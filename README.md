@@ -12,7 +12,9 @@ Reads midi files (.mid), based on the Midifile repository.
 ### Event Lister
 Shows events in a DataGrid. The events can be filtered by track, channel and event type.  
 Time can be displayed as Ticks or as Measure:Beat:Tick. Status can be displayed as Hex or Decimal.  
-The selected events can be copied to the Clipboard using **right-click**. From there, the tab-delimited text can be pasted into a text application or a spreadsheet.
+The selected events can be copied to the Clipboard using **right-click**. From there, the tab-delimited text can be pasted into a text application or a spreadsheet.  
+
+![EventLister](https://github.com/operatortwo/Mmultitool/assets/88147904/0fed225d-97e5-405e-abbd-e15e66b7ce6a)
 
 
 
