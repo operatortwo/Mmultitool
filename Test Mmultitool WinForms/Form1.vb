@@ -1,4 +1,5 @@
-﻿Imports Mmultitool
+﻿Imports System.Windows.Media
+Imports Mmultitool
 
 Public Class Form1
     Private mifir As New MidifileRead
