@@ -1,0 +1,14 @@
+﻿Version History of Test Mmultitool
+==================================
+
+Date			Version		Changes
+------------------------------------------------	
+2024 08 26		1.0.3.6		EventListWriter continued 3
+2024 07 26		1.0.3.5		EventListWriter continued 2
+2024 06 24		1.0.3.4		EventListWriter continued
+2024 06 24		1.0.3.3		added Tab for EventListWriter
+2024 05 10		1.0.3.0		first tests with midifile write
+2024 05 06		1.0.2.1		added name to tracklist
+2024 05 06		1.0.2.0		started with TabControlExpander
+2024 04 05		1.0.1.0		added code to test player
+2024 03 05		1.0.0.0		initial release
