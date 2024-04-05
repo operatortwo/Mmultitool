@@ -1,0 +1,19 @@
+﻿Version History of Test Mmultitool
+==================================
+
+Date			Version		Changes
+------------------------------------------------	
+2024 10	30		1.0.4.2		Release
+2024 10 18		1.0.4.1		fixes and improvements in dialog new event and dialog edit event
+2024 10 04		1.0.4.0		test Dialog edit event
+2024 09 15		1.0.3.8		fixed MidiFileWrite SequenceNumber, MidiChannel- and MidiPortPrefix
+2024 09 13		1.0.3.7		test Dialog new event
+2024 08 26		1.0.3.6		EventListWriter continued 3
+2024 07 26		1.0.3.5		EventListWriter continued 2
+2024 06 24		1.0.3.4		EventListWriter continued
+2024 06 24		1.0.3.3		added Tab for EventListWriter
+2024 05 10		1.0.3.0		first tests with midifile write
+2024 05 06		1.0.2.1		added name to tracklist
+2024 05 06		1.0.2.0		started with TabControlExpander
+2024 04 05		1.0.1.0		added code to test player
+2024 03 05		1.0.0.0		initial release
