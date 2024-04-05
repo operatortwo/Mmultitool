@@ -1,0 +1,338 @@
+﻿<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <RootNamespace>Mmultitool</RootNamespace>
+    <AssemblyName>Mmultitool</AssemblyName>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <Deterministic>true</Deterministic>
+    <ProjectGuid>{733AC466-709A-482A-8C62-0B0C3B773FC6}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <IncrementalBuild>true</IncrementalBuild>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Mmultitool.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <IncrementalBuild>false</IncrementalBuild>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Mmultitool.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DailyUserControls, Version=1.0.4.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Library\DailyUserControls.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="System.Threading.Tasks" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows" />
+    <Import Include="System.Windows.Controls" />
+    <Import Include="System.Windows.Data" />
+    <Import Include="System.Windows.Documents" />
+    <Import Include="System.Windows.Input" />
+    <Import Include="System.Windows.Shapes" />
+    <Import Include="System.Windows.Media" />
+    <Import Include="System.Windows.Media.Imaging" />
+    <Import Include="System.Windows.Navigation" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Common\MBT_Editor\MBT_Editor.xaml.vb">
+      <DependentUpon>MBT_Editor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Common\MBT_Editor\MBT_Editor_Procs.vb" />
+    <Compile Include="Controls\Common\MBT_InputBox.xaml.vb">
+      <DependentUpon>MBT_InputBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Common\NoteDurationHelper.xaml.vb">
+      <DependentUpon>NoteDurationHelper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventLister\Commands.vb" />
+    <Compile Include="Controls\EventLister\EventLister.xaml.vb">
+      <DependentUpon>EventLister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventLister\EventListerConverter.vb" />
+    <Compile Include="Controls\EventListWriter\Commands.vb" />
+    <Compile Include="Controls\EventListWriter\Dialogs\EditEvent\DlgEditEvent.xaml.vb">
+      <DependentUpon>DlgEditEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\Dialogs\EditEvent\EditProcedures.vb" />
+    <Compile Include="Controls\EventListWriter\Dialogs\NewEvent\DlgNewEvent.xaml.vb">
+      <DependentUpon>DlgNewEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\Dialogs\Track\DlgAddTrack.xaml.vb">
+      <DependentUpon>DlgAddTrack.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\Dialogs\Track\DlgRemoveTrack.xaml.vb">
+      <DependentUpon>DlgRemoveTrack.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\EventListWriter.xaml.vb">
+      <DependentUpon>EventListWriter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\EventListWriterConverter.vb" />
+    <Compile Include="Controls\EventListWriter\ObservableCollection.vb" />
+    <Compile Include="Controls\EventListWriter\Procedures.vb" />
+    <Compile Include="Controls\TrackView\Dialogs\DlgSetKeyList.xaml.vb">
+      <DependentUpon>DlgSetKeyList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Dialogs\DlgSortTracks.xaml.vb">
+      <DependentUpon>DlgSortTracks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\KeyCanvas.xaml.vb">
+      <DependentUpon>KeyCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\KeyPanel.xaml.vb">
+      <DependentUpon>KeyPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\LoopStrip.xaml.vb">
+      <DependentUpon>LoopStrip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\MeasureStrip.xaml.vb">
+      <DependentUpon>MeasureStrip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\MeasureStripAdorner.vb" />
+    <Compile Include="Controls\TrackView\Panels\NoteCanvas.xaml.vb">
+      <DependentUpon>NoteCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\NotePanel.xaml.vb">
+      <DependentUpon>NotePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\TrackHeaderPanel.xaml.vb">
+      <DependentUpon>TrackHeaderPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\TrackPanel.xaml.vb">
+      <DependentUpon>TrackPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\TrackView.xaml.vb">
+      <DependentUpon>TrackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\VoicePanel.xaml.vb">
+      <DependentUpon>VoicePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Midi\Common\EventList.vb" />
+    <Compile Include="Midi\Common\EventTypeInfo.vb" />
+    <Compile Include="Midi\Common\MCalc.vb" />
+    <Compile Include="Midi\Common\MDecode.vb" />
+    <Compile Include="Midi\Common\MModule1.vb" />
+    <Compile Include="Midi\Common\NoteNames.vb" />
+    <Compile Include="Midi\Common\TrackList.vb" />
+    <Compile Include="Midi\File\Read\MidifileRead.vb" />
+    <Compile Include="Midi\File\Write\DlgMidiFileWriteOptions.xaml.vb">
+      <DependentUpon>DlgMidiFileWriteOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
+    <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
+    <Compile Include="Midi\Player\Common.vb" />
+    <Compile Include="Midi\Player\SequencePlayer.vb" />
+    <Compile Include="Midi\Player\OutputStage.vb" />
+    <Compile Include="Midi\Player\Timer.vb" />
+    <Compile Include="Midi\Player\TrackPlayer.vb" />
+    <Compile Include="Module1.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\SelectAll_x32.png" />
+    <Resource Include="Resources\Images\Down_x22.png" />
+    <Resource Include="Resources\Images\Up_x22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\EditCopy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Play_bw_x22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\Common\MBT_Editor\MBT_Editor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Common\MBT_InputBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Common\NoteDurationHelper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventLister\EventLister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\Dialogs\EditEvent\DlgEditEvent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\Dialogs\NewEvent\DlgNewEvent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\Dialogs\Track\DlgAddTrack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\Dialogs\Track\DlgRemoveTrack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\EventListWriter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Dialogs\DlgSetKeyList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Dialogs\DlgSortTracks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\KeyCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\KeyPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\LoopStrip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\MeasureStrip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\NoteCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\NotePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\TrackHeaderPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\TrackPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\TrackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\VoicePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Midi\File\Write\DlgMidiFileWriteOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Notes\Note_eight.png" />
+    <Resource Include="Resources\Images\Notes\Note_half.png" />
+    <Resource Include="Resources\Images\Notes\Note_quarter.png" />
+    <Resource Include="Resources\Images\Notes\Note_sixteenth.png" />
+    <Resource Include="Resources\Images\Notes\Note_thirty_second.png" />
+    <Resource Include="Resources\Images\Notes\Note_tri_eight.png" />
+    <Resource Include="Resources\Images\Notes\Note_tri_sixteenth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Notes\Note_tri_thirty_second.png" />
+    <Resource Include="Resources\Images\Notes\Note_whole.png" />
+    <Resource Include="Resources\Images\Cancel_x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\GreenPlus_x24.png" />
+    <Resource Include="Resources\Images\UpDownArrows.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\store_x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\BlueMinus_x24.png" />
+    <Resource Include="Resources\Images\Ok_g_x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\TrackView\TrackView design notes.txt" />
+    <Resource Include="Resources\Images\ChevronUpGroup_24x.png" />
+    <Resource Include="Resources\Images\ChevronDownGroup_24x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Library\DailyUserControls.dll" />
+    <Resource Include="Resources\Library\DailyUserControls.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>

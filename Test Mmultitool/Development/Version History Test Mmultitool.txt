@@ -1,0 +1,39 @@
+﻿Version History of Test Mmultitool
+==================================
+
+Date			Version		Changes
+------------------------------------------------	
+2026 06 02		1.0.5.5		TrackView: user can change track order
+2025 06 01		1.0.5.4		fixed sort order in DataGrid.SelectedItmes before copy to clipboard
+2025 05 30		1.0.5.3		TrackView: scroll play position into view
+2025 04 29		1.0.5.2		MoveTrackPlayerPosition
+2025 04 23		1.0.5.1		some small improvements
+2025 04 19		1.0.5.0		MidifileWrite support for Format 0
+2025 04 19		1.0.4.17	dialog for MidifileWrite options
+2025 04 18		1.0.4.16	MidifileRead: converter for Multichannel tracks to Singlechannel Tracks
+2025 05 18		1.0.4.15	some UI improvenments
+2025 04 17		1.0.4.14	Improvements for TrackPlayer and TrackView
+2025 04 14      1.0.4.12    V 1.0.4.12 added PlayTracklist
+2025 04 12		1.0.4.11	Sequencer divided into TrackPlayer and SequencePlayer
+2025 04 10		1.0.4.10	TrackList fixed to TPQ 480
+2025 04 10		1.0.4.9		added preload, before big clean-up
+2025 04 07		1.0.4.8		duc 1.0.8.3 to prevent track scrolling with mousewheel when over SmallSlider or NumericUpDown
+2025 04 05		1.0.4.7		TrackView: vertical grid for notes
+2025 03 24		1.0.4.6		TrackView: draw notes
+2025 02 03		1.0.4.5		Measure for TrackView
+2025 01 10		1.0.4.4		TrackView continued
+2024 11 08		1.0.4.3		EventListWriter: added addTrack and RemoveTrack
+2024 10	30		1.0.4.2		Release
+2024 10 18		1.0.4.1		fixes and improvements in dialog new event and dialog edit event
+2024 10 04		1.0.4.0		test Dialog edit event
+2024 09 15		1.0.3.8		fixed MidiFileWrite SequenceNumber, MidiChannel- and MidiPortPrefix
+2024 09 13		1.0.3.7		test Dialog new event
+2024 08 26		1.0.3.6		EventListWriter continued 3
+2024 07 26		1.0.3.5		EventListWriter continued 2
+2024 06 24		1.0.3.4		EventListWriter continued
+2024 06 24		1.0.3.3		added Tab for EventListWriter
+2024 05 10		1.0.3.0		first tests with midifile write
+2024 05 06		1.0.2.1		added name to tracklist
+2024 05 06		1.0.2.0		started with TabControlExpander
+2024 04 05		1.0.1.0		added code to test player
+2024 03 05		1.0.0.0		initial release

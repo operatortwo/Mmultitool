@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="TrackPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mmultitool"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="800" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="1,0,1,1" MaxHeight="400" MinHeight="32"  Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="BorderBrush1" Color="Gray"/>
+        <SolidColorBrush x:Key="SplitterBorderBrush1" Color="Gray"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="6"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="ExpanderColumn" Width="Auto"/>
+            <ColumnDefinition x:Name="VoiceColumn" Width="190" MaxWidth="250" MinWidth="17"/>
+            <ColumnDefinition x:Name="VoiceTrackSplitterColumn" Width="5"/>
+            <ColumnDefinition x:Name="TrackHeaderColumn" Width="90" MaxWidth="200" MinWidth="10"/>
+            <ColumnDefinition x:Name="TrackKeysSplitterColumn" Width="5"/>
+            <ColumnDefinition x:Name="KeysColumn" Width="90" MaxWidth="150" MinWidth="10"/>
+            <ColumnDefinition x:Name="KeysNotesSplitterColumn" Width="6"/>
+            <ColumnDefinition x:Name="NotesColumn" Width="4*"/>
+            <ColumnDefinition x:Name="KeysAndNotesVScroll_Column" Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Expander x:Name="TrackExpander" HorizontalAlignment="Left" BorderBrush="{DynamicResource SplitterBorderBrush1}" BorderThickness="0,0,1,0" IsExpanded="True" >
+            <Grid Background="#FFE5E5E5"/>
+        </Expander>
+        <!-- Splitter -->
+        <GridSplitter x:Name="VoiceTrackSplitter" Grid.Column="2" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource SplitterBorderBrush1}" HorizontalAlignment="Stretch"/>
+        <GridSplitter x:Name="TrackKeysSplitter" Grid.Column="4" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource SplitterBorderBrush1}" HorizontalAlignment="Stretch"/>
+        <GridSplitter x:Name="KeysNotesSplitter" Grid.Column="6" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource SplitterBorderBrush1}" HorizontalAlignment="Stretch"/>
+        <!-- VoiceColumn content -->
+        <local:VoicePanel x:Name="VoicePanel" Grid.Column="1"/>
+        <!-- TrackHeaderColumn content -->
+        <local:TrackHeaderPanel x:Name="TrackHeaderPanel" Grid.Column="3"/>
+        <!---->
+        <local:KeyPanel x:Name="KeyPanel" Grid.Column="5"/>
+        <!---->
+        <local:NotePanel x:Name="NotePanel" Grid.Column="7" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BorderBrush1}"/>
+        <!---->
+        <ScrollBar x:Name="MasterVScroll" Grid.Column="9"/>
+        <!-- Vertical Splitter -->
+        <GridSplitter x:Name="HeightSplitter" Grid.Row="1" BorderBrush="{DynamicResource SplitterBorderBrush1}" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch" Grid.ColumnSpan="9" Focusable="False"/>
+    </Grid>
+</UserControl>

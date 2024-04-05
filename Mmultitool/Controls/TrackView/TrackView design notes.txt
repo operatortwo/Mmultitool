@@ -1,0 +1,59 @@
+﻿
+
+Track Columns (9)
+
+0			1		2		3			4		5		6		7		8
+
+Expander	Voice	Split	TrkHeader	Split	Keys	Split	Notes	Notes + Key VScroll
+
+
+
+TrackViewMode
+				FullRange		FirstKey	LastKey			(f.e. 88 keys)				-> FullRangeList
+				Range			FirstKey	LastKey			(f.e. 2 octaves bass)		-> RangeList
+				List			individual selected keys	(f.e. A2 E2 A3)				-> RandomList
+
+	+ optional comtrol rows
+	  automatic or manual sort
+
+List(Of KeyItem)
+
+KeyItem
+	Type				Note, ControlChange, PitchBend,..
+	(Note)Number
+	(Note)Name
+	Height
+	StartPos
+
+
+88 keys -> 21 A0 to 108 C8
+76 keys -> 28 E1 to 103 G7
+61 keys -> 36 C2 to  96 C7
+
+
+
+KeyPanel.Height = NumberOfNoteRows * PixelPerNoteRow * scaleY
+
+
+Public Function CreateTracklist(Mtracks As List(Of TrackChunk), TPQsource As Integer) As Tracklist
+
+
+---
+
+Play Midifile
+Assuming: 
+	- each Track is using only 1 Midi Channel
+	- track Channel is set by Channel Messages on the Track (notify for UI, set at ScreenRefresh)
+	- Player uses channel (status-low) directly
+
+--> Editor has to set the right channel when inserting Notes (and other Channel related events)
+
+
+Alternatively for New Tracklist:
+	- Track-Channel is set from user
+	- Track-Channel overrides channel set in status-low of Notes and other Channel related events
+
+
+
+
+

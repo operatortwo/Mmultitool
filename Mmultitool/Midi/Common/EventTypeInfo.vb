@@ -1,0 +1,85 @@
+﻿Module EventTypeInfo
+
+    Public Function GetEventTypeX_Name(member As EventTypeX) As String
+        Return member.ToString
+    End Function
+
+    Public Function GetEventTypeX_Value(member As EventTypeX) As Integer
+        Return member
+    End Function
+
+    Public Function GetEventTypeX_Info(type As EventTypeX) As EventTypeX_Information
+        Return EventTypeX_Info.Find(Function(x) x.enumtype = type)
+    End Function
+
+    Private ReadOnly EventTypeX_Info As New List(Of EventTypeX_Information) From {
+        {New EventTypeX_Information With {.enumtype = EventTypeX.Unkown, .Info = InfoUnkown}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.NoteOffEvent, .IsMidiEvent = True, .DataBytes = 2, .Info = InfoNoteOffEvent}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.NoteOnEvent, .IsMidiEvent = True, .DataBytes = 2, .Info = InfoNoteOnEvent}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.PolyKeyPressure, .IsMidiEvent = True, .DataBytes = 2, .Info = InfoPolyKeyPressure}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.ControlChange, .IsMidiEvent = True, .DataBytes = 2, .Info = InfoControlChange}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.ProgramChange, .IsMidiEvent = True, .DataBytes = 1, .Info = InfoProgramChange}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.ChannelPressure, .IsMidiEvent = True, .DataBytes = 1, .Info = InfoChannelPressure}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.PitchBend, .IsMidiEvent = True, .DataBytes = 2, .Info = InfoPitchBend}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.F0SysExEvent, .IsSysExEvent = True, .Info = InfoF0SysExEvent}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.F7SysExEvent, .IsSysExEvent = True, .Info = InfoF7SysExEvent}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.SequenceNumber, .IsMetaEvent = True, .DataBytes = 2, .Info = InfoSequenceNumber}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.TextEvent, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoTextEvent}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.CopyrightNotice, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoCopyrightNotice}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.SequenceOrTrackName, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoSequenceOrTrackName}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.InstrumentName, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoInstrumentName}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.Lyric, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoLyric}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.Marker, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoMarker}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.CuePoint, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoCuePoint}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.ProgramName, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoProgramName}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.DeviceName, .IsMetaEvent = True, .IsTextEvent = True, .Info = InfoDeviceName}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.MIDIChannelPrefix, .IsMetaEvent = True, .DataBytes = 1, .Info = InfoMIDIChannelPrefix}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.MIDIPortPrefix, .IsMetaEvent = True, .DataBytes = 1, .Info = InfoMIDIPortPrefix}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.EndOfTrack, .IsMetaEvent = True, .Info = InfoEndOfTrack}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.SetTempo, .IsMetaEvent = True, .DataBytes = 3, .Info = InfoSetTempo}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.SMPTEOffset, .IsMetaEvent = True, .DataBytes = 5, .Info = InfoSMPTEOffset}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.TimeSignature, .IsMetaEvent = True, .DataBytes = 4, .Info = InfoTimeSignature}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.KeySignature, .IsMetaEvent = True, .DataBytes = 2, .Info = InfoKeySignature}},
+        {New EventTypeX_Information With {.enumtype = EventTypeX.SequencerSpecific, .IsMetaEvent = True, .Info = InfoSequencerSpecific}}
+        }
+
+    Public Class EventTypeX_Information
+        Public enumtype As EventTypeX
+        Public IsMidiEvent As Boolean
+        Public IsSysExEvent As Boolean
+        Public IsMetaEvent As Boolean
+        Public IsTextEvent As Boolean
+        Public DataBytes As Integer
+        Public Info As String
+    End Class
+
+    Private Const InfoUnkown = "Placeholder for empty event or not recognized"
+    Private Const InfoNoteOffEvent = "Internally optional: can be generated by NoteOn Durations"
+    Private Const InfoNoteOnEvent = "kk vv - Turn on specified note with specified velocity on channel specified in status"
+    Private Const InfoPolyKeyPressure = "kk vv - Send data for key and pressure on channel specified in status"
+    Private Const InfoControlChange = "cc vv - Send data for controller number and value  on channel specified in status"
+    Private Const InfoProgramChange = "pp - Send program number for specified  on channel specified in status"
+    Private Const InfoChannelPressure = "vv - Send pressure data for all notes on channel specified in status"
+    Private Const InfoPitchBend = "vv vv - Send 14 bit value for pitchbend wheel  on channel specified in status"
+    Private Const InfoF0SysExEvent = "F0 System Exclusive"
+    Private Const InfoF7SysExEvent = "F7 System Exclusive"
+    Private Const InfoSequenceNumber = "Optional, must occur at the beginning of a track at time 0"
+    Private Const InfoTextEvent = "Any text describing anything"
+    Private Const InfoCopyrightNotice = "Format: (© YYYY owner) should be the first event in the first track at time 0."
+    Private Const InfoSequenceOrTrackName = "If in a format 0 track, or the first track in a format 1 file, the name of the sequence otherwise, the name of the track."
+    Private Const InfoInstrumentName = "Description of the type of instrumentation to be used in that track"
+    Private Const InfoLyric = "Lyric to be sung"
+    Private Const InfoMarker = "Name of that point in the sequence"
+    Private Const InfoCuePoint = "Description of something happening at that point"
+    Private Const InfoProgramName = "To aid in reorchestration, should only be used in conjunction with optional bank selects and a program change"
+    Private Const InfoDeviceName = "The name of the device associated with this track, f.e. the model name of a synthesizer"
+    Private Const InfoMIDIChannelPrefix = "Used to associate a channel with all events which follow. This channel is 'effective' until the next normal MIDI event"
+    Private Const InfoMIDIPortPrefix = "Obsolete, use DeviceName instead"
+    Private Const InfoEndOfTrack = "Internally optional, required in Midi file. The last event in a track. Will be generated at file write."
+    Private Const InfoSetTempo = "Indicates a tempo change in microseconds per quarter-note"
+    Private Const InfoSMPTEOffset = "Designates the SMPTE time at which the track chunk is supposed to start. should be present at the beginning of the track at time 0 and before any transmittable MIDI events"
+    Private Const InfoTimeSignature = "Numerator and denominator, number of MIDI clocks in a metronome click and number of notated 32nd-notes per quarter note"
+    Private Const InfoKeySignature = "sf mi - sf = -7: 7 flats, sf = 0: key of C, sf = 7: 7 sharps,mi = 0: major key, mi = 1: minor key"
+    Private Const InfoSequencerSpecific = "The first byte or first three bytes is a manufacturer ID as with MIDI System Exclusive"
+
+End Module

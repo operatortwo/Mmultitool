@@ -1,0 +1,24 @@
+﻿<Window x:Class="DlgSortTracks"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mmultitool"
+        xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
+        mc:Ignorable="d"
+        Title="DlgSortTracks" Height="450" Width="378" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+    <Grid>
+        <duc:ImageButton x:Name="btnOk" Width="70" Text="Ok" Margin="92,0,0,38" Image="/Mmultitool;component/Resources/Images/Ok_g_x32.png" HorizontalAlignment="Left" Height="24" VerticalAlignment="Bottom"/>
+        <duc:ImageButton x:Name="btnCancel" Width="70" Text="Cancel" Margin="197,0,0,38" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalAlignment="Left" IsCancel="True" Height="24" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnSortUp" Content="Up" Margin="0,96,25,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="35"/>
+        <Button x:Name="btnSortDown" Content="Down" Margin="0,149,26,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34"/>
+        <ListView x:Name="LvTracks" Margin="25,19,79,94" Foreground="Black" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="250" DisplayMemberBinding="{Binding Name}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>

@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="EventListWriter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mmultitool"
+             xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
+             DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="DgSelectedFore" Color="Black"/>
+        <SolidColorBrush x:Key="DgSelectedBack" Color="LightBlue"/>
+        <SolidColorBrush x:Key="DgFocusedFore" Color="Black"/>
+        <SolidColorBrush x:Key="DgFocusedBack" Color="#FFDEF7FF"/>
+        <SolidColorBrush x:Key="ButtonBorderBrush" Color="#FF777777"/>
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{x:Static local:EventListWriter.DataGridPasteInsertCommand}" Executed="DataGridPasteInsertCommand_Executed" CanExecute="DataGridPasteInsertCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:EventListWriter.DataGridDeleteCommand}" Executed="DataGridDeleteCommand_Executed" CanExecute="DataGridDeleteCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:EventListWriter.DataGridPlayCommand}" Executed="DataGridPlayCommand_Executed" CanExecute="DataGridPlayCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:EventListWriter.DataGridPlayLoopCommand}" Executed="DataGridPlayLoopCommand_Executed" CanExecute="DataGridPlayLoopCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:EventListWriter.DataGridEditCommand}" Executed="DataGridEditCommand_Executed" CanExecute="DataGridEditCommand_CanExecute"/>
+    </UserControl.CommandBindings>
+    <Grid>
+        <DockPanel>
+            <Border VerticalAlignment="Top" DockPanel.Dock="Top" BorderBrush="#FF688CAF" BorderThickness="1,1,1,0">
+                <duc:TabControlExpander DockPanel.Dock="Top" Height="100" HeaderPanelBackground="#FFE9F8FF">
+                    <TabItem Header="Start">
+                        <Grid Background="#FFF2FDF5">
+                            <!-- Format Group-->
+                            <Label Content="Time:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                            <ComboBox x:Name="cmbTimeFormat" HorizontalAlignment="Left" Margin="55,15,0,0" VerticalAlignment="Top" Width="108"/>
+                            <Label Content="Status:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                            <ComboBox x:Name="cmbStatusFormat" HorizontalAlignment="Left" Margin="55,49,0,0" VerticalAlignment="Top" Width="55"/>
+                            <Label Content="Format" HorizontalAlignment="Left" Margin="131,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="174,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <!-- Filter Group-->
+                            <duc:CheckboxFilterList x:Name="cbflistTrack" Margin="187,10,0,0" Text="Track" ImageLocation="Right" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="67" Height="26" ListWindowWidth="180"/>
+                            <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="187,44,0,0" Text="Channel" ImageLocation="Right" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108"/>
+                            <duc:CheckboxFilterList x:Name="cbflistEventType" Margin="268,10,0,0" Text="Event Type" ImageLocation="Right" ListWindowWidth="180" ListWindowHeight="275" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="97"/>
+                            <Label Content="Filter" HorizontalAlignment="Left" Margin="334,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="376,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+
+                            <!-- Track Group-->
+
+                            <duc:ImageButton x:Name="btnAddTrack" Text="Add Track" Margin="392,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="105" Image="/Mmultitool;component/Resources/Images/GreenPlus_x24.png" BorderThickness="1,1,1,1" BorderBrush="{DynamicResource ButtonBorderBrush}" TextPadding="0,2,0,2"/>
+                            <duc:ImageButton x:Name="btnRemoveTrack" Text="Remove Track" Margin="392,44,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="105" Image="/Mmultitool;component/Resources/Images/BlueMinus_x24.png" BorderThickness="1,1,1,1" BorderBrush="{DynamicResource ButtonBorderBrush}" TextPadding="0,2,0,2"/>
+
+                            <Label Content="Track" HorizontalAlignment="Left" Margin="510,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="550,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+
+                            <!-- Empty Group-->
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Tab 2">
+
+                    </TabItem>
+                </duc:TabControlExpander>
+            </Border>
+            <Border VerticalAlignment="Top" DockPanel.Dock="Top" BorderBrush="#FF688CAF" BorderThickness="1,1,1,0">
+                <Grid x:Name="InfoStrip" VerticalAlignment="Top" Height="22" DockPanel.Dock="Top" Background="#FFEFFCFF">
+                    <Label Content="TPQ:" Margin="0,0,59,0" VerticalAlignment="Center" Padding="0,0,0,0" HorizontalAlignment="Right"/>
+                    <Label x:Name="lblTpq" VerticalAlignment="Center" Padding="5,0,5,0" Height="18" Width="39" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalAlignment="Right" Margin="0,0,10,0" Content="{Binding EvliTPQ}"/>
+                    <StackPanel Orientation="Horizontal" Width="160" HorizontalAlignment="Right" Margin="0,0,100,0">
+                        <Label x:Name="lblEventCountFiltered" Content="{Binding CollectionView.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventListWriter}, Mode=FindAncestor}}" Padding="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalContentAlignment="Right" Margin="0,2,0,2" HorizontalAlignment="Left"/>
+                        <Label Content=" of " Padding="0,0,0,0" Margin="0,3,0,3" HorizontalAlignment="Left"/>
+                        <Label x:Name="lblEventCountAll" Content="{Binding TrackEvents.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventListWriter}, Mode=FindAncestor}}" Padding="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" Margin="0,2,0,2" HorizontalAlignment="Left"/>
+                        <Label Content=" Events " Padding="0,0,0,0" Margin="0,3,0,3" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Grid>
+                <DataGrid x:Name="DataGrid1" ItemsSource="{Binding CollectionView}" AutoGenerateColumns="False" CanUserResizeRows="False" RowHeaderWidth="18" RowBackground="{Binding DataGridRowBackground}" CanUserAddRows="False" IsReadOnly="True" IsTabStop="True" BorderBrush="{Binding DataGridBorderBrushNotFocused, Mode=OneTime}">
+                    <DataGrid.FocusVisualStyle>
+                        <!-- don't show FocusVisual -->
+                        <Style/>
+                    </DataGrid.FocusVisualStyle>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Copy" Command="{x:Static local:EventListWriter.DataGridCopyCommand}"/>
+                            <MenuItem x:Name="ctxMi_CopyWithHeader" Header="Copy with header">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/EditCopy.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_Paste" Header="Paste">
+                                <MenuItem x:Name="ctxMi_PasteInsert"  Header="Insert" Command="{x:Static local:EventListWriter.DataGridPasteInsertCommand}"/>
+                                <MenuItem x:Name="ctxMi_PasteOverwrite" Header="Overwrite"/>
+                                <MenuItem x:Name="ctxMi_PasteAppend" Header="Append"/>
+                            </MenuItem>
+                            <MenuItem Header="Insert New TrackEventX" Command="{x:Static local:EventListWriter.DataGridInsertNewCommand}" IsEnabled="True"/>
+                            <Separator/>
+                            <MenuItem x:Name="ctxMi_PlaySelected" Header="Play selected" Command="{x:Static local:EventListWriter.DataGridPlayCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/Play_bw_x22.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_PlaySelectedLoop" Header="Play selected and Loop" Command="{x:Static local:EventListWriter.DataGridPlayLoopCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/Play_bw_x22.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_DeleteSelectedItems" Header="Delete selected items" Command="{x:Static local:EventListWriter.DataGridDeleteCommand}"/>
+                            <MenuItem Header="Select _All"  Command="SelectAll" InputGestureText="Ctrl+A">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/SelectAll_x32.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_EditEvents" Header="Edit Events" Command="{x:Static local:EventListWriter.DataGridEditCommand}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <duc:DataGridTextColumnX x:Name="TimeCol" Header="Time" Binding="{Binding Time}" Width="80" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="TrackNumCol" Header="Trk" Binding="{Binding TrackNumber}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="ChannelCol" Header="Ch" Binding="{Binding Channel}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="TypeXCol" Header="Type X" Binding="{Binding TypeX}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="StatusCol" Header="Status" Binding="{Binding Status}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="Data1Col" Header="Data 1" Binding="{Binding Data1}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="Data2Col" Header="Data 2" Binding="{Binding Data2}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="DurationCol" Header="Duration" Binding="{Binding Duration}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="DataStrCol" Header="Data String" Binding="{Binding DataStr}" TextAlignment="Left" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="{x:Static local:EventListWriter.DataGridCopyCommand}" Executed="DataGridCopyCommand_Executed" CanExecute="DataGridCopyCommand_CanExecute"/>
+                        <CommandBinding Command="{x:Static local:EventListWriter.DataGridInsertNewCommand}" Executed="DataGridInsertNewCommand_Executed" CanExecute="DataGridInsertNewCommand_CanExecute"/>
+                    </DataGrid.CommandBindings>
+                </DataGrid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>
