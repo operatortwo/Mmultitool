@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="EventLister"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mmultitool"
+             xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:StatusByte_Converter x:Key="StatusByte_Converter"/>
+        <local:TimeToString_Converter x:Key="TimeToString_Converter"/>
+        <SolidColorBrush x:Key="DgSelectedFore" Color="Black"/>
+        <SolidColorBrush x:Key="DgSelectedBack" Color="LightBlue"/>
+        <SolidColorBrush x:Key="DgFocusedFore" Color="Black"/>
+        <SolidColorBrush x:Key="DgFocusedBack" Color="#FFDEF7FF"/>
+    </UserControl.Resources>
+    <Grid>
+        <DockPanel>
+            <Expander x:Name="Expander1" DockPanel.Dock="Top" Background="#FFEEF6FF"  IsExpanded="True" BorderBrush="Black" BorderThickness="0.5,0.5,0.5,0">
+                <Expander.Header>
+                    <StackPanel VerticalAlignment="Top" Height="30" Background="#FFEEF6FF" Orientation="Horizontal">
+                        <duc:CheckboxFilterList x:Name="cbflistTrack" Height="25" Margin="40,2,0,0" Text="Track" ImageLocation="Right" Width="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1"/>
+                        <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="40,2,0,0" Height="25" Text="Channel" ImageLocation="Right" Width="100" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1"/>
+                        <duc:CheckboxFilterList x:Name="cbflistEventType" Margin="50,2,0,0" Height="25" Text="Event Type" Width="113" ImageLocation="Right" ListWindowWidth="180" ListWindowHeight="275" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1"/>
+                        <Label x:Name="lblEventCountFiltered" Content="{Binding CollectionView.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventLister}, Mode=FindAncestor}}" Padding="5,0,5,0" Height="19" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalContentAlignment="Right" Margin="40,0,0,0"/>
+                        <Label Content=" of " Padding="0,0,0,0" VerticalAlignment="Center"/>
+                        <Label x:Name="lblEventCountAll" Content="{Binding TrackEvents.Count, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EventLister}}}" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5,0,5,0" Height="19" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" Margin="4,0,0,0"/>
+                        <Label Content=" Events " Padding="0,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Expander.Header>
+                <Grid>
+                    <Label Content="TPQ:" HorizontalAlignment="Left" Margin="500,0,0,0" VerticalAlignment="Center" Padding="0,0,0,0"/>
+                    <Label x:Name="lblTpq" HorizontalAlignment="Left" Margin="532,0,0,0" VerticalAlignment="Center" Padding="5,0,5,0" Height="19" Width="39" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF"/>
+                    <ComboBox x:Name="cmbTimeFormat" HorizontalAlignment="Left" Margin="5,12,0,2" VerticalAlignment="Top" Width="108" ItemsSource="{Binding TimeFormat}"/>
+                    <ComboBox x:Name="cmbStatusFormat" HorizontalAlignment="Left" Margin="207,12,0,2" VerticalAlignment="Top" Width="55"/>
+                    <Label Content="Status fmt:" HorizontalAlignment="Left" Margin="146,15,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                </Grid>
+            </Expander>
+            <Grid>
+                <DataGrid x:Name="DataGrid1" ItemsSource="{Binding CollectionView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EventLister}}}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" RowHeaderWidth="18" RowBackground="{Binding DataGridRowBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EventLister}}}" IsReadOnly="True">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="ctxMi_Copy" Header="Copy">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/EditCopy.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_CopyWithHeader" Header="Copy with header">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/EditCopy.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_PlaySelected" Header="Play selected">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/Play_bw_x22.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="ctxMi_PlaySelectedLoop" Header="Play selected and Loop">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/Play_bw_x22.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <duc:DataGridTextColumnX x:Name="TimeCol" Header="Time" Binding="{Binding Time, Converter={StaticResource TimeToString_Converter}}" Width="80" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="TrackNumCol" Header="Trk" Binding="{Binding TrackNumber}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="ChannelCol" Header="Ch" Binding="{Binding Channel}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="TypeXCol" Header="Type X" Binding="{Binding TypeX}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="StatusCol" Header="Status" Binding="{Binding Status, Converter={StaticResource StatusByte_Converter}}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="Data1Col" Header="Data 1" Binding="{Binding Data1}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="Data2Col" Header="Data 2" Binding="{Binding Data2}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="DurationCol" Header="Duration" Binding="{Binding Duration}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="DataStrCol" Header="Data String" Binding="{Binding DataStr}" TextAlignment="Left" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>
