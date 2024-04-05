@@ -1,0 +1,31 @@
+﻿
+
+Dlg Import Midi-Pattern
+---
+Is Multichannel ?
+First NoteOn
+LastEvent at
+IsDrum ? (Channel = 9)
+---
+TestPlay 
+TestPlay Loop
+
+-----
+Remove:
+
+SetTempo
+ProgramChange
+NoteOff
+EndOfTrack
+
++- ControlChange
+
+------------
+TPQ to 480
+------------
+Info:
+FirstProgramChange	38 - Synth Bass 1
+FirstSetTempo		140
+SequenceOrTrackName	synth ba
+InstrumentName		M Cha 1
+
