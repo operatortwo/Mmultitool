@@ -16,7 +16,8 @@ The selected events can be copied to the Clipboard using **right-click**. From t
 
 ![EventLister](https://github.com/operatortwo/Mmultitool/assets/88147904/0fed225d-97e5-405e-abbd-e15e66b7ce6a)
 
-
+### Player
+The player is designed for monitoring one or more events in the list and also for other internal purposes.
 
 ---
 ### Using from WinForms
