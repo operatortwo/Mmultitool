@@ -1,0 +1,435 @@
+﻿<Window x:Class="DlgEditEvent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mmultitool"        
+        xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"        
+        DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+        mc:Ignorable="d"
+        KeyboardNavigation.DirectionalNavigation="Contained"
+        Title="Edit Event" Height="500" Width="780" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.Resources>
+        <SolidColorBrush x:Key="GridBorderBrush1" Color="#FF737373"/>
+        <SolidColorBrush x:Key="DataBgBrush" Color="#FFFEFEF2"/>
+        <SolidColorBrush x:Key="InfoBgBrush" Color="#FFFFFEF3"/>
+        <SolidColorBrush x:Key="GroupBoxBorderBrush" Color="#FFFFA566"/>
+        <SolidColorBrush x:Key="GroupBoxBackground" Color="#FFF2F7FE"/>
+        <SolidColorBrush x:Key="ChangedBgBrush" Color="#FFD2FFD7"/>
+        <SolidColorBrush x:Key="UnChangedBgBrush" Color="White"/>
+        <SolidColorBrush x:Key="GridHeaderBgBrush" Color="#FFF4F9FF"/>
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFBFBFB"/>
+            <GradientStop Color="#FFFDF5F5" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid x:Name="MainGrid">
+
+        <Grid x:Name="CompareGrid" Width="704"  Margin="45,80,0,0" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Rectangle Grid.Row="0" Grid.ColumnSpan="11" Fill="{DynamicResource GridHeaderBgBrush}"/>
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="11" Fill="{DynamicResource DataBgBrush}"/>
+            <Rectangle Grid.Row="2" Grid.ColumnSpan="11" Fill="{DynamicResource UnChangedBgBrush}"/>
+
+            <Label Content="" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}"/>
+            <Label Content="Time" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="1"/>
+            <Label Content="Trk" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="2"/>
+            <Label Content="Ch" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="3"/>
+            <Label Content="TypeX" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="4"/>
+            <Label Content="Status" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="5"/>
+            <Label Content="Data 1" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="6"/>
+            <Label Content="Data 2" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="7"/>
+            <Label Content="Duration" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="8"/>
+            <Label Content="DataX" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="9"/>
+            <Label Content="Data Str" Padding="3,0,3,0" VerticalContentAlignment="Center" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="10"/>
+
+            <Label x:Name="lblCol0" Content="Orig " Padding="3,0,3,0" Grid.Row="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{DynamicResource GridHeaderBgBrush}"/>
+            <Label x:Name="lblTime" Content="time" Padding="3,0,3,0" Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label x:Name="lblTrk" Content="trk" Padding="3,0,3,0" Grid.Row="1" Grid.Column="2" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblChn" Content="chn" Padding="3,0,3,0" Grid.Row="1" Grid.Column="3" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblTypeX" Content="TypeX" Padding="3,0,3,0" Grid.Row="1" Grid.Column="4" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblStatus" Content="Status" Padding="3,0,3,0" Grid.Row="1" Grid.Column="5" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblData1" Content="Data 1" Padding="3,0,3,0" Grid.Row="1" Grid.Column="6" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblData2" Content="Data 2" Padding="3,0,3,0" Grid.Row="1" Grid.Column="7" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblDuration" Content="Duration" Padding="3,0,3,0" Grid.Row="1" Grid.Column="8" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblDataX" Content="DataX" Padding="3,0,3,0" Grid.Row="1" Grid.Column="9" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblDataStr" Content="DataStr" Padding="3,0,3,0" Grid.Row="1" Grid.Column="10" BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,1,1,1"/>
+
+            <Label x:Name="lblCo0R2" Content="New " Padding="3,0,3,0" Grid.Row="2" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,0,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{DynamicResource GridHeaderBgBrush}"/>
+            <Label x:Name="lblTimeNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,0,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label x:Name="lblTrkNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="2" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblChnNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="3" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblTypeXNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="4" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblStatusNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="5" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblData1New" Content="123" Padding="3,0,3,0" Grid.Row="2" Grid.Column="6" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblData2New" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="7" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblDurationNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="8" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblDataXNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="9" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblDataStrNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="10" BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,0,1,1"/>
+
+        </Grid>
+
+        <Rectangle x:Name="ScrollFocusRectangle" HorizontalAlignment="Left" Margin="8,8,0,16" Width="21" StrokeThickness="2"/>
+        <ScrollBar x:Name="ScrollBar1" HorizontalAlignment="Left" Margin="10,10,0,20" Maximum="9" SmallChange="1" ViewportSize="1" ValueChanged="ScrollBar1_ValueChanged" LargeChange="5" Value="-1" Focusable="True" Background="#FFD5E2EC"/>
+
+
+
+
+        <Label Content="Position:" HorizontalAlignment="Left" Margin="49,0,0,20" Padding="0,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+        <StackPanel Orientation="Horizontal" Width="100" HorizontalAlignment="Left" Margin="99,0,0,16" Height="20" VerticalAlignment="Bottom">
+            <Label x:Name="lblPosition" Content="xx" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+            <Label Content=" of " Padding="0,0,0,0" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="lblPositionMax" Margin="5,0,0,0" VerticalAlignment="Top" Padding="0,0,0,0" Content="xx"/>
+        </StackPanel>
+
+        <Label Content="Raw:" HorizontalAlignment="Left" Margin="578,8,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Label Content="DataX count:" HorizontalAlignment="Left" Margin="471,8,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Label x:Name="lblDataXcount" Content="xx" HorizontalAlignment="Left" Margin="544,6,0,0" VerticalAlignment="Top" Padding="3,0,3,0" Height="20" BorderThickness="1,1,1,1" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{DynamicResource InfoBgBrush}"/>
+        <TextBox x:Name="tbDataXDump" Text="xx" HorizontalAlignment="Left" Margin="608,6,0,0" VerticalAlignment="Top" Padding="0,0,0,0" Width="140" IsReadOnly="True" Background="{DynamicResource InfoBgBrush}" IsReadOnlyCaretVisible="True" Height="20"/>
+
+        <Label x:Name="lblEventType" Content="Type"  Padding="3,0,3,0"  BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Margin="46,6,0,0" VerticalAlignment="Top" Width="70" Height="20" Background="{DynamicResource InfoBgBrush}"/>
+        <Label x:Name="lblMetaEventType" Content="hh"  Padding="3,0,3,0"  BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,1,1" Margin="121,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="95" Background="{DynamicResource InfoBgBrush}"/>
+
+
+        <Rectangle Width="704" Height="42" Margin="45,34,0,0" StrokeThickness="1" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="{DynamicResource GridBorderBrush1}"/>
+        <Grid x:Name="InfoGrid" Width="702" Height="40" Margin="46,35,0,0" Background="{DynamicResource InfoBgBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock x:Name="tblEventInfo" Text="Info" TextWrapping="Wrap" Padding="5,0,5,0"/>
+        </Grid>
+
+        <TabControl x:Name="TabControlEdit" HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Margin="269,160,0,0" Width="480" SelectedIndex="0" Background="{DynamicResource GroupBoxBackground}">
+            <!-- set all TabItems to Collapsed to remove TabControl's Header-->
+
+            <TabItem x:Name="Ti_NoteOff" Visibility="Collapsed">
+                <GroupBox  Header="Note Off" HorizontalAlignment="Left" Width="464" Height="131" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Margin="5,0,0,0">
+                    <Grid>
+                        <Label Content="Data1:" HorizontalAlignment="Left" Margin="21,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <Label Content="Data2:" HorizontalAlignment="Left" Margin="114,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+
+                        <duc:NumericUpDown x:Name="nudNoteOffData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="60" Margin="10,28,0,0"/>
+                        <duc:NumericUpDown x:Name="nudNoteOffData2" Height="26" Margin="100,28,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127"/>
+
+                        <RadioButton x:Name="radNoteOff_90h" HorizontalAlignment="Left" VerticalAlignment="Top" Content="use NoteOn with velocity 0" Margin="10,89,0,0" IsChecked="False"/>
+                        <RadioButton x:Name="radNoteOff_80h" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Content="use NoteOff (80 hex)" Margin="206,89,0,0"/>
+
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="206,13,0,0" TextWrapping="Wrap" Height="54" Width="223" Padding="5,0,0,0" Background="{DynamicResource InfoBgBrush}">
+                     It is <Bold>not</Bold> necessary to insert NoteOff's because NoteDurations are used. <LineBreak/>
+                     It is still enabled for debug purposes.
+                        </TextBlock>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_NoteOn" Visibility="Collapsed">
+                <GroupBox  Header="Note On" HorizontalAlignment="Left" Width="464" Height="180" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Margin="5,0,0,0">
+                    <Grid>
+                        <Label Content="Data1:" HorizontalAlignment="Left" Margin="21,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <Label Content="Data2:" HorizontalAlignment="Left" Margin="114,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <TextBlock x:Name="txblNoteOnName" Text="nnn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="21,79,0,0" Background="{DynamicResource InfoBgBrush}"/>
+                        <TextBlock x:Name="txblNoteOnDrumName" Text="nddd" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="21,100,0,0" Background="{DynamicResource InfoBgBrush}"/>
+
+
+                        <duc:NumericUpDown x:Name="nudNoteOnData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="60" Margin="10,28,0,0"/>
+                        <duc:NumericUpDown x:Name="nudNoteOnData2" Height="26" Margin="100,28,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="100"/>
+
+                        <TextBlock Text="Note" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="21,59,0,0"/>
+
+                        <TextBlock Text="Velocity" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,59,0,0"/>
+
+
+
+                        <Grid x:Name="NoteDurationGrid"  HorizontalAlignment="Left" Height="52" Margin="190,2,0,0" VerticalAlignment="Top" Width="252">
+                            <Label x:Name="lblNoteOnDuration" Content="Duration" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                            <local:NoteDurationHelper x:Name="cmbNoteOnDuration" Height="26" Margin="99,26,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="153" Background="#FFE4FFE6" BorderBrush="{DynamicResource GridBorderBrush1}"/>
+                            <Label x:Name="lblNoteOnDurationValue" Content="dval" HorizontalAlignment="Left" Margin="147,3,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                            <Button x:Name="btnNoteOnSetDuration" Content="set" HorizontalAlignment="Left" Margin="99,0,0,0" VerticalAlignment="Top" Height="22" Width="32" Background="#FFE4FFE6"/>
+                            <duc:NumericUpDown x:Name="nudNoteOnDuration" Height="26" Margin="0,26,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="480" Value="120" MinimumValue="1"/>
+                        </Grid>
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+
+            <TabItem x:Name="Ti_PolyKeyPressure" Visibility="Collapsed">
+                <GroupBox  Header="PolyKeyPressure" HorizontalAlignment="Left" Width="464" Height="140" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Margin="5,0,0,0">
+                    <Grid>
+                        <Label Content="Data1:" HorizontalAlignment="Left" Margin="21,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <Label Content="Data2:" HorizontalAlignment="Left" Margin="141,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <TextBlock x:Name="txblPolyKeyPressureNoteName" Text="nn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,92,0,0" Background="{DynamicResource InfoBgBrush}" Padding="5,0,5,0"/>
+
+                        <duc:NumericUpDown x:Name="nudPolyKeyPressureData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="60" Margin="10,28,0,0"/>
+                        <duc:NumericUpDown x:Name="nudPolyKeyPressureData2" Height="26" Margin="130,28,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="100"/>
+
+                        <TextBlock Text="Note number" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,59,0,0"/>
+                        <TextBlock Text="Pressure amount" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="130,57,0,0"/>
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_ControlChange" Visibility="Collapsed">
+                <GroupBox  Header="Control Change" HorizontalAlignment="Left" Width="464" Height="150" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Margin="5,0,0,0">
+                    <Grid>
+                        <Label Content="Data1:" HorizontalAlignment="Left" Margin="21,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <Label Content="Data2:" HorizontalAlignment="Left" Margin="155,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <TextBlock x:Name="txblControlChangeCtrlName" Text="nn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,92,0,0" Background="{DynamicResource InfoBgBrush}" Padding="5,0,5,0"/>
+
+                        <duc:NumericUpDown x:Name="nudControlChangeData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="1" Margin="10,28,0,0"/>
+                        <duc:NumericUpDown x:Name="nudControlChangeData2" Height="26" Margin="150,28,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="100"/>
+
+                        <TextBlock Text="Controller number" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,59,0,0"/>
+                        <TextBlock Text="Value to set" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="155,57,0,0"/>
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_ProgramChange" Visibility="Collapsed">
+                <GroupBox  Header="Program Change" HorizontalAlignment="Left" Width="464" Height="131" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Margin="5,0,0,0">
+                    <Grid>
+                        <Label Content="Data1:" HorizontalAlignment="Left" Margin="21,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                        <TextBlock x:Name="txblProgramChangeProgName" Text="pp" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="137,71,0,0" Padding="5,0,5,0" Background="{DynamicResource InfoBgBrush}"/>
+
+                        <duc:NumericUpDown x:Name="nudProgramChangeData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Margin="10,28,0,0"/>
+
+                        <TextBlock Text="Program number" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,59,0,0"/>
+
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_ChannelPressure" Visibility="Collapsed">
+                <GroupBox  Header="Channel Pressure" HorizontalAlignment="Left" Width="464" Height="131" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Margin="5,0,0,0">
+                    <Grid>
+                        <Label Content="Data1:" HorizontalAlignment="Left" Margin="21,5,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+
+                        <duc:NumericUpDown x:Name="nudChannelPressureData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="100" Margin="10,28,0,0"/>
+                        <TextBlock Text="Pressure value" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,59,0,0"/>
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+
+            <TabItem x:Name="Ti_PitchBend" Visibility="Collapsed">
+                <GroupBox  Header="Pitch Bend" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="100" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <Label Content="Pitch Bend:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,7,0,0" />
+                        <duc:SmallSlider x:Name="PitchBendSlider" Margin="94,8,0,0" SliderBrush="#FF4077FD" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="24" MinimumValue="-8192" MaximumValue="8191" LeftRightLook="True" Background="#FFFFFBDE" StepValue="{Binding Value, ElementName=PitchBendStep}"/>
+                        <Label Content="Data1, Data2:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,7,0,0"/>
+                        <TextBlock x:Name="txblPitchBendData" Background="{DynamicResource InfoBgBrush}" Text="xx xx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="326,12,0,0" Width="50" TextAlignment="Center"/>
+                        <duc:SmallSlider x:Name="PitchBendStep" Margin="344,47,10,10" MinimumValue="1" Value="1" MaximumValue="200" SliderBrush="#FF59A8DA"/>
+                        <Label Content="SliderStep:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="278,44,0,0" />
+                        <Button x:Name="PitchBendZero" HorizontalAlignment="Left" VerticalAlignment="Top" Content="0" Margin="138,47,0,0" Width="25" Background="#FFE3F9C9"/>
+                        <Button x:Name="PitchBend4000" HorizontalAlignment="Left" VerticalAlignment="Top" Content="4k" Margin="208,47,0,0" Width="25"/>
+                        <Button x:Name="PitchBend2000" HorizontalAlignment="Left" VerticalAlignment="Top" Content="2k" Margin="173,47,0,0" Width="25"/>
+                        <Button x:Name="PitchBend6000" HorizontalAlignment="Left" VerticalAlignment="Top" Content="6k" Margin="243,47,0,0" Width="25"/>
+                        <Button x:Name="PitchBendMinus2000" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-2k" Margin="103,47,0,0" Width="25"/>
+                        <Button x:Name="PitchBendMinus4000" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-4k" Margin="68,47,0,0" Width="25"/>
+                        <Button x:Name="PitchBendMinus6000" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-6k" Margin="33,47,0,0" Width="25"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_MetaText" Visibility="Collapsed">
+                <GroupBox x:Name="GroupBox_MetaText" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="90" VerticalAlignment="Top" Header="Meta Event of Text Type" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBox x:Name="tbEditMetaText" HorizontalAlignment="Left" Margin="10,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379" MaxLength="50"/>
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,41,0,0">
+                     The input is currently limited to a maximum of 50 characters.
+                        </TextBlock>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_SequenceNumber" Visibility="Collapsed">
+                <GroupBox  Header="SequenceNumber" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <duc:NumericUpDown x:Name="nudSequenceNumber" Height="28" Width="100" MaximumValue="65535" HorizontalAlignment="Left" Margin="68,0,0,0" VerticalAlignment="Center"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_MidiChannelPrefix" Visibility="Collapsed">
+                <GroupBox  Header="MidiChannelPrefix" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <duc:NumericUpDown x:Name="nudChannelPrefix" MaximumValue="15" Height="28" Width="70" HorizontalAlignment="Left" Margin="50,8,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_MidiPortPrefix" Visibility="Collapsed">
+                <GroupBox  Header="MidiPortPrefix" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <duc:NumericUpDown x:Name="nudPortPrefix" MaximumValue="255" Height="28" Width="70" HorizontalAlignment="Left" Margin="50,8,0,0" VerticalAlignment="Top"/>
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="147,6,0,0" TextWrapping="Wrap" TextAlignment="Center" Width="272">
+                     Should not be used anymore. <LineBreak/>
+                     It is recommended to use DeviceName instead.
+                        </TextBlock>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_EndOfTrack" Visibility="Collapsed">
+                <GroupBox  Header="End of Track" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBlock Text="no paramenter required" Margin="10,10,0,0"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_SetTempo" Visibility="Collapsed">
+                <GroupBox  Header="Set Tempo" Margin="7,5,0,0" HorizontalAlignment="Left" Width="440" Height="80" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <Label Content="BPM:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12,10,0,0" />
+
+                        <TextBlock x:Name="txblSetTempoData" Background="{DynamicResource InfoBgBrush}" Text="xxx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,5,0,0" Width="100" TextAlignment="Center" FontSize="14"/>
+                        <TextBlock x:Name="txblSetTempoData2" Background="{DynamicResource InfoBgBrush}" Text="xx xx xx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,32,0,0" Width="100" TextAlignment="Center" FontSize="14"/>
+
+                        <duc:SmallSlider x:Name="TempoSlider" Margin="63,11,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Height="26"/>
+                        <Label Content="Microseconds:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="219,6,0,0" Padding="5,0,5,0" />
+                        <Label Content="Data:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="268,33,0,0" Padding="5,0,5,0" />
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_SMPTEOffset" Visibility="Collapsed">
+                <GroupBox  Header="SMPTEOffset" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBlock Text="no editor available yet" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_TimeSignature" Visibility="Collapsed">
+                <GroupBox  Header="Time Signature" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="180" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <!-- 4/4 24 8-->
+                        <duc:NumericUpDown x:Name="nudTimeSignatureNom" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Margin="10,26,0,0" Width="70" Background="White" MaximumValue="16" MinimumValue="2" Value="4" BorderBrush="#FFACACAC" BorderThickness="1,1,1,1"/>
+                        <Line Stroke="Black" X2="20" X1="100" Y1="20" Y2="100" Margin="16,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" StrokeThickness="1.5"/>
+                        <duc:ComboBox x:Name="cmbTimeSignatureDenom" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="76,81,0,0" Width="58" Background="White" SelectedIndex="1" HorizontalContentAlignment="Center" FontSize="18">
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="16"/>
+                        </duc:ComboBox>
+
+                        <duc:NumericUpDown x:Name="nudTimeSignatureClocks" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="70" Margin="342,12,0,0" Value="24" MaximumValue="96" MinimumValue="12" StepValue="2"/>
+                        <duc:NumericUpDown x:Name="nudTimeSignature32perQuarter" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="70" Margin="342,81,0,0" MaximumValue="32" MinimumValue="2" Value="8"/>
+
+                        <TextBlock Text="number of MIDI clocks in a metronome click" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" Height="41" Width="129" Margin="202,10,0,0" Padding="5,0,0,0"/>
+                        <TextBlock Text="the number of notated 32nd-notes per quarter" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" Height="41" Width="129" Margin="202,75,0,0" Padding="5,0,0,0"/>
+                        <Button x:Name="btnTimeSignatureDefault" Content="Default" HorizontalAlignment="Left" Margin="147,127,0,0" VerticalAlignment="Top" Width="52" Background="#FFE9FFD7"/>
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_KeySignature" Visibility="Collapsed">
+                <GroupBox  Header="Key Signature" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="80" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <!-- 0 0-->
+                        <TextBlock x:Name="txblKeySignatureSf" Text="key of C" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5,0,5,0" Background="{DynamicResource InfoBgBrush}" Margin="137,0,0,0"/>
+                        <duc:NumericUpDown x:Name="nudKeySignature" HorizontalAlignment="Left" VerticalAlignment="Center" Width="60" Height="31" Margin="50,0,0,0" MinimumValue="-7" MaximumValue="7"/>
+                        <RadioButton x:Name="rbtnKeySignatureMajor" Content="Major ( 0 )" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,8,0,0" IsChecked="True"/>
+                        <RadioButton x:Name="rbtnKeySignatureMinor" Content="Minor ( 1 )"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,32,0,0" />
+
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_SequencerSpecific" Visibility="Collapsed">
+                <GroupBox  Header="Sequencer Specific" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="110" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,0,0" TextWrapping="Wrap" Height="37">
+                     using <Bold>ID 7D hex</Bold> 
+                     reserved for non-commercial / development / educational purposes.
+                     Uses 3 bytes symbolically without further meaning.
+                        </TextBlock>
+                        <duc:SmallSlider x:Name="ssldSequencerSpecific1" Margin="15,55,0,0" MaximumValue="255" Value="1" Background="#FF8FDED5" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90" ValueChanged="ssldSequencerSpecific1_ValueChanged"/>
+                        <duc:SmallSlider x:Name="ssldSequencerSpecific2" Margin="140,55,0,0" MaximumValue="255" Value="2" Background="#FF9CDE8F" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90" ValueChanged="ssldSequencerSpecific2_ValueChanged"/>
+                        <duc:SmallSlider x:Name="ssldSequencerSpecific3" Margin="265,55,0,0" MaximumValue="255" Value="3" Background="#FFE8ED86"  Height="22"  VerticalAlignment="Top" HorizontalAlignment="Left"  Width="90" ValueChanged="ssldSequencerSpecific3_ValueChanged"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_F0SysEx" Visibility="Collapsed">
+                <GroupBox  Header="F0 SysEx" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="140" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBlock Text="Full SysEx string:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                        <Border x:Name="F0SysExValidator" Margin="40,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1,1,1,1" BorderBrush="Red">
+                            <TextBox x:Name="tbF0SysEx" HorizontalAlignment="Left" VerticalAlignment="Top"  MaxLength="256" Width="220" Margin="1,1,1,1"/>
+                        </Border>
+                        <Button x:Name="btnF0SysExSet" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Set" Margin="40,77,0,0" Width="60" Background="#FFE4FFE6" />
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_F7SysEx" Visibility="Collapsed">
+                <GroupBox  Header="F7 SysEx" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="140" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBlock Text="Full SysEx string:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                        <Border x:Name="F7SysExValidator" Margin="40,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1,1,1,1" BorderBrush="Red">
+                            <TextBox x:Name="tbF7SysEx" HorizontalAlignment="Left" VerticalAlignment="Top"  MaxLength="256" Width="220" Margin="1,1,1,1"/>
+                        </Border>
+                        <Button x:Name="btnF7SysExSet" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Set" Margin="40,77,0,0" Width="60" Background="#FFE4FFE6" />
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem x:Name="Ti_Unknown" Visibility="Collapsed">
+                <GroupBox  Header="Unkown" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <Grid>
+                        <TextBlock Text="empty TrackEventX" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="47,15,0,0"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+
+        </TabControl>
+
+        <duc:ImageButton x:Name="Navigate" Width="128" Height="48" Margin="45,0,0,39" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Navigate" Background="#FFD3E2FF" Image="/Mmultitool;component/Resources/Images/UpDownArrows.png" TextPadding="0,5,0,5" BorderThickness="1,1,1,1" ImageMargin="5,2,5,2" TabIndex="1010" BorderBrush="{DynamicResource GridBorderBrush1}"/>
+        <duc:ImageButton x:Name="btnClose" Margin="0,0,0,23" Text="Close" HorizontalAlignment="Center" Width="100" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" TextAlignment="Left" TextPadding="5,1,0,1" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True" TabIndex="1020" Height="28" VerticalAlignment="Bottom"/>
+        <duc:ImageButton x:Name="btnSaveChanges" Height="28" Width="158" Margin="560,0,0,25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Save  Changes" Image="/Mmultitool;component/Resources/Images/store_x32.png" Background="#FFD2FFD7" BorderThickness="1,1,1,1" TabIndex="1030" ImageMargin="5,2,0,2" TextPadding="0,1,0,1" IsEnabled="False"/>
+
+        <GroupBox Width="190" Height="120" HorizontalAlignment="Left" Margin="49,155,0,0" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush}" Header="Time">
+            <Grid Background="{DynamicResource GroupBoxBackground}">
+                <local:MBT_Editor x:Name="MBT_Editor1" HorizontalAlignment="Left" Margin="10,10,0,0" Width="155" UpDownColMinWidth="15" Height="28" VerticalAlignment="Top" BorderThickness="1,1,1,1" FocusStrokeThickness="3" TPQ="{Binding LocalTPQ}"/>
+                <local:MBT_InputBox x:Name="MBT_InputBox1" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="103" TPQ="{Binding LocalTPQ}" ValidatorStrokeThickness="2"/>
+                <Button x:Name="btnResetTime" Content="Reset" HorizontalAlignment="Left" Margin="132,61,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Width="76" Height="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="49,280,0,0" Header="Track" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+            <Grid Background="{DynamicResource GroupBoxBackground}">
+                <duc:NumericUpDown x:Name="nudTrack" Height="28" Width="60" MaximumValue="1"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Width="76" Height="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="163,280,0,0" Header="Channel" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+            <Grid Background="{DynamicResource GroupBoxBackground}">
+                <duc:NumericUpDown x:Name="nudChannel" Height="28" Width="60" MaximumValue="15"/>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>

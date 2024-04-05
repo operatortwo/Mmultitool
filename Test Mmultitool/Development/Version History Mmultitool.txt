@@ -1,0 +1,28 @@
+﻿Version History of Mmultitool
+===============================
+
+Date			Version		Changes
+------------------------------------------------	
+2025 04 05		1.0.4.7		TrackView: vertical grid for notes
+2025 03 24		1.0.4.6		TrackView: draw notes
+2025 02 03		1.0.4.5		Measure for TrackView
+2025 01 10		1.0.4.4		TrackView continued
+2024 11 08		1.0.4.3		EventListWriter: added addTrack and RemoveTrack
+2024 10 30		1.0.4.2		Release
+2014 10 18		1.0.4.1		fixes and improvements in dialog new event and dialog edit event
+2024 10 04		1.0.4.0		added Dialog edit event
+2024 09 15		1.0.3.8		fixed MidiFileWrite SequenceNumber, MidiChannel- and MidiPortPrefix
+2024 09 13		1.0.3.7		added Dialog new event
+2024 08 26		1.0.3.6		EventListWriter continued 3
+2024 07 26		1.0.3.5		EventListWriter continued 2
+2024 06 24		1.0.3.4		EventListWriter continued
+2024 06 24		1.0.3.3		started with EventListWriter
+2024 05 17		1.0.3.2		cleaned up EventLister
+2024 05 16		1.0.3.1		improvements on the EventLister
+2024 05 10		1.0.3.0		started with midifile write
+2024 05 10		1.0.2.3		EventLister: set MBT_0 as initial time format
+2024 05 10		1.0.2.2		added support for MetaEvents 8, 9, &H21
+2024 05 06		1.0.2.1		added name to tracklist
+2024 05 06		1.0.2.0		started with TabControlExpander
+2024 04 05		1.0.1.0		added player
+2024 03 05		1.0.0.0		initial release

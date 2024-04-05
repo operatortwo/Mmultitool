@@ -1,0 +1,84 @@
+﻿<UserControl x:Name="UserControl" x:Class="NoteDurationHelper"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mmultitool"
+             xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="24" d:DesignWidth="150" Background="#FFE6E6E6">
+    <Grid>
+        <duc:ComboBox x:Name="ComboBox1" Background="{Binding Background, ElementName=UserControl}" BorderBrush="{Binding BorderBrush, ElementName=UserControl}">
+
+            <ComboBoxItem x:Name="Cmbi_Whole" Tag="0.25">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_whole.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="1/1" Margin="15,0,0,0" HorizontalAlignment="Left" />
+                    <TextBlock Text="Whole" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Half" Tag="0.5">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_half.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="1/2" Margin="15,0,0,0" HorizontalAlignment="Left" />
+                    <TextBlock Text="Half" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Quarter" Tag="1">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_quarter.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="1/4" Margin="15,0,0,0" HorizontalAlignment="Left" />
+                    <TextBlock Text="Quarter" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Eight" Tag="2">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_eight.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="1/8" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                    <TextBlock Text="Eight" Margin="10,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Sixteenth" Tag="4">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_sixteenth.png"/>
+                    <TextBlock Text="1/16" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="Sixteenth" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Thirty_Second" Tag="8">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_thirty_second.png"/>
+                    <TextBlock Text="1/32" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="Thirty-second" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Tri_Eight" Tag="3">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_tri_eight.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="Tri-Eight" Margin="20,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Tri_Sixteenth" Tag="6">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_tri_sixteenth.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="Tri-Sixteenth" Margin="20,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+            <ComboBoxItem x:Name="Cmbi_Tri_thrity_second" Tag="12">
+                <StackPanel Orientation="Horizontal" Height="18">
+                    <Image Source="/Mmultitool;component/Resources/Images/Notes/Note_tri_thirty_second.png" HorizontalAlignment="Left" Height="16"/>
+                    <TextBlock Text="Tri-Thirty-Second" Margin="20,0,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+            </ComboBoxItem>
+
+        </duc:ComboBox>
+    </Grid>
+</UserControl>
