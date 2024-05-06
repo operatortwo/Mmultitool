@@ -16,6 +16,7 @@ Public Class EventLister
         cmbStatusFormat.SelectedIndex = 0
 
         cbflistTrack.ItemList = TrackList
+        cbflistTrack.DisplayMember = "TrackName"
         cbflistChannel.ItemList = ChannelList
         cbflistEventType.ItemList = [Enum].GetValues(GetType(EventTypeX))
     End Sub
@@ -24,8 +25,13 @@ Public Class EventLister
     Public Property TrackEvents As New ObservableCollection(Of TrackEventX)          ' sorted by Time
     Public Property CollectionView As New ListCollectionView(TrackEvents)           ' Filtered View
 
-    Private TrackList As New List(Of Byte)
+    Private TrackList As New List(Of NamedTrack)
     Private ChannelList As New List(Of Byte)
+
+    Public Class NamedTrack
+        Public Property TrackNumber As Byte
+        Public Property TrackName As String = ""
+    End Class
 
 #Region "Appearance"
 
@@ -62,16 +68,27 @@ Public Class EventLister
             TrackEvents.Add(ev)
         Next
 
-        '--- create TrackList (numbers)
+        '--- create TrackList (numbers + name)
 
         TrackList.Clear()
+
+        Dim trknumlist As New List(Of Byte)
         Dim trk As Byte
 
         For Each ev In evlic.EventList
             trk = ev.TrackNumber
-            If TrackList.Contains(trk) = False Then
-                TrackList.Add(trk)
+            If trknumlist.Contains(trk) = False Then
+                trknumlist.Add(trk)
             End If
+        Next
+
+        Dim ntrk As NamedTrack
+
+        For Each trnum In trknumlist
+            ntrk = New NamedTrack
+            ntrk.TrackNumber = trnum
+            ntrk.TrackName = GetTrackName(trnum, evlic.EventList)
+            TrackList.Add(ntrk)
         Next
 
         '--- create ChannelList (numbers)
@@ -113,9 +130,22 @@ Public Class EventLister
         '--- Track ---
 
         If cbflistTrack.SelectedAll = False Then
-            If cbflistTrack.SelectedItems.Contains(trev.TrackNumber) = False Then
-                Return False
-            End If
+            'If cbflistTrack.SelectedItems.Contains(trev.TrackNumber) = False Then
+            '    Return False
+            'End If
+            Dim trkfound As Boolean
+            Dim ntrk As NamedTrack
+            For Each item In cbflistTrack.SelectedItems
+                ntrk = TryCast(item, NamedTrack)
+                If ntrk IsNot Nothing Then
+                    If ntrk.TrackNumber = trev.TrackNumber Then
+                        trkfound = True
+                        Exit For
+                    End If
+                End If
+            Next
+
+            If trkfound = False Then Return False
         End If
 
         '--- Channel ---

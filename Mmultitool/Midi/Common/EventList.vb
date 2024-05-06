@@ -1,4 +1,6 @@
-﻿Public Module EventList
+﻿Imports System.Text
+
+Public Module EventList
 
 
 
@@ -30,14 +32,14 @@
                         .TypeX = GetEventTypeX(trev),
                         .Channel = trev.Status And &HF,
                         .DataStr = MDecode.GetData(trev)
-                        }
+}
 
-                Evlic.EventList.Add(ntrev)
+                evlic.EventList.Add(ntrev)
             Next
         Next
 
         Dim sc As New TrackEventX
-        Evlic.EventList.Sort(sc)
+        evlic.EventList.Sort(sc)
 
         '---
 
@@ -54,8 +56,8 @@
         If items.Count = 0 Then Return evlic            ' no data
 
         Dim selx As New List(Of TrackEventX)
-            Dim tev As TrackEventX
-            Dim tev2 As TrackEventX
+        Dim tev As TrackEventX
+        Dim tev2 As TrackEventX
         For Each item In items
             tev = TryCast(item, TrackEventX)
             If tev IsNot Nothing Then
@@ -69,7 +71,6 @@
         evlic.CreateResult = True               ' mark as 'create was successful'
         Return evlic
     End Function
-
 
     Public Class EventListContainer
         Public EventList As New List(Of TrackEventX)
@@ -86,4 +87,21 @@
 
         Public CreateResult As Boolean              ' Result of Create, TRUE = successful
     End Class
+
+    Public Function GetTrackName(TrackNumber As Byte, Eventlist As List(Of TrackEventX)) As String
+        Dim retstr As String = TrackNumber
+        If Eventlist Is Nothing Then Return retstr
+
+        For Each ev In Eventlist
+            If ev.TrackNumber = TrackNumber Then
+                If ev.TypeX = EventTypeX.SequenceOrTrackName Or ev.TypeX = EventTypeX.TextEvent Then
+                    Dim ascii As Encoding = Encoding.ASCII
+                    retstr = retstr & "  " & ascii.GetChars(ev.DataX)
+                End If
+            End If
+        Next
+
+        Return retstr
+    End Function
+
 End Module
