@@ -22,6 +22,16 @@ DailyUserControls
   resource lookups using this strongly typed resource class.
 </summary>
 </member>
+<member name="P:DailyUserControls.TabControlExpander.HeaderPanelBackground">
+ <summary>
+ Background brush when checked
+ </summary>    
+</member>
+<member name="P:DailyUserControls.TabControlExpander.HelpButtonVisibility">
+ <summary>
+ Background brush when checked
+ </summary>    
+</member>
 <member name="T:DailyUserControls.CheckboxFilterList">
 <summary>
 CheckboxFilterList

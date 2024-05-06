@@ -17,26 +17,44 @@
     </UserControl.Resources>
     <Grid>
         <DockPanel>
-            <Expander x:Name="Expander1" DockPanel.Dock="Top" Background="#FFEEF6FF"  IsExpanded="True" BorderBrush="Black" BorderThickness="0.5,0.5,0.5,0">
-                <Expander.Header>
-                    <StackPanel VerticalAlignment="Top" Height="30" Background="#FFEEF6FF" Orientation="Horizontal">
-                        <duc:CheckboxFilterList x:Name="cbflistTrack" Height="25" Margin="40,2,0,0" Text="Track" ImageLocation="Right" Width="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1"/>
-                        <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="40,2,0,0" Height="25" Text="Channel" ImageLocation="Right" Width="100" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1"/>
-                        <duc:CheckboxFilterList x:Name="cbflistEventType" Margin="50,2,0,0" Height="25" Text="Event Type" Width="113" ImageLocation="Right" ListWindowWidth="180" ListWindowHeight="275" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1"/>
-                        <Label x:Name="lblEventCountFiltered" Content="{Binding CollectionView.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventLister}, Mode=FindAncestor}}" Padding="5,0,5,0" Height="19" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalContentAlignment="Right" Margin="40,0,0,0"/>
-                        <Label Content=" of " Padding="0,0,0,0" VerticalAlignment="Center"/>
-                        <Label x:Name="lblEventCountAll" Content="{Binding TrackEvents.Count, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EventLister}}}" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5,0,5,0" Height="19" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" Margin="4,0,0,0"/>
-                        <Label Content=" Events " Padding="0,0,0,0" VerticalAlignment="Center"/>
+            <Border VerticalAlignment="Top" DockPanel.Dock="Top" BorderBrush="#FF688CAF" BorderThickness="1,1,1,0">
+                <duc:TabControlExpander DockPanel.Dock="Top" Height="100" HeaderPanelBackground="#FFE9F8FF">
+                    <TabItem Header="Start">
+                        <Grid Background="#FFF2FDF5">
+                            <!-- Format -->
+                            <Label Content="Time:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                            <ComboBox x:Name="cmbTimeFormat" HorizontalAlignment="Left" Margin="55,15,0,0" VerticalAlignment="Top" Width="108" ItemsSource="{Binding TimeFormat}"/>
+                            <Label Content="Status:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                            <ComboBox x:Name="cmbStatusFormat" HorizontalAlignment="Left" Margin="55,49,0,0" VerticalAlignment="Top" Width="55"/>
+                            <Label Content="Format" HorizontalAlignment="Left" Margin="131,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="174,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <!-- Filter -->
+                            <duc:CheckboxFilterList x:Name="cbflistTrack" Margin="187,15,0,0" Text="Track" ImageLocation="Right" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="67" Height="26"/>
+                            <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="272,15,0,0" Text="Channel" ImageLocation="Right" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108"/>
+                            <duc:CheckboxFilterList x:Name="cbflistEventType" Margin="402,15,0,0" Text="Event Type" ImageLocation="Right" ListWindowWidth="180" ListWindowHeight="275" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="97"/>
+                            <Label Content="Filter" HorizontalAlignment="Left" Margin="473,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="509,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <!-- Empty -->
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Tab 2">
+
+                    </TabItem>
+                </duc:TabControlExpander>
+            </Border>
+            <Border VerticalAlignment="Top" DockPanel.Dock="Top" BorderBrush="#FF688CAF" BorderThickness="1,1,1,0">
+                <Grid x:Name="InfoStrip" VerticalAlignment="Top" Height="22" DockPanel.Dock="Top" Background="#FFEFFCFF">
+                    <Label Content="TPQ:" Margin="0,0,59,0" VerticalAlignment="Center" Padding="0,0,0,0" HorizontalAlignment="Right"/>
+                    <Label x:Name="lblTpq" VerticalAlignment="Center" Padding="5,0,5,0" Height="18" Width="39" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <StackPanel Orientation="Horizontal" Width="160" HorizontalAlignment="Right" Margin="0,0,100,0">
+                        <Label x:Name="lblEventCountFiltered" Content="{Binding CollectionView.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventLister}, Mode=FindAncestor}}" Padding="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalContentAlignment="Right" Margin="0,2,0,2" HorizontalAlignment="Left"/>
+                        <Label Content=" of " Padding="0,0,0,0" Margin="0,3,0,3" HorizontalAlignment="Left"/>
+                        <Label x:Name="lblEventCountAll" Content="{Binding TrackEvents.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventLister}, Mode=FindAncestor}}" Padding="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" Margin="0,2,0,2" HorizontalAlignment="Left"/>
+                        <Label Content=" Events " Padding="0,0,0,0" Margin="0,3,0,3" HorizontalAlignment="Right"/>
                     </StackPanel>
-                </Expander.Header>
-                <Grid>
-                    <Label Content="TPQ:" HorizontalAlignment="Left" Margin="500,0,0,0" VerticalAlignment="Center" Padding="0,0,0,0"/>
-                    <Label x:Name="lblTpq" HorizontalAlignment="Left" Margin="532,0,0,0" VerticalAlignment="Center" Padding="5,0,5,0" Height="19" Width="39" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF"/>
-                    <ComboBox x:Name="cmbTimeFormat" HorizontalAlignment="Left" Margin="5,12,0,2" VerticalAlignment="Top" Width="108" ItemsSource="{Binding TimeFormat}"/>
-                    <ComboBox x:Name="cmbStatusFormat" HorizontalAlignment="Left" Margin="207,12,0,2" VerticalAlignment="Top" Width="55"/>
-                    <Label Content="Status fmt:" HorizontalAlignment="Left" Margin="146,15,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
                 </Grid>
-            </Expander>
+            </Border>
+
             <Grid>
                 <DataGrid x:Name="DataGrid1" ItemsSource="{Binding CollectionView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EventLister}}}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" RowHeaderWidth="18" RowBackground="{Binding DataGridRowBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EventLister}}}" IsReadOnly="True">
                     <DataGrid.ContextMenu>

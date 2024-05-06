@@ -120,14 +120,15 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\Library\DailyUserControls.dll" />
+    <Resource Include="Resources\Library\DailyUserControls.xml" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\EditCopy.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Play_bw_x22.png" />
-    <Content Include="Resources\Library\DailyUserControls.dll" />
-    <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\EventLister\EventLister.xaml">
