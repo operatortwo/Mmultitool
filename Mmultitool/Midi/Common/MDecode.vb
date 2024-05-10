@@ -107,9 +107,19 @@ Module MDecode
             Return GetMetaEventText(ev)
         ElseIf type = MetaEventType.CuePoint Then
             Return GetMetaEventText(ev)
+        ElseIf type = MetaEventType.ProgramName Then
+            Return GetMetaEventText(ev)
+        ElseIf type = MetaEventType.DeviceName Then
+            Return GetMetaEventText(ev)
         ElseIf type = MetaEventType.MIDIChannelPrefix Then
             If ev.DataX.Length > 0 Then                          ' should be 1
                 Return CStr(ev.DataX(0))                         ' channel (0-15)
+            Else
+                Return ""
+            End If
+        ElseIf type = MetaEventType.MIDIPortPrefix Then
+            If ev.DataX.Length > 0 Then                          ' should be 1
+                Return CStr(ev.DataX(0))                         ' port (0-15)
             Else
                 Return ""
             End If
@@ -120,12 +130,14 @@ Module MDecode
             micros = ev.DataX(0) * 65536 + ev.DataX(1) * 256 + ev.DataX(2)
             Return micros.ToString & "   " & Math.Round(60 * 1000 * 1000 / micros, 2)   ' 2 Decimal places
         ElseIf type = MetaEventType.SMPTEOffset Then
-            Return "not supported"
+            'Return "not supported"
+            ' FF 54 05 hr mn se fr ff
+            Return Bytes_to_hex_str(ev.DataX)
         ElseIf type = MetaEventType.TimeSignature Then
-            Dim num As Byte = ev.DataX(0)                        ' numerator (Zähler)
+            Dim num As Byte = ev.DataX(0)                        ' numerator
             Dim denom As Byte = CByte(2 ^ ev.DataX(1))           ' denominator (denominator, 2 ^ denominator
             Dim mclocks_metronclick As Byte = ev.DataX(2)        ' clocks per metronome click
-            Dim num32perquarter As Byte = ev.DataX(3)            ' no of 32/notes in a QuarterNote (24)            
+            Dim num32perquarter As Byte = ev.DataX(3)            ' num of 32/notes in a QuarterNote (24)            
             Return num & "/" & denom & " " & mclocks_metronclick & " " & num32perquarter
         ElseIf type = MetaEventType.KeySignature Then
             ' C  min/maj

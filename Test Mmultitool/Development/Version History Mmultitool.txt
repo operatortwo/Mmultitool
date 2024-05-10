@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2024 05 10		1.0.2.2		added support for MetaEvents 8, 9, &H21
 2024 05 06		1.0.2.1		added name to tracklist
 2024 05 06		1.0.2.0		started with TabControlExpander
 2024 04 05		1.0.1.0		added player

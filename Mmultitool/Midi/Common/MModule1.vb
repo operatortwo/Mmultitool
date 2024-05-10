@@ -296,8 +296,14 @@
                         Return EventTypeX.Marker
                     Case MetaEventType.CuePoint
                         Return EventTypeX.CuePoint
+                    Case MetaEventType.ProgramName          ' (RP-019 1999 MMA) FF 08 len text
+                        Return EventTypeX.ProgramName
+                    Case MetaEventType.DeviceName           ' (RP-019 1999 MMA) FF 09 len text
+                        Return EventTypeX.DeviceName
                     Case MetaEventType.MIDIChannelPrefix
                         Return EventTypeX.MIDIChannelPrefix
+                    Case MetaEventType.MIDIPortPrefix       ' obsolete, for read only, use DeviceName instead
+                        Return EventTypeX.MIDIPortPrefix
                     Case MetaEventType.EndOfTrack
                         Return EventTypeX.EndOfTrack
                     Case MetaEventType.SetTempo
@@ -354,7 +360,10 @@
         Lyric = 5
         Marker = 6
         CuePoint = 7
+        ProgramName = 8                     ' (RP-019 1999 MMA) FF 08 len text
+        DeviceName = 9                      ' (RP-019 1999 MMA) FF 09 len text
         MIDIChannelPrefix = &H20
+        MIDIPortPrefix = &H21               ' obsolete, for read only, use DeviceName instead   FF 21 01 pp 
         EndOfTrack = &H2F
         SetTempo = &H51
         SMPTEOffset = &H54
@@ -368,7 +377,7 @@
     ''' </summary>
     Public Enum EventTypeX
         Unkown = 0
-        'MidiEvent = 1        ' channel message
+        'MidiEvent = 1              ' channel message
         NoteOffEvent = &H180
         NoteOnEvent = &H190
         PolyKeyPressure = &H1A0
@@ -377,10 +386,10 @@
         ChannelPressure = &H1D0
         PitchBend = &H1E0
 
-        F0SysExEvent = &HF000       ' &HF0 / 240     normal sysx
-        F7SysExEvent = &HF700       ' &HF7 / 247     escape sysx
-        'MetaEvent = &HFF00         ' &HFF / 255    
+        F0SysExEvent = &HF000       ' &HF0 / 240     normal sysEx
+        F7SysExEvent = &HF700       ' &HF7 / 247     escape sysEx
 
+        'MetaEvent = &HFF00         ' &HFF / 255    
         SequenceNumber = &HFF00
         TextEvent = &HFF01
         CopyrightNotice = &HFF02
@@ -389,7 +398,10 @@
         Lyric = &HFF05
         Marker = &HFF06
         CuePoint = &HFF07
+        ProgramName = &HFF08                ' (RP-019 1999 MMA) FF 08 len text
+        DeviceName = &HFF09                 ' (RP-019 1999 MMA) FF 09 len text
         MIDIChannelPrefix = &HFF20
+        MIDIPortPrefix = &HFF21             ' obsolete, for read only, use DeviceName instead   FF 21 01 pp 
         EndOfTrack = &HFF2F
         SetTempo = &HFF51
         SMPTEOffset = &HFF54

@@ -629,6 +629,8 @@ Public Class MidifileRead
         F7SysxEvent = &HF7              ' escape sysx
     End Enum
 
+
+    '--- unused ? (0 references) ---
     Public Enum MidiEventType
         NoteOffEvent = &H80
         NoteOnEvent = &H90
@@ -639,6 +641,7 @@ Public Class MidifileRead
         PitchBend = &HE0
     End Enum
 
+    '--- unused ? (0 references) ---
     Public Enum MetaEventType
         SequenceNumber = 0
         TextEvent = 1
@@ -648,7 +651,10 @@ Public Class MidifileRead
         Lyric = 5
         Marker = 6
         CuePoint = 7
+        ProgramName = 8                     ' (RP-019 1999 MMA) 
+        DeviceName = 9                      ' (RP-019 1999 MMA)
         MIDIChannelPrefix = &H20
+        MIDIPortPrefix = &H21               ' obsolete, for read only, use DeviceName instead
         EndOfTrack = &H2F
         SetTempo = &H51
         SMPTEOffset = &H54
