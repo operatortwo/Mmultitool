@@ -10,7 +10,7 @@ Public Class EventLister
         InitializeComponent()
 
         cmbTimeFormat.ItemsSource = [Enum].GetValues(GetType(TimeFormat))
-        cmbTimeFormat.SelectedIndex = 0
+        cmbTimeFormat.SelectedIndex = 1
 
         cmbStatusFormat.ItemsSource = [Enum].GetValues(GetType(HexOrDec))
         cmbStatusFormat.SelectedIndex = 0
