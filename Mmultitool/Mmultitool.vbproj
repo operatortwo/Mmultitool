@@ -93,6 +93,8 @@
     <Compile Include="Midi\Common\MDecode.vb" />
     <Compile Include="Midi\Common\MModule1.vb" />
     <Compile Include="Midi\File\Read\MidifileRead.vb" />
+    <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
+    <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
     <Compile Include="Midi\Sequencer\SequencerSeq.vb" />
     <Compile Include="Midi\Sequencer\SequencerPlay.vb" />
     <Compile Include="Midi\Sequencer\Sequencer.vb" />
@@ -136,5 +138,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

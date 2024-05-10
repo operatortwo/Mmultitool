@@ -177,4 +177,15 @@ Class MainWindow
     Private Sub btnEvListerPlaySelected_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListerPlaySelected.Click
         EventLister1.PlaySelectedItems(tgbtnEvListerLoop.IsChecked)
     End Sub
+
+    Private Sub btnTestMidiWrite_Click(sender As Object, e As RoutedEventArgs) Handles btnTestMidiWrite.Click
+        Dim evlic As EventListContainer
+        evlic = CreateEventListContainer(mifir.TrackList, mifir.TPQ)
+        Dim mifiw As New MidiFileWrite
+
+        If mifiw.CreateMidiFile(evlic, 120) = True Then
+            MessageBox.Show("The file 'TestMidi.mid' was written successfully", "Create MidiFile")
+        End If
+
+    End Sub
 End Class

@@ -19,6 +19,10 @@ The selected events can be copied to the Clipboard using **right-click**. From t
 ### Player
 The player is designed for monitoring one or more events in the list and also for other internal purposes.
 
+### Midifile Writer
+Just started. Mainly to write created or edited content to a standard MidiFile.  
+Further development work is still necessary
+
 ---
 ### Using from WinForms
 The library can also be used by a WinForms application, although there may be restrictions when using the controls.  
