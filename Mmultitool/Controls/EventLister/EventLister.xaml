@@ -8,8 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <local:StatusByte_Converter x:Key="StatusByte_Converter"/>
-        <local:TimeToString_Converter x:Key="TimeToString_Converter"/>
         <SolidColorBrush x:Key="DgSelectedFore" Color="Black"/>
         <SolidColorBrush x:Key="DgSelectedBack" Color="LightBlue"/>
         <SolidColorBrush x:Key="DgFocusedFore" Color="Black"/>
@@ -82,11 +80,11 @@
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-                        <duc:DataGridTextColumnX x:Name="TimeCol" Header="Time" Binding="{Binding Time, Converter={StaticResource TimeToString_Converter}}" Width="80" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="TimeCol" Header="Time" Binding="{Binding Time}" Width="80" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
                         <duc:DataGridTextColumnX x:Name="TrackNumCol" Header="Trk" Binding="{Binding TrackNumber}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
                         <duc:DataGridTextColumnX x:Name="ChannelCol" Header="Ch" Binding="{Binding Channel}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
                         <duc:DataGridTextColumnX x:Name="TypeXCol" Header="Type X" Binding="{Binding TypeX}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
-                        <duc:DataGridTextColumnX x:Name="StatusCol" Header="Status" Binding="{Binding Status, Converter={StaticResource StatusByte_Converter}}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
+                        <duc:DataGridTextColumnX x:Name="StatusCol" Header="Status" Binding="{Binding Status}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
                         <duc:DataGridTextColumnX x:Name="Data1Col" Header="Data 1" Binding="{Binding Data1}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
                         <duc:DataGridTextColumnX x:Name="Data2Col" Header="Data 2" Binding="{Binding Data2}" TextAlignment="Right" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>
                         <duc:DataGridTextColumnX x:Name="DurationCol" Header="Duration" Binding="{Binding Duration}" TextAlignment="Center" HeaderTextAlignment="Center" SelectedBackground="{StaticResource DgSelectedBack}" SelectedForeground="{StaticResource DgSelectedFore}" FocusedBackground="{StaticResource DgFocusedBack}" FocusedForeground="{StaticResource DgFocusedFore}"/>

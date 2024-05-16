@@ -87,8 +87,7 @@
     <Compile Include="Controls\EventLister\EventLister.xaml.vb">
       <DependentUpon>EventLister.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EventLister\EventListerModule.vb" />
-    <Compile Include="Controls\EventLister\ValueConverters.vb" />
+    <Compile Include="Controls\EventLister\EventListerConverter.vb" />
     <Compile Include="Midi\Common\EventList.vb" />
     <Compile Include="Midi\Common\MDecode.vb" />
     <Compile Include="Midi\Common\MModule1.vb" />

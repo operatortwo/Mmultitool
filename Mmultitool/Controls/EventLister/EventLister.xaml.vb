@@ -19,6 +19,11 @@ Public Class EventLister
         cbflistTrack.DisplayMember = "TrackName"
         cbflistChannel.ItemList = ChannelList
         cbflistEventType.ItemList = [Enum].GetValues(GetType(EventTypeX))
+
+        Dim bind As Binding = TimeCol.Binding
+        bind.Converter = TimeConvert                ' set converter for Time Column
+        bind = StatusCol.Binding
+        bind.Converter = StatusConvert              ' set converter for Status Column
     End Sub
 
     Private AllTrackEvents As New List(Of TrackEventX)                      ' input
@@ -33,6 +38,39 @@ Public Class EventLister
         Public Property TrackName As String = ""
     End Class
 
+    Public Shared ReadOnly DesiredStatusFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredStatusFormat", GetType(HexOrDec), GetType(EventLister), New PropertyMetadata(HexOrDec.Hex))
+    <Description("Format of the Status column"), Category("Event Lister")>
+    Public Property DesiredStatusFormat As HexOrDec
+        Get
+            Return GetValue(DesiredStatusFormatProperty)
+        End Get
+        Set(value As HexOrDec)
+            SetValue(DesiredStatusFormatProperty, value)
+        End Set
+    End Property
+
+    Public Enum HexOrDec
+        Hex
+        Dec
+    End Enum
+
+    Public Shared ReadOnly DesiredTimeFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredTimeFormat", GetType(TimeFormat), GetType(EventLister), New PropertyMetadata(TimeFormat.MBT_0_based))
+    <Description("Format of the Time column"), Category("Event Lister")>
+    Public Property DesiredTimeFormat As TimeFormat
+        Get
+            Return GetValue(DesiredTimeFormatProperty)
+        End Get
+        Set(value As TimeFormat)
+            SetValue(DesiredTimeFormatProperty, value)
+        End Set
+    End Property
+
+    Public Enum TimeFormat
+        Ticks
+        MBT_0_based
+        MBT_1_based
+    End Enum
+
 #Region "Appearance"
 
     Public Shared ReadOnly DataGridRowBackgroundProperty As DependencyProperty = DependencyProperty.Register("DataGridRowBackground", GetType(Brush), GetType(EventLister))
@@ -45,6 +83,41 @@ Public Class EventLister
             SetValue(DataGridRowBackgroundProperty, value)
         End Set
     End Property
+
+#End Region
+
+
+#Region "TPQ Property"
+
+    Public Shared ReadOnly EvliTPQProperty As DependencyProperty = DependencyProperty.Register("EvliTPQ", GetType(Integer), GetType(EventLister),
+            New FrameworkPropertyMetadata(120, New PropertyChangedCallback(AddressOf OnEvliTPQChanged),
+            New CoerceValueCallback(AddressOf CoerceEvliTPQ)))
+
+    <Description("Ticks per quarter note"), Category("Event Lister")>   ' appears in VS property
+    Public Property EvliTPQ() As Integer
+        Get
+            Return (GetValue(EvliTPQProperty))
+        End Get
+        Set(ByVal value As Integer)
+            SetValue(EvliTPQProperty, value)
+        End Set
+    End Property
+
+    Private Overloads Shared Function CoerceEvliTPQ(ByVal d As DependencyObject, ByVal value As Object) As Object
+        Dim newValue As Integer = value
+
+        If newValue < 1 Then
+            Return 1
+        ElseIf newValue > 2000 Then
+            Return 2000
+        End If
+
+        Return newValue
+    End Function
+
+    Private Shared Sub OnEvliTPQChanged(ByVal d As DependencyObject, ByVal args As DependencyPropertyChangedEventArgs)
+        Dim control As EventLister = CType(d, EventLister)
+    End Sub
 
 #End Region
 
@@ -318,11 +391,11 @@ Public Class EventLister
             trev = TryCast(item, TrackEventX)
             If trev IsNot Nothing Then
                 ' Time and Status are converted depending on the selected Format (= as in the DataGrid)
-                sb.Append(TimeToString_Converter.Convert(trev.Time)).Append(vbTab)
+                sb.Append(ConvertTimeToString(trev.Time, EvliTPQ, DesiredTimeFormat)).Append(vbTab)
                 sb.Append(trev.TrackNumber).Append(vbTab)
                 sb.Append(trev.Channel).Append(vbTab)
                 sb.Append(trev.TypeX.ToString).Append(vbTab)
-                sb.Append(StatusByte_Converter.Convert(trev.Status)).Append(vbTab)
+                sb.Append(ConvertStatusByte(trev.Status, DesiredStatusFormat)).Append(vbTab)
                 sb.Append(trev.Data1).Append(vbTab)
                 sb.Append(trev.Data2).Append(vbTab)
                 sb.Append(trev.Duration).Append(vbTab)
