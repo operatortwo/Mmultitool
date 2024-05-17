@@ -9,27 +9,32 @@ Public Class EventLister
         ' required for the designer
         InitializeComponent()
 
+        '--- user can select time format ---
         cmbTimeFormat.ItemsSource = [Enum].GetValues(GetType(TimeFormat))
         cmbTimeFormat.SelectedIndex = 1
 
+        '--- user can select status format ---
         cmbStatusFormat.ItemsSource = [Enum].GetValues(GetType(HexOrDec))
         cmbStatusFormat.SelectedIndex = 0
 
+        '--- user can filter events ---
         cbflistTrack.ItemList = TrackList
         cbflistTrack.DisplayMember = "TrackName"
         cbflistChannel.ItemList = ChannelList
         cbflistEventType.ItemList = [Enum].GetValues(GetType(EventTypeX))
 
+        '--- time and status use an internal converter ---
         Dim bind As Binding = TimeCol.Binding
         bind.Converter = TimeConvert                ' set converter for Time Column
         bind = StatusCol.Binding
         bind.Converter = StatusConvert              ' set converter for Status Column
     End Sub
 
-    Private AllTrackEvents As New List(Of TrackEventX)                      ' input
-    Public Property TrackEvents As New ObservableCollection(Of TrackEventX)          ' sorted by Time
+    '--- main data ---
+    Public Property TrackEvents As New ObservableCollection(Of TrackEventX)         ' sorted by Time
     Public Property CollectionView As New ListCollectionView(TrackEvents)           ' Filtered View
 
+    '--- auxiliary lists ---
     Private TrackList As New List(Of NamedTrack)
     Private ChannelList As New List(Of Byte)
 
@@ -38,21 +43,22 @@ Public Class EventLister
         Public Property TrackName As String = ""
     End Class
 
-    Public Shared ReadOnly DesiredStatusFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredStatusFormat", GetType(HexOrDec), GetType(EventLister), New PropertyMetadata(HexOrDec.Hex))
-    <Description("Format of the Status column"), Category("Event Lister")>
-    Public Property DesiredStatusFormat As HexOrDec
+#Region "DataGrid Background"
+
+    Public Shared ReadOnly DataGridRowBackgroundProperty As DependencyProperty = DependencyProperty.Register("DataGridRowBackground", GetType(Brush), GetType(EventLister))
+    <Description("The default brush for all rows background")>
+    Public Property DataGridRowBackground As Brush
         Get
-            Return GetValue(DesiredStatusFormatProperty)
+            Return GetValue(DataGridRowBackgroundProperty)
         End Get
-        Set(value As HexOrDec)
-            SetValue(DesiredStatusFormatProperty, value)
+        Set(value As Brush)
+            SetValue(DataGridRowBackgroundProperty, value)
         End Set
     End Property
 
-    Public Enum HexOrDec
-        Hex
-        Dec
-    End Enum
+#End Region
+
+#Region "Time and Status format"
 
     Public Shared ReadOnly DesiredTimeFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredTimeFormat", GetType(TimeFormat), GetType(EventLister), New PropertyMetadata(TimeFormat.MBT_0_based))
     <Description("Format of the Time column"), Category("Event Lister")>
@@ -71,21 +77,23 @@ Public Class EventLister
         MBT_1_based
     End Enum
 
-#Region "Appearance"
-
-    Public Shared ReadOnly DataGridRowBackgroundProperty As DependencyProperty = DependencyProperty.Register("DataGridRowBackground", GetType(Brush), GetType(EventLister))
-    <Description("The default brush for all rows background")>
-    Public Property DataGridRowBackground As Brush
+    Public Shared ReadOnly DesiredStatusFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredStatusFormat", GetType(HexOrDec), GetType(EventLister), New PropertyMetadata(HexOrDec.Hex))
+    <Description("Format of the Status column"), Category("Event Lister")>
+    Public Property DesiredStatusFormat As HexOrDec
         Get
-            Return GetValue(DataGridRowBackgroundProperty)
+            Return GetValue(DesiredStatusFormatProperty)
         End Get
-        Set(value As Brush)
-            SetValue(DataGridRowBackgroundProperty, value)
+        Set(value As HexOrDec)
+            SetValue(DesiredStatusFormatProperty, value)
         End Set
     End Property
 
-#End Region
+    Public Enum HexOrDec
+        Hex
+        Dec
+    End Enum
 
+#End Region
 
 #Region "TPQ Property"
 
@@ -105,13 +113,11 @@ Public Class EventLister
 
     Private Overloads Shared Function CoerceEvliTPQ(ByVal d As DependencyObject, ByVal value As Object) As Object
         Dim newValue As Integer = value
-
         If newValue < 1 Then
             Return 1
         ElseIf newValue > 2000 Then
             Return 2000
         End If
-
         Return newValue
     End Function
 
@@ -120,7 +126,6 @@ Public Class EventLister
     End Sub
 
 #End Region
-
 
     Public Sub SetEventListContainer(evlic As EventListContainer)
         lblTpq.Content = 1
@@ -135,13 +140,13 @@ Public Class EventLister
         lblTpq.Content = evlic.TPQ
         EvliTPQ = evlic.TPQ
 
-        '--- copy list to ObservableCollection
+        '--- copy source list to ObservableCollection ---
 
         For Each ev In evlic.EventList
             TrackEvents.Add(ev)
         Next
 
-        '--- create TrackList (numbers + name)
+        '--- create TrackList (numbers + name) ---
 
         TrackList.Clear()
 
@@ -201,11 +206,7 @@ Public Class EventLister
         If trev Is Nothing Then Return False
 
         '--- Track ---
-
         If cbflistTrack.SelectedAll = False Then
-            'If cbflistTrack.SelectedItems.Contains(trev.TrackNumber) = False Then
-            '    Return False
-            'End If
             Dim trkfound As Boolean
             Dim ntrk As NamedTrack
             For Each item In cbflistTrack.SelectedItems
@@ -222,7 +223,6 @@ Public Class EventLister
         End If
 
         '--- Channel ---
-
         If cbflistChannel.SelectedAll = False Then
             If cbflistChannel.SelectedItems.Contains(trev.Channel) = False Then
                 Return False
@@ -230,7 +230,6 @@ Public Class EventLister
         End If
 
         '--- EventType ---
-
         If cbflistEventType.SelectedAll = False Then
             If cbflistEventType.SelectedItems.Contains(trev.TypeX) = False Then
                 Return False
@@ -240,46 +239,9 @@ Public Class EventLister
         Return True
     End Function
 
-    Private Function FilterFunctionSingle(item As Object) As Boolean
-
-        If cbflistTrack.SelectedAll = True Then Return True
-        If cbflistTrack.SelectedNone = True Then Return False
-
-        Dim trev As TrackEventX = TryCast(item, TrackEventX)
-
-        If trev IsNot Nothing Then
-
-            If cbflistTrack.SelectedItems.Contains(trev.TrackNumber) Then
-                Return True
-            Else
-                Return False
-            End If
-        End If
-
-        Return False
-    End Function
-
-
-    Private Function FilterFunctionExample(item As Object) As Boolean
-        Dim emp As TrackEventX = TryCast(item, TrackEventX)
-
-        If emp IsNot Nothing Then
-
-            If emp.Channel = 2 Then
-                Return True
-            Else
-                Return False
-            End If
-
-        End If
-
-        Return False
-    End Function
-
     Public Sub SelectAll()
-        DataGrid1.SelectAll()
+        DataGrid1.SelectAll()               ' a fast way to select all events in the DataGrid
     End Sub
-
 
     Private Sub cmbTimeFormat_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles cmbTimeFormat.SelectionChanged
         If cmbTimeFormat.SelectedItem IsNot Nothing Then
@@ -301,14 +263,25 @@ Public Class EventLister
 
     Private Sub cbflistTrack_SelectionChanged(sender As Object, e As RoutedEventArgs) Handles cbflistTrack.SelectionChanged
         CollectionView.Refresh()
+        ScrollToFirstSelectedItem()
     End Sub
 
     Private Sub cbflistChannel_SelectionChanged(sender As Object, e As RoutedEventArgs) Handles cbflistChannel.SelectionChanged
         CollectionView.Refresh()
+        ScrollToFirstSelectedItem()
     End Sub
 
     Private Sub cbflistEventType_SelectionChanged(sender As Object, e As RoutedEventArgs) Handles cbflistEventType.SelectionChanged
         CollectionView.Refresh()
+        ScrollToFirstSelectedItem()
+    End Sub
+
+    Private Sub ScrollToFirstSelectedItem()
+        If DataGrid1.Items.Count > 0 Then
+            If DataGrid1.SelectedItem IsNot Nothing Then
+                DataGrid1.ScrollIntoView(DataGrid1.SelectedItem)
+            End If
+        End If
     End Sub
 
     Private Sub ctxMi_Copy_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_Copy.Click
@@ -354,7 +327,6 @@ Public Class EventLister
         End If
     End Sub
 
-
     Private Sub CopySelectedItemsToClipboard(withHeader As Boolean)
         Dim sel = DataGrid1.SelectedItems
         If sel.Count > 0 Then
@@ -366,7 +338,6 @@ Public Class EventLister
             dao.SetData(GetType(EventListContainer), evlic)             ' format as type
             Clipboard.SetDataObject(dao)
         End If
-
     End Sub
 
     Private Function TrackEventXListToText(lst As IList, withHeader As Boolean) As String
@@ -405,6 +376,5 @@ Public Class EventLister
         Next
         Return sb.ToString
     End Function
-
 
 End Class

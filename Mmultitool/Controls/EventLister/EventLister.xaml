@@ -21,7 +21,7 @@
                         <Grid Background="#FFF2FDF5">
                             <!-- Format -->
                             <Label Content="Time:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-                            <ComboBox x:Name="cmbTimeFormat" HorizontalAlignment="Left" Margin="55,15,0,0" VerticalAlignment="Top" Width="108" ItemsSource="{Binding TimeFormat}"/>
+                            <ComboBox x:Name="cmbTimeFormat" HorizontalAlignment="Left" Margin="55,15,0,0" VerticalAlignment="Top" Width="108"/>
                             <Label Content="Status:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
                             <ComboBox x:Name="cmbStatusFormat" HorizontalAlignment="Left" Margin="55,49,0,0" VerticalAlignment="Top" Width="55"/>
                             <Label Content="Format" HorizontalAlignment="Left" Margin="131,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
