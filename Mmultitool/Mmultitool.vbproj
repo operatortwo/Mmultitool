@@ -84,10 +84,22 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\EventLister\Commands.vb" />
     <Compile Include="Controls\EventLister\EventLister.xaml.vb">
       <DependentUpon>EventLister.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\EventLister\EventListerConverter.vb" />
+    <Compile Include="Controls\EventListWriter\Commands.vb" />
+    <Compile Include="Controls\EventListWriter\Dialogs\EditEvent\DlgEditEvent.xaml.vb">
+      <DependentUpon>DlgEditEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\Dialogs\EditEvent\Procedures.vb" />
+    <Compile Include="Controls\EventListWriter\EventListWriter.xaml.vb">
+      <DependentUpon>EventListWriter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EventListWriter\EventListWriterConverter.vb" />
+    <Compile Include="Controls\EventListWriter\ObservableCollection.vb" />
+    <Compile Include="Controls\EventListWriter\Procedures.vb" />
     <Compile Include="Midi\Common\EventList.vb" />
     <Compile Include="Midi\Common\MDecode.vb" />
     <Compile Include="Midi\Common\MModule1.vb" />
@@ -122,6 +134,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Images\SelectAll_x32.png" />
+    <Resource Include="Resources\Images\Down_x22.png" />
+    <Resource Include="Resources\Images\Up_x22.png" />
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>
@@ -133,6 +148,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\EventLister\EventLister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\Dialogs\EditEvent\DlgEditEvent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\EventListWriter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

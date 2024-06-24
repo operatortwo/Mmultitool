@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2024 06 24		1.0.3.3		added Tab for EventListWriter
 2024 05 10		1.0.3.0		first tests with midifile write
 2024 05 06		1.0.2.1		added name to tracklist
 2024 05 06		1.0.2.0		started with TabControlExpander

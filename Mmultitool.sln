@@ -8,6 +8,9 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Test Mmultitool", "Test Mmultitool\Test Mmultitool.vbproj", "{DC7E7BB6-E11C-447B-8A7B-8E090AA6C46A}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Test Mmultitool WinForms", "Test Mmultitool WinForms\Test Mmultitool WinForms.vbproj", "{6FB633CA-B4D0-4FF7-95E6-28D556CB1973}"
+	ProjectSection(ProjectDependencies) = postProject
+		{733AC466-709A-482A-8C62-0B0C3B773FC6} = {733AC466-709A-482A-8C62-0B0C3B773FC6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

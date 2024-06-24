@@ -73,6 +73,7 @@
     ''' <summary>
     ''' Contains data used in EventList (extended TrackEvent)
     ''' </summary>
+    <Serializable>                                  ' needed for copy and paste
     Public Class TrackEventX
         Implements IComparer(Of TrackEventX)
         ''' <summary>
@@ -129,7 +130,7 @@
         Public Property Type As EventType
 
         ''' <summary>
-        ''' Comparer for sorting the EventList by Time and Track
+        ''' Comparer for sorting the EventList by Time and Track. -1 means x is less than y
         ''' </summary>
         ''' <param name="x"></param>
         ''' <param name="y"></param>
@@ -199,7 +200,9 @@
             tev2.Port = Port
             tev2.TrackNumber = TrackNumber
             tev2.Channel = Channel
-            tev2.DataStr = String.Copy(DataStr)
+            If DataStr IsNot Nothing Then
+                tev2.DataStr = String.Copy(DataStr)
+            End If
             tev2.Type = Type
             Return tev2
         End Function
@@ -232,9 +235,11 @@
             tev2.TrackNumber = TrackNumber
             tev2.Channel = Channel
             If CopyDataStr = True Then
-                tev2.DataStr = String.Copy(DataStr)
+                If DataStr IsNot Nothing Then
+                    tev2.DataStr = String.Copy(DataStr)
+                End If
             End If
-            tev2.Type = Type
+                tev2.Type = Type
             Return tev2
         End Function
 
@@ -449,6 +454,42 @@
         Return Time * SequencerTPQ / SourceTPQ
     End Function
 
+
+    ''' <summary>
+    ''' Get time of next beat mark
+    ''' </summary>
+    ''' <param name="Time">Time 1</param>
+    ''' <returns>Time 1 rounded up to next beat mark</returns>
+    Public Function GetTimeOfNextBeat(Time As UInteger, TPQ As Integer) As UInteger
+        If TPQ < 1 Then Return Time
+        Dim Newtime As UInteger
+        Dim TicksPerUnit As Integer = TPQ                   ' here a unit is a beat = 1 quaterNote Length
+        Dim ElapsedTicks As UInteger                        ' in this unit
+        Dim RemainingTicks As UInteger                      ' in this unit     
+
+        ElapsedTicks = CUInt(Time Mod TicksPerUnit)
+        RemainingTicks = CUInt(TicksPerUnit - ElapsedTicks)
+        Newtime = Time + RemainingTicks                     ' round up to end of this unit
+
+        Return Newtime
+    End Function
+
+    ''' <summary>
+    ''' Get time of previous beat mark. Time base is SequencerTPQ.
+    ''' </summary>
+    ''' <param name="Time">Time 1</param>
+    ''' <returns>Time 1 rounded down to previous beat mark</returns>
+    Public Function GetTimeOfPreviousBeat(Time As UInteger, TPQ As Integer) As UInteger
+        If TPQ < 1 Then Return Time
+        Dim Newtime As UInteger
+        Dim TicksPerUnit As UInteger = TPQ                  ' here a unit is a beat = 1 quaterNote Length
+        Dim ElapsedTicks As UInteger                        ' in this unit
+
+        ElapsedTicks = Time Mod TicksPerUnit
+        Newtime = Time - ElapsedTicks                       ' round down to start of this unit
+
+        Return Newtime
+    End Function
 
 
 End Module

@@ -22,7 +22,7 @@
         seq.EventList.Sort(sc)                          ' items input is not always sorted -> do it here
 
         If seq.EventList.Count > 0 Then
-            '--- absolute time to relative time, set Length and Duration
+            '--- absolute time to relative time, set sequence Length and Duration
             Dim TimeOffset As UInteger = seq.EventList(0).Time
             TimeOffset = GetTimeOfPreviousBeat(TimeOffset)      ' keep relative time within beat
             ' f.e. if the first event is at 3:1:24 it will be shifted to 0:0:24

@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Text
+Imports Mmultitool.EventListWriter
 
 Public Class EventLister
     Inherits UserControl
@@ -31,6 +32,9 @@ Public Class EventLister
     End Sub
 
     '--- main data ---
+    ''' <summary>
+    ''' Collection of all Events, sorted by Time
+    ''' </summary>        
     Public Property TrackEvents As New ObservableCollection(Of TrackEventX)         ' sorted by Time
     Public Property CollectionView As New ListCollectionView(TrackEvents)           ' Filtered View
 
@@ -38,9 +42,24 @@ Public Class EventLister
     Private TrackList As New List(Of NamedTrack)
     Private ChannelList As New List(Of Byte)
 
-    Public Class NamedTrack
+    Private Class NamedTrack
+        Implements IComparer(Of NamedTrack)
         Public Property TrackNumber As Byte
         Public Property TrackName As String = ""
+
+        Public Function Compare(x As NamedTrack, y As NamedTrack) As Integer Implements IComparer(Of NamedTrack).Compare
+            ' Return Value              Meaning
+            '---------------------------------------------
+            ' Less than zero    (-1)    x is less than y
+            ' Zero              (0)     x equals y
+            ' Greater than zero (1)     x is greater than y
+
+            If x Is Nothing Then Return -1
+            If y Is Nothing Then Return 1
+            If x.TrackNumber < y.TrackNumber Then Return -1
+            If x.TrackNumber > y.TrackNumber Then Return 1
+            Return 0
+        End Function
     End Class
 
 #Region "DataGrid Background"
@@ -284,17 +303,17 @@ Public Class EventLister
         End If
     End Sub
 
-    Private Sub ctxMi_Copy_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_Copy.Click
-        CopySelectedItemsToClipboard(False)
-    End Sub
+    'Private Sub ctxMi_Copy_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_Copy.Click
+    '    CopySelectedItemsToClipboard(False)
+    'End Sub
 
     Private Sub ctxMi_CopyWithHeader_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_CopyWithHeader.Click
         CopySelectedItemsToClipboard(True)
     End Sub
 
-    Private Sub ctxMi_PlaySelected_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_PlaySelected.Click
-        PlaySelectedItems(False)
-    End Sub
+    'Private Sub ctxMi_PlaySelected_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_PlaySelected.Click
+    '    PlaySelectedItems(False)
+    'End Sub
 
     Private Sub ctxMi_PlaySelectedLoop_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_PlaySelectedLoop.Click
         PlaySelectedItems(True)

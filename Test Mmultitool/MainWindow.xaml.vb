@@ -71,6 +71,29 @@ Class MainWindow
         MIO.OutLongMsg(hMidiOut, GM_ON_sysx)
     End Sub
 
+    Private Sub Mi_ResetSound_Click(sender As Object, e As RoutedEventArgs) Handles Mi_ResetSound.Click
+        ' All Notes Off, All Sound Off, Reset All Controllers --> Port 0
+        Dim stat As Byte
+
+        '-- all notes off 123 (7B)
+        For i = 0 To &HF
+            stat = CByte(i Or &HB0)
+            MidiOutShortMsg(stat, &H7B, 0)           ' All Notes Off (Bx, 7B, 0)            
+        Next
+
+        '-- all sound off 120 (78h)
+        For i = 0 To &HF
+            stat = CByte(i Or &HB0)
+            MidiOutShortMsg(stat, &H78, 0)           ' All Notes Off (Bx, 78, 0)            
+        Next
+
+        '-- reset all controllers 121 (79h)
+        For i = 0 To &HF
+            stat = CByte(i Or &HB0)
+            MidiOutShortMsg(stat, &H79, 0)           ' All Notes Off (Bx, 79, 0)            
+        Next
+    End Sub
+
     Private Sub Mi_About_Click(sender As Object, e As RoutedEventArgs) Handles Mi_About.Click
         Dim win As New AboutWin
         win.Owner = Me
@@ -188,4 +211,14 @@ Class MainWindow
         End If
 
     End Sub
+
+    Private Sub btnEvListWrSelectAll_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListWrSelectAll.Click
+        EventListWriter1.SelectAll()
+    End Sub
+
+    Private Sub btnEvListWrPlaySelected_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListWrPlaySelected.Click
+        EventListWriter1.PlaySelectedItems(tgbtnEvListWrLoop.IsChecked)
+    End Sub
+
+
 End Class

@@ -33,6 +33,16 @@ Module MDecode
         End If
     End Function
 
+    Public Function GetData(evx As TrackEventX) As String
+        Dim ev As New TrackEvent
+        ev.Type = evx.Type
+        ev.Status = evx.Status
+        ev.Data1 = evx.Data1
+        ev.Data2 = evx.Data2
+        ev.DataX = evx.DataX
+        Return GetData(ev)
+    End Function
+
     Public Function GetData(ev As TrackEvent) As String
 
         Select Case ev.Type

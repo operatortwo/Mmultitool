@@ -8,8 +8,7 @@ Public Module EventList
     ''' Create an eventlist from midifile tracks.
     ''' </summary>
     ''' <param name="Tracks">Tracklist in midifile</param>
-    ''' <param name="TPQsource">TicksPerQuarterNote in midifile</param>
-    ''' <returns>Container including EventList. The result is returned in the CreateResult field.</returns>
+    ''' <param name="TPQsource">TicksPerQuarterNote in midifile</param>    
     Public Function CreateEventListContainer(Tracks As List(Of TrackChunk), TPQsource As Integer) As EventListContainer
         Dim evlic As New EventListContainer
 
@@ -41,14 +40,14 @@ Public Module EventList
         Dim sc As New TrackEventX
         evlic.EventList.Sort(sc)
 
-        '---
-
         evlic.TPQ = TPQsource                   ' is needed to correctly interpret the Time property of TrackEventX
-        evlic.CreateResult = True               ' mark as 'create was successful'
+
         Return evlic
     End Function
 
-
+    ''' <summary>
+    ''' includes sort
+    ''' </summary>   
     Public Function CreateEventListContainer(items As IList, TPQsource As Integer) As EventListContainer
         Dim evlic As New EventListContainer
         evlic.TPQ = TPQsource
@@ -68,10 +67,10 @@ Public Module EventList
         Dim sc As New TrackEventX
         evlic.EventList.Sort(sc)
 
-        evlic.CreateResult = True               ' mark as 'create was successful'
         Return evlic
     End Function
 
+    <Serializable>                                  ' needed for copy and paste
     Public Class EventListContainer
         Public EventList As New List(Of TrackEventX)
         Private _TPQ As Integer = 1
@@ -85,7 +84,23 @@ Public Module EventList
             End Set
         End Property
 
-        Public CreateResult As Boolean              ' Result of Create, TRUE = successful
+        ''' <summary>
+        ''' Make a deep copy af this EventListContainer
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function Copy() As EventListContainer
+            Dim evlic2 As New EventListContainer
+            evlic2.TPQ = TPQ
+            Dim trev As TrackEventX
+
+            For Each ev In EventList
+                trev = ev.Copy
+                evlic2.EventList.Add(trev)
+            Next
+
+            Return evlic2
+        End Function
+
     End Class
 
     Public Function GetTrackName(TrackNumber As Byte, Eventlist As List(Of TrackEventX)) As String
