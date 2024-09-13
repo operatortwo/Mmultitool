@@ -114,13 +114,16 @@ Partial Public Module Sequencer
             'ElseIf tev.Status
 
         ElseIf tev.TypeX = EventTypeX.SetTempo Then
-            Dim micros As Integer
-            micros = tev.DataX(0) * 65536 + tev.DataX(1) * 256 + tev.DataX(2)
-            SequencerBPM = CSng(Math.Round(60 * 1000 * 1000 / micros, 2))       ' 2 Decimal places
+            If tev.DataX IsNot Nothing Then                 ' check for invalid SetTempo
+                If tev.DataX.Count >= 3 Then
+                    Dim micros As Integer
+                    micros = tev.DataX(0) * 65536 + tev.DataX(1) * 256 + tev.DataX(2)
+                    SequencerBPM = CSng(Math.Round(60 * 1000 * 1000 / micros, 2))       ' 2 Decimal places
+                End If
+            End If
 
-
-        ElseIf (tev.Status = &HF0) Or (tev.Status = &HF7) Then
-            If tev.DataX.Count > 0 Then
+            ElseIf (tev.Status = &HF0) Or (tev.Status = &HF7) Then
+                If tev.DataX.Count > 0 Then
                 Dim sysex(tev.DataX.Count) As Byte
                 sysex(0) = tev.Status
                 tev.DataX.CopyTo(sysex, 1)

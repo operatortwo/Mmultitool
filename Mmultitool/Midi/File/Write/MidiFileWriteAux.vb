@@ -120,6 +120,7 @@ Partial Public Class MidiFileWrite
                 trev.Data1 = &H7F
             Case Else
                 ' unknown
+                trev.Time = trevx.Time
                 trev.Type = EventType.Unkown
         End Select
 

@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2024 09 13		1.0.3.7		added Dialog new event
 2024 08 26		1.0.3.6		EventListWriter continued 3
 2024 07 26		1.0.3.5		EventListWriter continued 2
 2024 06 24		1.0.3.4		EventListWriter continued

@@ -27,8 +27,10 @@ Public Class MidiFileWrite
     Private TrackNumberList As New List(Of Byte)
 
 
-    Public Function CreateMidiFile(evlic As EventListContainer, destinationTPQ As Integer) As Boolean
+    Public Function CreateMidiFile(evlic As EventListContainer, destinationTPQ As Integer, fullname As String) As Boolean
         If evlic Is Nothing Then Return False
+        If fullname Is Nothing Then Return False
+        If fullname = "" Then Return False
 
         Try
             Prepare(evlic, destinationTPQ)
@@ -39,7 +41,7 @@ Public Class MidiFileWrite
 
         '--- write to file ---
         Try
-            WriteMidiFile(File.Create("TestMidi.mid"))
+            WriteMidiFile(File.Create(fullname))              ' TestMidi.mid
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Write MidiFile")
             Return False
@@ -104,7 +106,7 @@ Public Class MidiFileWrite
             If trk.EventList.Count > 0 Then
                 lastev = trk.EventList(trk.EventList.Count - 1)
                 If lastev.Type <> EventType.MetaEvent Then
-                    If lastev.Data1 <> &H2F AndAlso lastev.Data2 <> 0 Then
+                    If lastev.Data1 <> &H2F Then
                         eot = New TrackEvent With {.Status = &HFF, .Data1 = &H2F, .Data2 = 0, .Type = EventType.MetaEvent}
                         eot.Time = trk.EventList(trk.EventList.Count - 1).Time
                         trk.EventList.Add(eot)

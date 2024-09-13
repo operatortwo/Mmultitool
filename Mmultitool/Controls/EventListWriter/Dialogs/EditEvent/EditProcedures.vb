@@ -35,12 +35,12 @@ Partial Public Class DlgEditEvent
             If IsEventTypeText(CurrentEvent) = True Then
                 If CurrentEvent.DataX IsNot Nothing Then
 
-                    tbEditText.Text = ASCIIenc.GetString(CurrentEvent.DataX)
+                    'tbEditText.Text = ASCIIenc.GetString(CurrentEvent.DataX)
                 Else
-                    tbEditText.Text = ""
+                    'tbEditText.Text = ""
                 End If
             Else
-                tbEditText.Text = ""
+                'tbEditText.Text = ""
             End If
 
 

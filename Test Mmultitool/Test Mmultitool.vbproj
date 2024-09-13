@@ -176,6 +176,10 @@
     <Resource Include="Resources\Images\SelectAll_x24.png" />
     <Resource Include="Resources\Images\SelectAll_x32.png" />
     <Resource Include="Resources\Images\OpenFile_x32.png" />
+    <Resource Include="Resources\Images\SaveAs_x32.png" />
+    <Content Include="Most Events.mid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Library\Midi_IO.dll" />
     <Resource Include="Resources\Library\Midi_IO.xml" />
     <Resource Include="Resources\Images\Play_x22.png" />

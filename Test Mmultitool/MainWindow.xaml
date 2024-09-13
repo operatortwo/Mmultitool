@@ -8,6 +8,9 @@
         xmlns:Mmultitool="clr-namespace:Mmultitool;assembly=Mmultitool"
         mc:Ignorable="d"
         Title="Test Mmultitool" Height="600" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.Resources>
+        <SolidColorBrush x:Key="ButtonBorderBrush1" Color="#FF707070"/>
+    </Window.Resources>
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top" Height="22" VerticalAlignment="Top" TabIndex="100">
@@ -59,6 +62,7 @@
                         <duc:ImageButton x:Name="btnEvListerSelectAll" Text="Select All" TextAlignment="Right" Margin="10,49,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/SelectAll_x32.png" Width="78" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF3F3F3" ImageMargin="0,0,0,0" TabIndex="402" IsTabStop="True"/>
                         <duc:ImageButton x:Name="btnEvListerPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="106" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Right" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" TabIndex="403" IsTabStop="True"/>
                         <duc:ToggleButton x:Name="tgbtnEvListerLoop" Margin="235,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="#FF707070" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" TabIndex="404" IsTabStop="True"/>
+                        <duc:ImageButton x:Name="btnEvlisterStop" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="298,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" ImageMargin="0,0,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
                         <Button x:Name="btnTestMidiWrite" Content="Test MidiFile write" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="648,46,0,0" Height="32" Width="107" ToolTip="Tyr to write the entire File to TestMidi.mid" TabIndex="407"/>
                     </Grid>
                 </TabItem>
@@ -67,7 +71,10 @@
                         <Mmultitool:EventListWriter x:Name="EventListWriter1"  Margin="10,89,10,10" DataGridRowBackground="#FFFFFDF4"/>
                         <duc:ImageButton x:Name="btnEvListWrSelectAll" Text="Select All" TextAlignment="Right" Margin="10,49,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/SelectAll_x32.png" Width="78" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF3F3F3" ImageMargin="0,0,0,0"/>
                         <duc:ImageButton x:Name="btnEvListWrPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="106" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Right" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3"/>
-                        <duc:ToggleButton x:Name="tgbtnEvListWrLoop" Margin="235,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="#FF707070" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3"/>
+                        <duc:ToggleButton x:Name="tgbtnEvListWrLoop" Margin="235,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="{DynamicResource ButtonBorderBrush1}" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3"/>
+                        <duc:ImageButton x:Name="btnEvlistWrStop" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="298,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" ImageMargin="0,0,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
+                        <duc:ImageButton x:Name="btnSaveAs" Height="28" Width="115" Margin="397,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save As ..." Image="/Resources/Images/SaveAs_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1"/>
+                        <duc:ImageButton x:Name="btnEvListWrOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True"/>
                     </Grid>
                 </TabItem>
             </TabControl>

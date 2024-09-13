@@ -1,4 +1,5 @@
-﻿Imports Mmultitool
+﻿Imports System.Data
+Imports Mmultitool
 
 Class MainWindow
 
@@ -35,12 +36,17 @@ Class MainWindow
 
         '--- for Developmnt ---
 
-        Dim win As New DlgNewEvent(EventListWriter1)
-        win.Owner = Application.Current.MainWindow
-        win.StartReferenceItem = New TrackEventX
-        win.ShowDialog()
+        'Dim win As New DlgNewEvent(EventListWriter1)
+        'win.Owner = Application.Current.MainWindow
+        'win.StartReferenceItem = New TrackEventX
+        'win.ShowDialog()
 
-
+        Dim mifir2 As New MidifileRead
+        If mifir2.ReadMidiFile("Most Events.mid") = True Then
+            Dim evlic2 As EventListContainer
+            evlic2 = CreateEventListContainer(mifir2.TrackList, mifir2.TPQ)
+            EventListWriter1.SetEventListContainer(evlic2)
+        End If
         '---
     End Sub
 
@@ -204,12 +210,17 @@ Class MainWindow
         EventLister1.PlaySelectedItems(tgbtnEvListerLoop.IsChecked)
     End Sub
 
+    Private Sub btnEvlisterStop_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlisterStop.Click
+        StopSequencer()
+        'Set_SequencerTime(0)
+    End Sub
+
     Private Sub btnTestMidiWrite_Click(sender As Object, e As RoutedEventArgs) Handles btnTestMidiWrite.Click
         Dim evlic As EventListContainer
         evlic = CreateEventListContainer(mifir.TrackList, mifir.TPQ)
         Dim mifiw As New MidiFileWrite
 
-        If mifiw.CreateMidiFile(evlic, 120) = True Then
+        If mifiw.CreateMidiFile(evlic, 120, "TestMidi.mid") = True Then
             MessageBox.Show("The file 'TestMidi.mid' was written successfully", "Create MidiFile")
         End If
 
@@ -223,5 +234,65 @@ Class MainWindow
         EventListWriter1.PlaySelectedItems(tgbtnEvListWrLoop.IsChecked)
     End Sub
 
+    Private Sub btnEvlistWrStop_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlistWrStop.Click
+        StopSequencer()
+        'Set_SequencerTime(0)
+    End Sub
 
+    Private Sub btnSaveAs_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveAs.Click
+        Dim evlic As EventListContainer
+        Dim tpq As Integer = EventListWriter1.EvliTPQ
+        evlic = CreateEventListContainer(EventListWriter1.TrackEvents, tpq)
+
+        Dim sfd As New Microsoft.Win32.SaveFileDialog
+        '--- Create folder if not exists
+        'If Not IO.Directory.Exists(CompositionsDirectory) Then
+        'IO.Directory.CreateDirectory(CompositionsDirectory)
+        'End If
+        '---
+
+        'sfd.InitialDirectory = CompositionsDirectory
+        sfd.Filter = "MIDI files|*.mid"
+        sfd.DefaultExt = ".mid"
+
+        Dim ret As Boolean?
+        ret = sfd.ShowDialog()
+        If ret = False Then Exit Sub
+
+
+        Dim mifiw As New MidiFileWrite
+        If mifiw.CreateMidiFile(evlic, tpq, sfd.FileName) = True Then
+            MessageBox.Show("The file '" & sfd.FileName & "' was written successfully", "Create MidiFile")
+        End If
+
+
+    End Sub
+
+    Private Sub btnEvListWrOpenFile_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListWrOpenFile.Click
+        Dim ofd As New Microsoft.Win32.OpenFileDialog
+
+        ofd.Filter = "Midi files|*.mid"
+        If ofd.ShowDialog() = False Then Exit Sub
+        Dim ret As Boolean
+
+        Try
+            ret = mifir.ReadMidiFile(ofd.FileName)
+            tbEvListerFilename.Text = ofd.SafeFileName
+            tbEvListerMessage.Clear()
+            If ret = True Then
+                ShowMidifileInfo()
+            Else
+                EvListerMessage("Errortext:" & mifir.ErrorText)
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message & mifir.ErrorText, "Error reading Midi-File")
+        End Try
+
+        If ret = True Then
+            Dim evlic As EventListContainer
+            evlic = CreateEventListContainer(mifir.TrackList, mifir.TPQ)
+            EventListWriter1.SetEventListContainer(evlic)
+        End If
+
+    End Sub
 End Class

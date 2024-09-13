@@ -137,6 +137,75 @@ Public Class EventListWriter
 
 #End Region
 
+    Public Sub SetEventListContainer(evlic As EventListContainer)
+        lblTpq.Content = 1
+        EvliTPQ = 1
+        CollectionView.Filter = Nothing                     ' reset filter if any (= show all items)
+
+        TrackEvents.Clear()
+
+        If evlic Is Nothing Then Exit Sub
+        If evlic.EventList Is Nothing Then Exit Sub
+
+        lblTpq.Content = evlic.TPQ
+        EvliTPQ = evlic.TPQ
+
+        '--- copy source list to ObservableCollection ---
+
+        For Each ev In evlic.EventList
+            TrackEvents.Add(ev)
+        Next
+
+        '--- create TrackList (numbers + name) ---
+
+        TrackList.Clear()
+
+        Dim trknumlist As New List(Of Byte)
+        Dim trk As Byte
+
+        For Each ev In evlic.EventList
+            trk = ev.TrackNumber
+            If trknumlist.Contains(trk) = False Then
+                trknumlist.Add(trk)
+            End If
+        Next
+
+        Dim ntrk As NamedTrack
+
+        For Each trnum In trknumlist
+            ntrk = New NamedTrack
+            ntrk.TrackNumber = trnum
+            ntrk.TrackName = GetTrackName(trnum, evlic.EventList)
+            TrackList.Add(ntrk)
+        Next
+
+        '--- create ChannelList (numbers)
+
+        ChannelList.Clear()
+        Dim chan As Byte
+
+        For Each ev In evlic.EventList
+            chan = ev.Channel
+            If ChannelList.Contains(chan) = False Then
+                ChannelList.Add(chan)
+            End If
+        Next
+
+        '--- update Filter Lists
+
+        cbflistTrack.ItemListUpdate()
+        cbflistChannel.ItemListUpdate()
+        cbflistEventType.ItemListUpdate()             ' also updates Filter state to AllSelected
+
+        CollectionView.Filter = AddressOf FilterFunction
+        'CollectionView.Refresh()
+
+        If DataGrid1.Items.Count > 0 Then
+            DataGrid1.ScrollIntoView(DataGrid1.Items(0))
+        End If
+    End Sub
+
+
 #Region "Time and Status format"
 
     Public Shared ReadOnly DesiredTimeFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredTimeFormat", GetType(TimeFormat), GetType(EventListWriter), New PropertyMetadata(TimeFormat.MBT_0_based))

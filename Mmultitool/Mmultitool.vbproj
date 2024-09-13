@@ -115,8 +115,10 @@
     <Compile Include="Controls\EventListWriter\Procedures.vb" />
     <Compile Include="Midi\Common\EventList.vb" />
     <Compile Include="Midi\Common\EventTypeInfo.vb" />
+    <Compile Include="Midi\Common\MCalc.vb" />
     <Compile Include="Midi\Common\MDecode.vb" />
     <Compile Include="Midi\Common\MModule1.vb" />
+    <Compile Include="Midi\Common\NoteNames.vb" />
     <Compile Include="Midi\File\Read\MidifileRead.vb" />
     <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
     <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
@@ -203,6 +205,8 @@
     <Resource Include="Resources\Images\Cancel_x32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Images\GreenPlus_x24.png" />
+    <Resource Include="Resources\Images\UpDownArrows.png" />
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>

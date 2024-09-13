@@ -95,8 +95,11 @@ Module MDecode
 
         Dim type As Byte = ev.Data1
 
-        Dim ascii As Encoding = Encoding.ASCII
+        If type = MetaEventType.EndOfTrack Then Return ""        ' no additional data required
 
+        If ev.DataX Is Nothing Then Return "Nothing"
+
+        'Dim ascii As Encoding = Encoding.ASCII
 
         If type = MetaEventType.SequenceNumber Then
             If ev.DataX.Length > 0 Then
@@ -117,6 +120,7 @@ Module MDecode
         ElseIf type = MetaEventType.Marker Then
             Return GetMetaEventText(ev)
         ElseIf type = MetaEventType.CuePoint Then
+            Console.WriteLine(GetMetaEventText(ev))
             Return GetMetaEventText(ev)
         ElseIf type = MetaEventType.ProgramName Then
             Return GetMetaEventText(ev)
@@ -134,8 +138,6 @@ Module MDecode
             Else
                 Return ""
             End If
-        ElseIf type = MetaEventType.EndOfTrack Then
-            Return ""                                           ' no data
         ElseIf type = MetaEventType.SetTempo Then
             Dim micros As Integer
             If ev.DataX.Length >= 3 Then
@@ -152,30 +154,30 @@ Module MDecode
                 Return "len = 0"
             End If
         ElseIf type = MetaEventType.TimeSignature Then
-                If ev.DataX.Length >= 4 Then
-                    Dim num As Byte = ev.DataX(0)                        ' numerator
-                    Dim denom As Byte = CByte(2 ^ ev.DataX(1))           ' denominator (denominator, 2 ^ denominator
-                    Dim mclocks_metronclick As Byte = ev.DataX(2)        ' clocks per metronome click
-                    Dim num32perquarter As Byte = ev.DataX(3)            ' num of 32/notes in a QuarterNote (24)            
-                    Return num & "/" & denom & " " & mclocks_metronclick & " " & num32perquarter
-                Else
-                    Return "len = 0"
-                End If
-            ElseIf type = MetaEventType.KeySignature Then
-                ' C  min/maj
-                If ev.DataX.Length > 0 Then
-                    Return Bytes_to_hex_str(ev.DataX)
-                Else
-                    Return "len = 0"
-                End If
-            ElseIf type = MetaEventType.SequencerSpecific Then
-                If ev.DataX.Length > 0 Then
-                    Return Bytes_to_hex_str(ev.DataX)
-                Else
-                    Return "len = 0"
-                End If
+            If ev.DataX.Length >= 4 Then
+                Dim num As Byte = ev.DataX(0)                        ' numerator
+                Dim denom As Byte = CByte(2 ^ ev.DataX(1))           ' denominator (denominator, 2 ^ denominator
+                Dim mclocks_metronclick As Byte = ev.DataX(2)        ' clocks per metronome click
+                Dim num32perquarter As Byte = ev.DataX(3)            ' num of 32/notes in a QuarterNote (24)            
+                Return num & "/" & denom & " " & mclocks_metronclick & " " & num32perquarter
             Else
-                If ev.DataX.Length > 0 Then
+                Return "len = 0"
+            End If
+        ElseIf type = MetaEventType.KeySignature Then
+            ' C  min/maj
+            If ev.DataX.Length > 0 Then
+                Return Bytes_to_hex_str(ev.DataX)
+            Else
+                Return "len = 0"
+            End If
+        ElseIf type = MetaEventType.SequencerSpecific Then
+            If ev.DataX.Length > 0 Then
+                Return Bytes_to_hex_str(ev.DataX)
+            Else
+                Return "len = 0"
+            End If
+        Else
+            If ev.DataX.Length > 0 Then
                 Return "unknown, " & Bytes_to_hex_str(ev.DataX)
             Else
                 Return "unkown, len = 0"
