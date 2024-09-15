@@ -246,11 +246,11 @@ Public Class MidiFileWrite
 
             Case MetaEventType.SequenceNumber                           ' FF 00 02 ssss
                 varlen.Write(ev.Time, writer)                           ' time
-                writer.Write(EventType.MetaEvent)                       ' FF    (Status)
-                writer.Write(MetaEventType.SequenceNumber)              ' 00
-                writer.Write(2)                                         ' 02    (length=2)
-                writer.Write(ev.DataX(0))                               ' Sequence Number MSB
-                writer.Write(ev.DataX(1))                               ' Sequence Number LSB
+                WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
+                WriteByte(writer, MetaEventType.SequenceNumber)         ' 00
+                WriteByte(writer, 2)                                    ' 02    (length=2)
+                WriteByte(writer, ev.DataX(0))                          ' Sequence Number MSB
+                WriteByte(writer, ev.DataX(1))                          ' Sequence Number LSB
 
             Case MetaEventType.TextEvent                                ' FF 01 len text
                 varlen.Write(ev.Time, writer)                           ' time
@@ -320,7 +320,7 @@ Public Class MidiFileWrite
                 WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
                 WriteByte(writer, MetaEventType.MIDIChannelPrefix)      ' &H20
                 WriteByte(writer, 1)                                    ' 01    (length=1)
-                WriteByte(writer, ev.Data2)                              ' cc
+                WriteByte(writer, ev.DataX(0))                          ' cc
 
             ' MIDIPortPrefix is obsolete and should not be used anymore, instead DeviceName should be used.
             ' It is implemented for compatibility with old MidiFiles which may still contain it
@@ -329,13 +329,13 @@ Public Class MidiFileWrite
                 WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
                 WriteByte(writer, MetaEventType.MIDIPortPrefix)         ' &H21
                 WriteByte(writer, 1)                                    ' 01    (length=1)
-                WriteByte(writer, ev.Data2)                              ' pp
+                WriteByte(writer, ev.DataX(0))                          ' pp
 
             Case MetaEventType.EndOfTrack                               ' FF 2F 00
                 varlen.Write(ev.Time, writer)                           ' time
                 WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
-                WriteByte(writer, MetaEventType.EndOfTrack)             ' 2F    (Data1)
-                WriteByte(writer, 0)                                    ' 00    (Data2)
+                WriteByte(writer, MetaEventType.EndOfTrack)             ' 2F    (Databyte 1)
+                WriteByte(writer, 0)                                    ' 00    (Databyte 2)
 
             Case MetaEventType.SetTempo                                 ' FF 51 03 tttttt
                 varlen.Write(ev.Time, writer)                           ' time
