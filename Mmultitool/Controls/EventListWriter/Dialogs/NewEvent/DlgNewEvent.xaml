@@ -222,14 +222,14 @@
             </TabItem>
 
             <TabItem x:Name="Ti_SetTempo" Visibility="Collapsed">
-                <GroupBox  Header="Set Tempo" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="75" VerticalAlignment="Top" BorderBrush="#FFFFA566">
+                <GroupBox  Header="Set Tempo" Margin="7,5,0,0" HorizontalAlignment="Left" Width="440" Height="80" VerticalAlignment="Top" BorderBrush="#FFFFA566">
                     <Grid>
                         <Label Content="BPM:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="21,10,0,0" />
 
-                        <TextBlock x:Name="txblSetTempoData" Background="{DynamicResource InfoBgBrush}" Text="xxx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,7,0,0" Width="100" TextAlignment="Center"/>
-                        <TextBlock x:Name="txblSetTempoData2" Background="{DynamicResource InfoBgBrush}" Text="xx xx xx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,30,0,0" Width="100" TextAlignment="Center"/>
+                        <TextBlock x:Name="txblSetTempoData" Background="{DynamicResource InfoBgBrush}" Text="xxx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,7,0,0" Width="100" TextAlignment="Center" FontSize="14"/>
+                        <TextBlock x:Name="txblSetTempoData2" Background="{DynamicResource InfoBgBrush}" Text="xx xx xx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,30,0,0" Width="100" TextAlignment="Center" FontSize="14"/>
 
-                        <duc:SmallSlider x:Name="TempoSlider" Margin="63,11,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="24"/>
+                        <duc:SmallSlider x:Name="TempoSlider" Margin="63,11,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Height="26"/>
                         <Label Content="Microseconds:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="219,7,0,0" Padding="5,0,5,0" />
                         <Label Content="Data:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="268,30,0,0" Padding="5,0,5,0" />
 

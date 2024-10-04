@@ -207,6 +207,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\GreenPlus_x24.png" />
     <Resource Include="Resources\Images\UpDownArrows.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\store_x32.png" />
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>

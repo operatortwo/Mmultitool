@@ -161,6 +161,75 @@ SidePanelButton
 InitializeComponent
 </summary>
 </member>
+<member name="T:DailyUserControls.MessageWindow">
+<summary>
+MessageWindow
+</summary>
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.MessageIcon,System.Windows.Media.Brush,System.Double)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>   
+ <param name="FontSize">Must be between 10 and 20</param>
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.MessageIcon,System.Windows.Media.Brush)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.MessageIcon,System.Double)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>   
+ <param name="FontSize">Must be between 10 and 20</param>
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.MessageIcon)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String,DailyUserControls.MessageIcon)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String,System.String)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.Windows.Window,System.String)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.String,System.String)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show(System.String)">
+ <summary>
+ Opens a dialog window and waits until the user presses ESC or ENTER or closes the window.
+ </summary>    
+</member>
+<member name="M:DailyUserControls.MessageWindow.Show">
+ <summary>
+ Inherited from Window. No meaningful use here.
+ </summary>
+</member>
+<member name="M:DailyUserControls.MessageWindow.SetFontSize(DailyUserControls.MessageWindow,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="dlg"></param>
+ <param name="desiredSize">between 10 and 20, else the default size is set</param>
+</member>
+<member name="M:DailyUserControls.MessageWindow.InitializeComponent">
+<summary>
+InitializeComponent
+</summary>
+</member>
 <member name="T:DailyUserControls.ImageButton">
 <summary>
 ImageButton
@@ -558,6 +627,36 @@ VU_Bar
 <member name="M:DailyUserControls.VU_Bar.InitializeComponent">
 <summary>
 InitializeComponent
+</summary>
+</member>
+<member name="T:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+<summary>
+GeneratedInternalTypeHelper
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+<summary>
+CreateInstance
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+<summary>
+GetPropertyValue
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+<summary>
+SetPropertyValue
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+<summary>
+CreateDelegate
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+<summary>
+AddEventHandler
 </summary>
 </member>
 </members>

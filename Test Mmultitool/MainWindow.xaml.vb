@@ -1,4 +1,5 @@
 ﻿Imports System.Data
+Imports DailyUserControls
 Imports Mmultitool
 
 Class MainWindow
@@ -262,7 +263,8 @@ Class MainWindow
 
         Dim mifiw As New MidiFileWrite
         If mifiw.CreateMidiFile(evlic, tpq, sfd.FileName) = True Then
-            MessageBox.Show("The file '" & sfd.FileName & "' was written successfully", "Create MidiFile")
+            MessageWindow.Show(Me, "The file" & vbCrLf & sfd.FileName & vbCrLf & "was written successfully",
+                               "Create MidiFile", MessageIcon.StatusOk, Brushes.AliceBlue)
         End If
 
 

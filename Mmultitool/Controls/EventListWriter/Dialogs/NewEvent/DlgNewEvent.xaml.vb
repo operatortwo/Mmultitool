@@ -313,7 +313,7 @@ Public Class DlgNewEvent
             Case EventTypeX.KeySignature
                 ' Meta 2 bytes
                 Dim barr = New Byte(1) {}
-                barr(0) = nudKeySignature.Value
+                barr(0) = CByte(nudKeySignature.Value And &HFF)         ' limit value to signed byte range
                 If rbtnKeySignatureMajor.IsChecked = True Then
                     barr(1) = 0
                 Else
@@ -452,5 +452,7 @@ Public Class DlgNewEvent
     Private Sub nudPolyKeyPressureData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudPolyKeyPressureData1.ValueChanged
         txblPolyKeyPressureNoteName.Text = NoteNumber_to_NoteName(e.NewValue)
     End Sub
+
+
 End Class
 

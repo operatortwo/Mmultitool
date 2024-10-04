@@ -58,7 +58,17 @@
     End Function
 #End Region
 
-
+    ''' <summary>
+    ''' Convert a Byte that represents a signed byte-value to SByte.
+    ''' </summary>        
+    Public Function ByteToSByte(b As Byte) As SByte
+        'IIf(b < 128, b, b - 256)
+        If b < 128 Then
+            Return b
+        Else
+            Return b - 256
+        End If
+    End Function
 
 
 

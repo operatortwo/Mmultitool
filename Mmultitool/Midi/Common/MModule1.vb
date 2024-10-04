@@ -355,13 +355,13 @@ Public Module MModule1
             tev2.Data2 = Data2
             'Public Property DataX As Byte()
             If DataX IsNot Nothing Then
-                If DataX.Count > 0 Then
-                    Dim dx2 As Byte() = New Byte(DataX.Count - 1) {}        ' byte(upperBound)
+                'If DataX.Count > 0 Then
+                Dim dx2 As Byte() = New Byte(DataX.Count - 1) {}        ' byte(upperBound)
                     For i = 1 To DataX.Count
                         dx2(i - 1) = DataX(i - 1)
                     Next
                     tev2.DataX = dx2
-                End If
+                'End If
             End If
             tev2.Duration = Duration
             tev2.Port = Port

@@ -304,14 +304,14 @@ Public Class MidiFileWrite
             Case MetaEventType.ProgramName                              ' FF 08 len text   (RP-019 1999 MMA)
                 varlen.Write(ev.Time, writer)                           ' time
                 WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
-                WriteByte(writer, MetaEventType.CuePoint)               ' 07
+                WriteByte(writer, MetaEventType.ProgramName)            ' 08
                 WriteDataByteCount(ev.DataX, writer)                    ' length
                 WriteDataBytes(ev.DataX, writer)                        ' text
 
             Case MetaEventType.DeviceName                               ' FF 09 len text   (RP-019 1999 MMA)
                 varlen.Write(ev.Time, writer)                           ' time
                 WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
-                WriteByte(writer, MetaEventType.CuePoint)               ' 07
+                WriteByte(writer, MetaEventType.DeviceName)             ' 09
                 WriteDataByteCount(ev.DataX, writer)                    ' length
                 WriteDataBytes(ev.DataX, writer)                        ' text
 
@@ -368,7 +368,7 @@ Public Class MidiFileWrite
             Case MetaEventType.SequencerSpecific                        ' FF 7F len data
                 varlen.Write(ev.Time, writer)                           ' time
                 WriteByte(writer, EventType.MetaEvent)                  ' FF    (Status)
-                WriteByte(writer, MetaEventType.CuePoint)               ' &H7F               
+                WriteByte(writer, MetaEventType.SequencerSpecific)      ' &H7F               
                 WriteDataByteCount(ev.DataX, writer)                    ' length
                 WriteDataBytes(ev.DataX, writer)                        ' data
 

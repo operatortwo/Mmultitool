@@ -145,6 +145,7 @@ Public Class MBT_Editor
         Dim control As MBT_Editor = CType(d, MBT_Editor)
         control.SetValue(NewValueKey, control.OriginalValue)
         control.SetNumericUpDownValues()
+        control.UpdateAllTextBoxBackgrounds()                   ' reset background in case it was changed before
     End Sub
 
     <Description("The edited value"), Category("MBT Editor")>

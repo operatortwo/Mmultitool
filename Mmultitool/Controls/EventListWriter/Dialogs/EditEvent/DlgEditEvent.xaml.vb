@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Controls.Primitives
+Imports DailyUserControls
 Imports Mmultitool.EventListWriter
 Public Class DlgEditEvent
 
@@ -6,7 +7,10 @@ Public Class DlgEditEvent
     Private Evliw As EventListWriter
 
     Private CurrentEvent As TrackEventX
+    Private EditedEvent As TrackEventX
 
+    Private ChangedBgBrush As Brush
+    Private UnChangedBgBrush As Brush
 
     Public Property LocalTPQ As Integer = 1
 
@@ -29,7 +33,7 @@ Public Class DlgEditEvent
 
         'GetCurrentEvent()
         'CurrentEvent = Evliw.CollectionView.CurrentItem
-        ShowEventInfo()
+        'ShowEventInfo()
 
 
         lblPosition.Content = CurrentIndex
@@ -38,12 +42,12 @@ Public Class DlgEditEvent
         ScrollBar1.Maximum = Evliw.CollectionView.Count - 1
         ScrollBar1.Value = Evliw.CollectionView.CurrentPosition
 
+        ChangedBgBrush = TryCast(Me.Resources("ChangedBgBrush"), Brush)           ' defined in xaml
+        UnChangedBgBrush = TryCast(Me.Resources("UnChangedBgBrush"), Brush)           ' defined in xaml
 
-
-
-        'TrackEvents.Item(1)
     End Sub
 
+    Private evtinfo As EventTypeX_Information
 
     Private _CurrentIndex As Integer
     Private Property CurrentIndex As Integer
@@ -53,10 +57,15 @@ Public Class DlgEditEvent
         Set(value As Integer)
             _CurrentIndex = value
             GetCurrentEvent()
+            EditedEvent = CurrentEvent.Copy
+            EditCompare()
+
+            evtinfo = GetEventTypeX_Info(CurrentEvent.TypeX)
+            tblEventInfo.Text = evtinfo.Info                    ' show Info for the event
             ShowEventInfo()
 
             SetEditTab()
-            SetEditData
+            SetEditData()
         End Set
     End Property
 
@@ -67,14 +76,6 @@ Public Class DlgEditEvent
         If CurrentIndex >= Evliw.CollectionView.Count Then Exit Sub
         CurrentEvent = Evliw.CollectionView.GetItemAt(CurrentIndex)
     End Sub
-
-    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        Dim lbl = lblPositionMax.Content
-
-        Beep()
-        Me.Close()
-    End Sub
-
 
 #Region "Navigation"
 
@@ -90,31 +91,57 @@ Public Class DlgEditEvent
             lblPosition.Content = ScrollBar1.Value
         End If
 
-
-
     End Sub
 
-    Private Sub MainGrid_KeyDown(sender As Object, e As KeyEventArgs) Handles MainGrid.KeyDown
-        If e.Key = Key.Down Then
-            ScrollBar1.Value = ScrollBar1.Value + 1
-            e.Handled = True
-        ElseIf e.Key = Key.Up Then
-            ScrollBar1.Value = ScrollBar1.Value - 1
-            e.Handled = True
-        ElseIf e.Key = Key.Home Then
-            ScrollBar1.Value = 0
-            e.Handled = True
-        ElseIf e.Key = Key.End Then
-            ScrollBar1.Value = Evliw.TrackEvents.Count - 1
-            e.Handled = True
-        ElseIf e.Key = Key.PageUp Then
-            ScrollBar1.Value = ScrollBar1.Value - ScrollBar1.LargeChange
-            e.Handled = True
-        ElseIf e.Key = Key.PageDown Then
-            ScrollBar1.Value = ScrollBar1.Value + ScrollBar1.LargeChange
-            e.Handled = True
-        End If
+    Private Sub ScrollBar1_PreviewMouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles ScrollBar1.PreviewMouseLeftButtonDown
+        ScrollBar1.Focus()
     End Sub
+
+    Private Sub Navigate_Click(sender As Object, e As RoutedEventArgs) Handles Navigate.Click
+        ScrollBar1.Focus()
+    End Sub
+
+    Private NavigateFocusBrush As New SolidColorBrush(Color.FromArgb(&HFF, &H56, &H9D, &HE5))
+    Private Sub ScrollBar1_GotFocus(sender As Object, e As RoutedEventArgs) Handles ScrollBar1.GotFocus
+        ScrollFocusRectangle.Stroke = NavigateFocusBrush
+    End Sub
+
+    Private Sub ScrollBar1_LostFocus(sender As Object, e As RoutedEventArgs) Handles ScrollBar1.LostFocus
+        ScrollFocusRectangle.Stroke = Nothing
+    End Sub
+
+    'Private Sub Navigate_KeyDown(sender As Object, e As KeyEventArgs) Handles Navigate.KeyDown
+
+    '    If e.Key = Key.Down Then
+    '        ScrollBar1.Value = ScrollBar1.Value + 1
+    '        e.Handled = True
+    '    ElseIf e.Key = Key.Up Then
+    '        ScrollBar1.Value = ScrollBar1.Value - 1
+    '        e.Handled = True
+    '    ElseIf e.Key = Key.Home Then
+    '        ScrollBar1.Value = 0
+    '        e.Handled = True
+    '    ElseIf e.Key = Key.End Then
+    '        ScrollBar1.Value = Evliw.TrackEvents.Count - 1
+    '        e.Handled = True
+    '    ElseIf e.Key = Key.PageUp Then
+    '        ScrollBar1.Value = ScrollBar1.Value - ScrollBar1.LargeChange
+    '        e.Handled = True
+    '    ElseIf e.Key = Key.PageDown Then
+    '        ScrollBar1.Value = ScrollBar1.Value + ScrollBar1.LargeChange
+    '        e.Handled = True
+    '    End If
+    'End Sub
+
+    'Private NavigateFocusBrush As New SolidColorBrush(Color.FromArgb(&HFF, &H56, &H9D, &HE5))
+    'Private Sub Navigate_GotFocus(sender As Object, e As RoutedEventArgs) Handles Navigate.GotFocus
+    '    Navigate.BorderBrush = NavigateFocusBrush
+    'End Sub
+
+    'Private Sub Navigate_LostFocus(sender As Object, e As RoutedEventArgs) Handles Navigate.LostFocus
+    '    Navigate.BorderBrush = Nothing
+    'End Sub
+
 
     Private Sub MBT_InputBox1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of UInteger)) Handles MBT_InputBox1.ValueChanged
         MBT_Editor1.ChangeCurrentValue(e.NewValue)
@@ -151,22 +178,31 @@ Public Class DlgEditEvent
                 TabControlEdit.SelectedItem = Ti_SequenceNumber
             Case EventTypeX.TextEvent
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Text"
             Case EventTypeX.CopyrightNotice
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Copyright Notice"
             Case EventTypeX.SequenceOrTrackName
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Sequence- or Track-Name"
             Case EventTypeX.InstrumentName
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Instrument Name"
             Case EventTypeX.Lyric
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Lyric"
             Case EventTypeX.Marker
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Marker"
             Case EventTypeX.CuePoint
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Cue Point"
             Case EventTypeX.ProgramName
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Program Name"
             Case EventTypeX.DeviceName
                 TabControlEdit.SelectedItem = Ti_MetaText
+                GroupBox_MetaText.Header = "Device Name"
             Case EventTypeX.MIDIChannelPrefix
                 TabControlEdit.SelectedItem = Ti_MidiChannelPrefix
             Case EventTypeX.MIDIPortPrefix
@@ -233,8 +269,8 @@ Public Class DlgEditEvent
                 ' Meta 2 bytes
                 If HasMetaData(CurrentEvent.DataX, 2) = False Then Exit Select
                 Dim val As Integer
-                    val = CurrentEvent.DataX(0) * 256
-                    val += CurrentEvent.DataX(1)
+                val = CurrentEvent.DataX(0) * 256
+                val += CurrentEvent.DataX(1)
                 nudSequenceNumber.Value = val
             Case EventTypeX.TextEvent
                 If HasMetaData(CurrentEvent.DataX, 0) = False Then Exit Select
@@ -294,11 +330,11 @@ Public Class DlgEditEvent
                 ' Meta 2 bytes
                 If HasMetaData(CurrentEvent.DataX, 2) = False Then Exit Select
                 Dim barr As Byte() = CurrentEvent.DataX
-                nudKeySignature.Value = barr(0)
+                nudKeySignature.Value = ByteToSByte(barr(0))
                 If barr(1) = 0 Then
                     rbtnKeySignatureMajor.IsChecked = True
                 Else
-                    rbtnKeySignatureMajor.IsChecked = False
+                    rbtnKeySignatureMinor.IsChecked = True
                 End If
             Case EventTypeX.SequencerSpecific
                 ' example with 3 data-bytes
@@ -326,5 +362,387 @@ Public Class DlgEditEvent
         If buffer.Count < requiredBytes Then Return False
         Return True
     End Function
+
+    Private Sub cmbNoteOnDuration_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of UInteger)) Handles cmbNoteOnDuration.ValueChanged
+        lblNoteOnDurationValue.Content = e.NewValue
+    End Sub
+
+    Private Sub btnNoteOnSetDuration_Click(sender As Object, e As RoutedEventArgs) Handles btnNoteOnSetDuration.Click
+        nudNoteOnDuration.Value = cmbNoteOnDuration.Value
+    End Sub
+
+#Region "PitchBend"
+    Private Sub PitchBendSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles PitchBendSlider.ValueChanged
+        Dim ret As TwoBytes
+        ret = PitchBendValueToData(e.NewValue)
+        txblPitchBendData.Text = ret.Byte1 & "   " & ret.Byte2
+    End Sub
+
+    Private Sub PitchBendZero_Click(sender As Object, e As RoutedEventArgs) Handles PitchBendZero.Click
+        PitchBendSlider.Value = 0
+    End Sub
+
+    Private Sub PitchBend2000_Click(sender As Object, e As RoutedEventArgs) Handles PitchBend2000.Click
+        PitchBendSlider.Value = 2000
+    End Sub
+
+    Private Sub PitchBend4000_Click(sender As Object, e As RoutedEventArgs) Handles PitchBend4000.Click
+        PitchBendSlider.Value = 4000
+    End Sub
+
+    Private Sub PitchBend6000_Click(sender As Object, e As RoutedEventArgs) Handles PitchBend6000.Click
+        PitchBendSlider.Value = 6000
+    End Sub
+
+    Private Sub PitchBendMinus2000_Click(sender As Object, e As RoutedEventArgs) Handles PitchBendMinus2000.Click
+        PitchBendSlider.Value = -2000
+    End Sub
+
+    Private Sub PitchBendMinus4000_Click(sender As Object, e As RoutedEventArgs) Handles PitchBendMinus4000.Click
+        PitchBendSlider.Value = -4000
+    End Sub
+
+    Private Sub PitchBendMinus6000_Click(sender As Object, e As RoutedEventArgs) Handles PitchBendMinus6000.Click
+        PitchBendSlider.Value = -6000
+    End Sub
+
+
+
+
+
+#End Region
+
+    Private Sub TempoSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles TempoSlider.ValueChanged
+
+        Dim bpm As Integer = e.NewValue
+
+        Dim micros As Integer
+        Dim tdata As ThreeBytes
+        micros = BPM_ToMicroseconds(bpm)
+        tdata = BPM_ToTempoData(bpm)
+
+        txblSetTempoData.Text = micros.ToString("N0")
+        txblSetTempoData2.Text = tdata.Byte1 & "   " & tdata.Byte2 & "   " & tdata.Byte3
+
+    End Sub
+
+    Private Sub nudNoteOnData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNoteOnData1.ValueChanged
+        txblNoteOnName.Text = NoteNumber_to_NoteName(e.NewValue)
+        txblNoteOnDrumName.Text = NoteNames.Get_GM_DrumVoiceName(e.NewValue)
+    End Sub
+    Private Sub radNoteOff_90h_Checked(sender As Object, e As RoutedEventArgs) Handles radNoteOff_90h.Checked
+        nudNoteOffData2.IsEnabled = False
+    End Sub
+    Private Sub radNoteOff_80h_Checked(sender As Object, e As RoutedEventArgs) Handles radNoteOff_80h.Checked
+        nudNoteOffData2.IsEnabled = True
+    End Sub
+
+    Private Sub nudKeySignature_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudKeySignature.ValueChanged
+        Dim sfval As Integer = e.NewValue
+        Dim str As String
+
+        If sfval = 0 Then
+            str = "key of C"
+        Else
+            Dim val As Integer = Math.Abs(sfval)
+            str = val & " "
+            If sfval < 0 Then
+                If val = 1 Then
+                    str = str & "flat"
+                Else
+                    str = str & "flats"
+                End If
+            Else
+                If val = 1 Then
+                    str = str & "sharp"
+                Else
+                    str = str & "sharps"
+                End If
+            End If
+        End If
+
+        txblKeySignatureSf.Text = str
+    End Sub
+
+    Private Sub btnTimeSignatureDefault_Click(sender As Object, e As RoutedEventArgs) Handles btnTimeSignatureDefault.Click
+        cmbTimeSignatureDenom.SelectedIndex = 1
+        nudTimeSignatureNom.Value = 4
+        nudTimeSignatureClocks.Value = 24
+        nudTimeSignature32perQuarter.Value = 8
+    End Sub
+
+    Private Sub nudProgramChangeData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudProgramChangeData1.ValueChanged
+        txblProgramChangeProgName.Text = NoteNames.Get_GM_VoiceName(e.NewValue)
+    End Sub
+
+    Private Sub nudControlChangeData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudControlChangeData1.ValueChanged
+        txblControlChangeCtrlName.Text = MDecode.GetControllerName(e.NewValue)
+    End Sub
+
+    Private Sub nudPolyKeyPressureData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudPolyKeyPressureData1.ValueChanged
+        txblPolyKeyPressureNoteName.Text = NoteNumber_to_NoteName(e.NewValue)
+    End Sub
+
+#Region "Edit Event"
+
+    Private Sub btnSaveChanges_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveChanges.Click
+
+        '--- update data's in CurrentEvent ---
+
+        CurrentEvent.TrackNumber = EditedEvent.TrackNumber
+        CurrentEvent.Channel = EditedEvent.Channel
+        CurrentEvent.TypeX = EditedEvent.TypeX
+        CurrentEvent.Status = EditedEvent.Status
+        CurrentEvent.Data1 = EditedEvent.Data1
+        CurrentEvent.Data2 = EditedEvent.Data2
+        CurrentEvent.Duration = EditedEvent.Duration
+
+        If ByteArrayCompare(CurrentEvent.DataX, EditedEvent.DataX) = False Then
+            CurrentEvent.DataX = EditedEvent.DataX
+        End If
+
+        If CurrentEvent.DataStr <> EditedEvent.DataStr Then
+            CurrentEvent.DataStr = EditedEvent.DataStr
+        End If
+
+        '--- if Time was changed ---
+
+        If CurrentEvent.Time <> EditedEvent.Time Then
+            CurrentEvent.Time = EditedEvent.Time                    ' set new Time
+            Evliw.CollectionView.Remove(CurrentEvent)               ' remove at current position
+            If Evliw.InsertEvent(CurrentEvent) = False Then         ' insert to new position
+                MessageWindow.Show(Me, "InsertEvent failed", "Time was changed", MessageIcon.Error)     ' for debug
+            End If
+
+            MBT_Editor1.OriginalValue = CurrentEvent.Time           ' update to remove changed color
+        End If
+
+        '--- update view ---
+
+        Evliw.CollectionView.Refresh()
+
+        ShowEventInfo()                             ' show the the updated data's in row 1
+        EditCompare()                               ' reset background in row 2 and set HasChanges to FALSE
+    End Sub
+
+    Private Sub MBT_Editor1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of UInteger)) Handles MBT_Editor1.ValueChanged
+        EditedEvent.Time = e.NewValue
+        TimeChanged
+    End Sub
+
+    Private Sub TempoSlider_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles TempoSlider.ValueChanged
+        If IsLoaded = True Then
+            Dim barr = New Byte(2) {}
+            Dim dat As ThreeBytes = BPM_ToTempoData(TempoSlider.Value)
+            barr(0) = dat.Byte1
+            barr(1) = dat.Byte2
+            barr(2) = dat.Byte3
+            EditedEvent.DataX = barr
+            DataXChanged()
+        End If
+    End Sub
+
+    Private Sub nudProgramChangeData1_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudProgramChangeData1.ValueChanged
+        EditedEvent.Data1 = e.NewValue
+        Data1Changed()
+    End Sub
+
+    Private Sub nudControlChangeData1_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudControlChangeData1.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Data1 = e.NewValue
+            Data1Changed()
+        End If
+    End Sub
+
+    Private Sub nudControlChangeData2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudControlChangeData2.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Data2 = e.NewValue
+            Data2Changed()
+        End If
+    End Sub
+
+    Private Sub PitchBendSlider_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles PitchBendSlider.ValueChanged
+        Dim dat As TwoBytes = PitchBendValueToData(PitchBendSlider.Value)
+        EditedEvent.Data1 = dat.Byte1
+        EditedEvent.Data2 = dat.Byte2
+        Data1Changed()
+        Data2Changed()
+    End Sub
+
+    Private Sub nudNoteOnData1_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNoteOnData1.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Data1 = e.NewValue
+            Data1Changed()
+        End If
+    End Sub
+
+    Private Sub nudNoteOnData2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNoteOnData2.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Data2 = e.NewValue
+            Data2Changed()
+        End If
+    End Sub
+
+    Private Sub nudNoteOnDuration_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNoteOnDuration.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Duration = e.NewValue
+            DurationChanged()
+        End If
+    End Sub
+
+    Private Sub nudNoteOffData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNoteOffData1.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Data1 = e.NewValue
+            Data1Changed()
+        End If
+    End Sub
+
+    Private Sub nudNoteOffData2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNoteOffData2.ValueChanged
+        If IsLoaded = True Then
+            EditedEvent.Data2 = e.NewValue
+            Data2Changed()
+        End If
+    End Sub
+
+    Private Sub radNoteOff_90h_Checked_1(sender As Object, e As RoutedEventArgs) Handles radNoteOff_90h.Checked
+        If IsLoaded = True Then
+            EditedEvent.Status = &H90
+            StatusChanged()
+            If EditedEvent.Data2 <> 0 Then
+                nudNoteOffData2.Value = 0
+            End If
+
+        End If
+    End Sub
+
+    Private Sub radNoteOff_80h_Checked_1(sender As Object, e As RoutedEventArgs) Handles radNoteOff_80h.Checked
+        If IsLoaded = True Then
+            EditedEvent.Status = &H80
+            StatusChanged()
+        End If
+    End Sub
+
+    Private Sub tbEditMetaText_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbEditMetaText.TextChanged
+        If IsLoaded = True Then
+            EditedEvent.DataX = ASCIIenc.GetBytes(tbEditMetaText.Text)
+            DataXChanged()
+        End If
+    End Sub
+
+    Private Sub nudKeySignature_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudKeySignature.ValueChanged
+        ' Meta 2 bytes
+        EditedEvent.DataX(0) = CByte(nudKeySignature.Value And &HFF)        ' limit value to signed byte range
+        DataXChanged()
+    End Sub
+
+    Private Sub rbtnKeySignatureMajor_Checked(sender As Object, e As RoutedEventArgs) Handles rbtnKeySignatureMajor.Checked
+        If IsLoaded = False Then Exit Sub
+        ' major = 0
+        If EditedEvent.DataX(1) <> 0 Then
+            EditedEvent.DataX(1) = 0
+            DataXChanged()
+        End If
+    End Sub
+
+    Private Sub rbtnKeySignatureMinor_Checked(sender As Object, e As RoutedEventArgs) Handles rbtnKeySignatureMinor.Checked
+        If IsLoaded = False Then Exit Sub
+        ' minor = 1
+        If EditedEvent.DataX(1) <> 1 Then
+            EditedEvent.DataX(1) = 1
+            DataXChanged()
+        End If
+    End Sub
+
+    Private Sub nudTimeSignatureNom_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudTimeSignatureNom.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(0) = nudTimeSignatureNom.Value
+        DataXChanged()
+    End Sub
+
+    Private Sub cmbTimeSignatureDenom_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles cmbTimeSignatureDenom.SelectionChanged
+        If IsLoaded = False Then Exit Sub
+        Dim ci As ComboBoxItem = cmbTimeSignatureDenom.SelectedItem
+        EditedEvent.DataX(1) = Math.Sqrt(ci.Content)
+        DataXChanged()
+    End Sub
+
+    Private Sub nudTimeSignatureClocks_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudTimeSignatureClocks.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(2) = nudTimeSignatureClocks.Value
+        DataXChanged()
+    End Sub
+
+    Private Sub nudTimeSignature32perQuarter_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudTimeSignature32perQuarter.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(3) = nudTimeSignature32perQuarter.Value
+        DataXChanged()
+    End Sub
+
+    Private Sub nudPolyKeyPressureData1_ValueChanged_1(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudPolyKeyPressureData1.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.Data1 = e.NewValue
+        Data1Changed()
+    End Sub
+
+    Private Sub nudPolyKeyPressureData2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudPolyKeyPressureData2.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.Data2 = e.NewValue
+        Data2Changed()
+    End Sub
+
+    Private Sub nudChannelPressureData1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudChannelPressureData1.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.Data1 = e.NewValue
+        Data1Changed()
+    End Sub
+
+    Private Sub nudSequenceNumber_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudSequenceNumber.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        Dim val As Integer = e.NewValue
+        val = val And &HFFFF
+        EditedEvent.DataX(0) = val >> 8
+        EditedEvent.DataX(1) = val And &HFF
+        DataXChanged()
+    End Sub
+
+    Private Sub nudChannelPrefix_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudChannelPrefix.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(0) = e.NewValue
+        DataXChanged()
+    End Sub
+
+    Private Sub nudPortPrefix_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudPortPrefix.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(0) = e.NewValue
+        DataXChanged()
+    End Sub
+
+    Private Sub ssldSequencerSpecific1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldSequencerSpecific1.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(0) = e.NewValue
+        DataXChanged()
+    End Sub
+
+    Private Sub ssldSequencerSpecific2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldSequencerSpecific2.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(1) = e.NewValue
+        DataXChanged()
+    End Sub
+
+    Private Sub ssldSequencerSpecific3_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldSequencerSpecific3.ValueChanged
+        If IsLoaded = False Then Exit Sub
+        EditedEvent.DataX(2) = e.NewValue
+        DataXChanged()
+    End Sub
+
+
+
+
+
+
+
+
+
+#End Region
 
 End Class

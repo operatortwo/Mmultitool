@@ -120,7 +120,6 @@ Module MDecode
         ElseIf type = MetaEventType.Marker Then
             Return GetMetaEventText(ev)
         ElseIf type = MetaEventType.CuePoint Then
-            Console.WriteLine(GetMetaEventText(ev))
             Return GetMetaEventText(ev)
         ElseIf type = MetaEventType.ProgramName Then
             Return GetMetaEventText(ev)

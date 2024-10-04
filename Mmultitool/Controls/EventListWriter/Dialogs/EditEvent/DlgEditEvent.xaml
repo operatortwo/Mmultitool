@@ -7,12 +7,16 @@
         xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"        
         DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
-        Title="Edit Event" Height="450" Width="780" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+        KeyboardNavigation.DirectionalNavigation="Contained"
+        Title="Edit Event" Height="500" Width="780" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
     <Window.Resources>
         <SolidColorBrush x:Key="GridBorderBrush1" Color="#FF737373"/>
         <SolidColorBrush x:Key="DataBgBrush" Color="#FFFEFEF2"/>
         <SolidColorBrush x:Key="InfoBgBrush" Color="#FFFFFEF3"/>
         <SolidColorBrush x:Key="GroupBoxBorderBrush1" Color="#FFFFA566"/>
+        <SolidColorBrush x:Key="ChangedBgBrush" Color="#FFD2FFD7"/>
+        <SolidColorBrush x:Key="UnChangedBgBrush" Color="White"/>
+        <SolidColorBrush x:Key="GridHeaderBgBrush" Color="#FFF4F9FF"/>
     </Window.Resources>
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -22,8 +26,11 @@
     </Window.Background>
     <Grid x:Name="MainGrid">
 
-        <Grid x:Name="OriginalEvent" Width="660" Background="{DynamicResource DataBgBrush}" Margin="70,80,0,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Grid x:Name="CompareGrid" Width="704"  Margin="45,80,0,0" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -36,54 +43,80 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
-
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Content="Time" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}"/>
-            <Label Content="Trk" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="1"/>
-            <Label Content="Ch" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="2"/>
-            <Label Content="TypeX" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="3" Width="140"/>
-            <Label Content="Status" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="4"/>
-            <Label Content="Data 1" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="5"/>
-            <Label Content="Data 2" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="6"/>
-            <Label Content="Data Str" Padding="3,0,3,0" VerticalContentAlignment="Center" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="7"/>
+            <Rectangle Grid.Row="0" Grid.ColumnSpan="11" Fill="{DynamicResource GridHeaderBgBrush}"/>
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="11" Fill="{DynamicResource DataBgBrush}"/>
+            <Rectangle Grid.Row="2" Grid.ColumnSpan="11" Fill="{DynamicResource UnChangedBgBrush}"/>
 
-            <Label x:Name="lblTime" Content="time" Padding="3,0,3,0" Grid.Row="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <Label x:Name="lblTrk" Content="trk" Padding="3,0,3,0" Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
-            <Label x:Name="lblChn" Content="chn" Padding="3,0,3,0" Grid.Row="1" Grid.Column="2" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
-            <Label x:Name="lblTypeX" Content="TypeX" Padding="3,0,3,0" Grid.Row="1" Grid.Column="3" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
-            <Label x:Name="lblStatus" Content="Status" Padding="3,0,3,0" Grid.Row="1" Grid.Column="4" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
-            <Label x:Name="lblData1" Content="Data 1" Padding="3,0,3,0" Grid.Row="1" Grid.Column="5" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
-            <Label x:Name="lblData2" Content="Data 2" Padding="3,0,3,0" Grid.Row="1" Grid.Column="6" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
-            <Label x:Name="lblDataStr" Content="DataStr" Padding="3,0,3,0" Grid.Row="1" Grid.Column="7" BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,1,1,1"/>
+            <Label Content="" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}"/>
+            <Label Content="Time" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="1"/>
+            <Label Content="Trk" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="2"/>
+            <Label Content="Ch" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="3"/>
+            <Label Content="TypeX" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="4"/>
+            <Label Content="Status" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="5"/>
+            <Label Content="Data 1" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="6"/>
+            <Label Content="Data 2" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="7"/>
+            <Label Content="Duration" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="8"/>
+            <Label Content="DataX" Padding="3,0,3,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="9"/>
+            <Label Content="Data Str" Padding="3,0,3,0" VerticalContentAlignment="Center" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource GridBorderBrush1}" Grid.Column="10"/>
+
+            <Label x:Name="lblCol0" Content="Orig " Padding="3,0,3,0" Grid.Row="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{DynamicResource GridHeaderBgBrush}"/>
+            <Label x:Name="lblTime" Content="time" Padding="3,0,3,0" Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label x:Name="lblTrk" Content="trk" Padding="3,0,3,0" Grid.Row="1" Grid.Column="2" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblChn" Content="chn" Padding="3,0,3,0" Grid.Row="1" Grid.Column="3" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblTypeX" Content="TypeX" Padding="3,0,3,0" Grid.Row="1" Grid.Column="4" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblStatus" Content="Status" Padding="3,0,3,0" Grid.Row="1" Grid.Column="5" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblData1" Content="Data 1" Padding="3,0,3,0" Grid.Row="1" Grid.Column="6" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblData2" Content="Data 2" Padding="3,0,3,0" Grid.Row="1" Grid.Column="7" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblDuration" Content="Duration" Padding="3,0,3,0" Grid.Row="1" Grid.Column="8" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblDataX" Content="DataX" Padding="3,0,3,0" Grid.Row="1" Grid.Column="9" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,0,1"/>
+            <Label x:Name="lblDataStr" Content="DataStr" Padding="3,0,3,0" Grid.Row="1" Grid.Column="10" BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,1,1,1"/>
+
+            <Label x:Name="lblCo0R2" Content="New " Padding="3,0,3,0" Grid.Row="2" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,0,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{DynamicResource GridHeaderBgBrush}"/>
+            <Label x:Name="lblTimeNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="1" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,0,0,1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label x:Name="lblTrkNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="2" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblChnNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="3" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblTypeXNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="4" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblStatusNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="5" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblData1New" Content="123" Padding="3,0,3,0" Grid.Row="2" Grid.Column="6" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblData2New" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="7" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblDurationNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="8" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblDataXNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="9" BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,0,0,1"/>
+            <Label x:Name="lblDataStrNew" Content="" Padding="3,0,3,0" Grid.Row="2" Grid.Column="10" BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,0,1,1"/>
+
         </Grid>
 
+        <Rectangle x:Name="ScrollFocusRectangle" HorizontalAlignment="Left" Margin="8,8,0,16" Width="21" StrokeThickness="2"/>
+        <ScrollBar x:Name="ScrollBar1" HorizontalAlignment="Left" Margin="10,10,0,20" Maximum="9" SmallChange="1" ViewportSize="1" ValueChanged="ScrollBar1_ValueChanged" LargeChange="5" Value="-1" Focusable="True" Background="#FFD5E2EC"/>
 
-        <ScrollBar x:Name="ScrollBar1" HorizontalAlignment="Left" Margin="10,10,0,20" Background="#FFD5E4F5" Maximum="9" SmallChange="1" ViewportSize="1" ValueChanged="ScrollBar1_ValueChanged" LargeChange="5" Value="-1"/>
 
-        <Label Content="Position:" HorizontalAlignment="Left" Margin="45,10,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <StackPanel Orientation="Horizontal" Height="20" Width="100" HorizontalAlignment="Left" Margin="95,10,0,0" VerticalAlignment="Top">
+
+
+        <Label Content="Position:" HorizontalAlignment="Left" Margin="49,0,0,73" Padding="0,0,0,0" Height="16" VerticalAlignment="Bottom"/>
+        <StackPanel Orientation="Horizontal" Width="100" HorizontalAlignment="Left" Margin="99,0,0,69" Height="20" VerticalAlignment="Bottom">
             <Label x:Name="lblPosition" Content="xx" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
             <Label Content=" of " Padding="0,0,0,0" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label x:Name="lblPositionMax" Margin="5,0,0,0" VerticalAlignment="Top" Padding="0,0,0,0" Content="xx"/>
         </StackPanel>
 
-        <Label Content="DataX:" HorizontalAlignment="Left" Margin="76,298,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <Label Content="DataX count:" HorizontalAlignment="Left" Margin="77,277,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <Label x:Name="lblDataXcount" Content="xx" HorizontalAlignment="Left" Margin="150,277,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <Label x:Name="lblDataX" Content="xx" HorizontalAlignment="Left" Margin="115,298,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Label Content="DataX:" HorizontalAlignment="Left" Margin="54,334,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Label Content="DataX count:" HorizontalAlignment="Left" Margin="54,310,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Label x:Name="lblDataXcount" Content="xx" HorizontalAlignment="Left" Margin="129,310,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <TextBox x:Name="tbDataXDump" Text="xx" HorizontalAlignment="Left" Margin="93,332,0,0" VerticalAlignment="Top" Padding="0,0,0,0" Width="131" IsReadOnly="True" Background="#FFEDEDED" IsReadOnlyCaretVisible="True"/>
 
-        <Label x:Name="lblEventType" Content="Type"  Padding="3,0,3,0"  BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Margin="604,6,0,0" VerticalAlignment="Top" Width="70" Height="20" Background="{DynamicResource InfoBgBrush}"/>
-        <Label x:Name="lblMetaEventType" Content="hh"  Padding="3,0,3,0"  BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,1,1" Margin="679,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="51" Background="{DynamicResource InfoBgBrush}"/>
+        <Label x:Name="lblEventType" Content="Type"  Padding="3,0,3,0"  BorderBrush="{DynamicResource GridBorderBrush1}" VerticalContentAlignment="Center" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Margin="560,6,0,0" VerticalAlignment="Top" Width="70" Height="20" Background="{DynamicResource InfoBgBrush}"/>
+        <Label x:Name="lblMetaEventType" Content="hh"  Padding="3,0,3,0"  BorderBrush="{DynamicResource GridBorderBrush1}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1,1,1,1" Margin="635,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="95" Background="{DynamicResource InfoBgBrush}"/>
 
 
-        <Rectangle Width="662" Height="42" Margin="70,34,0,0" StrokeThickness="1" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="{DynamicResource GridBorderBrush1}"/>
-        <Grid x:Name="InfoGrid" Width="660" Height="40" Margin="71,35,0,0" Background="{DynamicResource InfoBgBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Rectangle Width="704" Height="42" Margin="45,34,0,0" StrokeThickness="1" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="{DynamicResource GridBorderBrush1}"/>
+        <Grid x:Name="InfoGrid" Width="702" Height="40" Margin="46,35,0,0" Background="{DynamicResource InfoBgBrush}" HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBlock x:Name="tblEventInfo" Text="Info" TextWrapping="Wrap" Padding="5,0,5,0"/>
         </Grid>
 
 
 
-        <TabControl x:Name="TabControlEdit" HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Margin="269,137,0,0" Background="#FFE9FEFF" Width="480" SelectedIndex="0">
+        <TabControl x:Name="TabControlEdit" HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Margin="269,170,0,0" Background="#FFE9FEFF" Width="480" SelectedIndex="0">
             <!-- set all TabItems to Collapsed to remove TabControl's Header-->
 
             <TabItem x:Name="Ti_NoteOff" Visibility="Collapsed">
@@ -220,7 +253,7 @@
             </TabItem>
 
             <TabItem x:Name="Ti_MetaText" Visibility="Collapsed">
-                <GroupBox Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="90" VerticalAlignment="Top" Header="Meta Event of Text Type" BorderBrush="#FFFFA566">
+                <GroupBox x:Name="GroupBox_MetaText" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="90" VerticalAlignment="Top" Header="Meta Event of Text Type" BorderBrush="#FFFFA566">
                     <Grid>
                         <TextBox x:Name="tbEditMetaText" HorizontalAlignment="Left" Margin="10,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379" MaxLength="50"/>
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,41,0,0">
@@ -267,16 +300,16 @@
             </TabItem>
 
             <TabItem x:Name="Ti_SetTempo" Visibility="Collapsed">
-                <GroupBox  Header="Set Tempo" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="75" VerticalAlignment="Top" BorderBrush="#FFFFA566">
+                <GroupBox  Header="Set Tempo" Margin="7,5,0,0" HorizontalAlignment="Left" Width="440" Height="80" VerticalAlignment="Top" BorderBrush="#FFFFA566">
                     <Grid>
-                        <Label Content="BPM:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="21,10,0,0" />
+                        <Label Content="BPM:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12,10,0,0" />
 
-                        <TextBlock x:Name="txblSetTempoData" Background="{DynamicResource InfoBgBrush}" Text="xxx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,7,0,0" Width="100" TextAlignment="Center"/>
-                        <TextBlock x:Name="txblSetTempoData2" Background="{DynamicResource InfoBgBrush}" Text="xx xx xx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,30,0,0" Width="100" TextAlignment="Center"/>
+                        <TextBlock x:Name="txblSetTempoData" Background="{DynamicResource InfoBgBrush}" Text="xxx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,5,0,0" Width="100" TextAlignment="Center" FontSize="14"/>
+                        <TextBlock x:Name="txblSetTempoData2" Background="{DynamicResource InfoBgBrush}" Text="xx xx xx" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,32,0,0" Width="100" TextAlignment="Center" FontSize="14"/>
 
-                        <duc:SmallSlider x:Name="TempoSlider" Margin="63,11,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="24"/>
-                        <Label Content="Microseconds:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="219,7,0,0" Padding="5,0,5,0" />
-                        <Label Content="Data:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="268,30,0,0" Padding="5,0,5,0" />
+                        <duc:SmallSlider x:Name="TempoSlider" Margin="63,11,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Height="26"/>
+                        <Label Content="Microseconds:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="219,6,0,0" Padding="5,0,5,0" />
+                        <Label Content="Data:"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="268,33,0,0" Padding="5,0,5,0" />
 
                     </Grid>
                 </GroupBox>
@@ -335,9 +368,9 @@
                      reserved for non-commercial / development / educational purposes.
                      Uses 3 bytes symbolically without further meaning.
                         </TextBlock>
-                        <duc:SmallSlider x:Name="ssldSequencerSpecific1" Margin="15,55,0,0" MaximumValue="255" Value="1" Background="#FF8FDED5" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90"/>
-                        <duc:SmallSlider x:Name="ssldSequencerSpecific2" Margin="140,55,0,0" MaximumValue="255" Value="2" Background="#FF9CDE8F" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90"/>
-                        <duc:SmallSlider x:Name="ssldSequencerSpecific3" Margin="265,55,0,0" MaximumValue="255" Value="3" Background="#FFE8ED86"  Height="22"  VerticalAlignment="Top" HorizontalAlignment="Left"  Width="90"/>
+                        <duc:SmallSlider x:Name="ssldSequencerSpecific1" Margin="15,55,0,0" MaximumValue="255" Value="1" Background="#FF8FDED5" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90" ValueChanged="ssldSequencerSpecific1_ValueChanged"/>
+                        <duc:SmallSlider x:Name="ssldSequencerSpecific2" Margin="140,55,0,0" MaximumValue="255" Value="2" Background="#FF9CDE8F" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="90" ValueChanged="ssldSequencerSpecific2_ValueChanged"/>
+                        <duc:SmallSlider x:Name="ssldSequencerSpecific3" Margin="265,55,0,0" MaximumValue="255" Value="3" Background="#FFE8ED86"  Height="22"  VerticalAlignment="Top" HorizontalAlignment="Left"  Width="90" ValueChanged="ssldSequencerSpecific3_ValueChanged"/>
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -368,17 +401,17 @@
 
         </TabControl>
 
+        <duc:ImageButton x:Name="Navigate" Width="128" Height="48" Margin="45,0,0,20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Navigate" Background="#FFD3E2FF" Image="/Mmultitool;component/Resources/Images/UpDownArrows.png" TextPadding="0,5,0,5" BorderThickness="2,2,2,2" ImageMargin="5,2,5,2" TabIndex="1010"/>
+        <duc:ImageButton x:Name="btnClose" Margin="341,0,0,25" Text="Close" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="102" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" TextAlignment="Left" TextPadding="5,0,0,0" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True" TabIndex="1020"/>
+        <duc:ImageButton x:Name="btnSaveChanges" Height="30" Width="158" Margin="560,0,0,25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Save  Changes" Image="/Mmultitool;component/Resources/Images/store_x32.png" Background="#FFD2FFD7" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="7,0,5,0" IsEnabled="False" TabIndex="1030"/>
 
-
-        <duc:ImageButton Width="146" Height="48" Margin="67,0,0,20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Navigate" Background="#FFD3E2FF" Image="/Mmultitool;component/Resources/Images/UpDownArrows.png" TextPadding="0,5,0,5" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="5,2,5,2"/>
-        <duc:ImageButton x:Name="btnClose" Margin="341,0,0,20" Text="Close" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="102" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" TextAlignment="Left" TextPadding="5,0,0,0" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True"/>
-
-        <GroupBox Width="190" Height="127" HorizontalAlignment="Left" Margin="45,137,0,0" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush1}" Header="Time">
+        <GroupBox Width="190" Height="127" HorizontalAlignment="Left" Margin="45,170,0,0" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush1}" Header="Time">
             <Grid>
                 <local:MBT_Editor x:Name="MBT_Editor1" HorizontalAlignment="Left" Margin="10,10,0,0" Width="155" UpDownColMinWidth="15" Height="28" VerticalAlignment="Top" BorderThickness="1,1,1,1" FocusStrokeThickness="3" TPQ="{Binding LocalTPQ}"/>
                 <local:MBT_InputBox x:Name="MBT_InputBox1" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="103" TPQ="{Binding LocalTPQ}" ValidatorStrokeThickness="2"/>
                 <Button x:Name="btnResetTime" Content="Reset" HorizontalAlignment="Left" Margin="132,74,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
+
     </Grid>
 </Window>
