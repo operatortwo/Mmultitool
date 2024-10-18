@@ -77,6 +77,20 @@ Public Class DlgEditEvent
         CurrentEvent = Evliw.CollectionView.GetItemAt(CurrentIndex)
     End Sub
 
+    Private Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
+        If HasChanges = True Then
+            Dim result As QuestionWindowResult
+            result = QuestionWindow.Show(Me, "Do you want to save the changes ?", "Closing Dialog", QuestionWindowButton.YesNoCancel, Brushes.Lavender)
+            If result = QuestionWindowResult.Yes Then
+                SaveChanges()
+            ElseIf result = QuestionWindowResult.No Then
+
+            ElseIf result = QuestionWindowResult.Cancel Then
+                e.Cancel = True
+            End If
+        End If
+    End Sub
+
 #Region "Navigation"
 
     Private Sub ScrollBar1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
@@ -231,16 +245,8 @@ Public Class DlgEditEvent
     Private Sub SetEditData()
         Select Case CurrentEvent.TypeX
             Case EventTypeX.NoteOffEvent
-
-                'If radNoteOff_90h.IsChecked = True Then
-                '    CurrentEvent.Status = &H90
-                '    CurrentEvent.Data1 = nudNoteOffData1.Value
-                'Else
-                '    CurrentEvent.Status = &H80
-                '    CurrentEvent.Data1 = nudNoteOffData1.Value
-                '    CurrentEvent.Data2 = nudNoteOffData2.Value
-                'End If
-
+                nudNoteOffData1.Value = CurrentEvent.Data1
+                nudNoteOffData2.Value = CurrentEvent.Data2
             Case EventTypeX.NoteOnEvent
                 nudNoteOnData1.Value = CurrentEvent.Data1
                 nudNoteOnData2.Value = CurrentEvent.Data2
@@ -258,13 +264,11 @@ Public Class DlgEditEvent
             Case EventTypeX.PitchBend
                 PitchBendSlider.Value = PitchBendDataToValue(CurrentEvent.Data1, CurrentEvent.Data2)
             Case EventTypeX.F0SysExEvent
-                ' not yet                
                 If HasMetaData(CurrentEvent.DataX, 0) = False Then Exit Select
-                'CurrentEvent.DataX = New Byte() {}
+                tbF0SysEx.Text = Bytes_to_hex_str(CurrentEvent.DataX)
             Case EventTypeX.F7SysExEvent
-                ' not yet
                 If HasMetaData(CurrentEvent.DataX, 0) = False Then Exit Select
-                'CurrentEvent.DataX = New Byte() {}
+                tbF7SysEx.Text = Bytes_to_hex_str(CurrentEvent.DataX)
             Case EventTypeX.SequenceNumber
                 ' Meta 2 bytes
                 If HasMetaData(CurrentEvent.DataX, 2) = False Then Exit Select
@@ -431,10 +435,15 @@ Public Class DlgEditEvent
         txblNoteOnDrumName.Text = NoteNames.Get_GM_DrumVoiceName(e.NewValue)
     End Sub
     Private Sub radNoteOff_90h_Checked(sender As Object, e As RoutedEventArgs) Handles radNoteOff_90h.Checked
+        If IsLoaded = False Then Exit Sub
         nudNoteOffData2.IsEnabled = False
+        nudNoteOffData1.Value = CurrentEvent.Data1
     End Sub
     Private Sub radNoteOff_80h_Checked(sender As Object, e As RoutedEventArgs) Handles radNoteOff_80h.Checked
+        If IsLoaded = False Then Exit Sub
         nudNoteOffData2.IsEnabled = True
+        nudNoteOffData1.Value = CurrentEvent.Data1
+        nudNoteOffData2.Value = CurrentEvent.Data2
     End Sub
 
     Private Sub nudKeySignature_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudKeySignature.ValueChanged
@@ -486,6 +495,11 @@ Public Class DlgEditEvent
 #Region "Edit Event"
 
     Private Sub btnSaveChanges_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveChanges.Click
+        If HasChanges = False Then Exit Sub
+        SaveChanges()
+    End Sub
+
+    Private Sub SaveChanges()
 
         '--- update data's in CurrentEvent ---
 
@@ -524,6 +538,7 @@ Public Class DlgEditEvent
         ShowEventInfo()                             ' show the the updated data's in row 1
         EditCompare()                               ' reset background in row 2 and set HasChanges to FALSE
     End Sub
+
 
     Private Sub MBT_Editor1_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of UInteger)) Handles MBT_Editor1.ValueChanged
         EditedEvent.Time = e.NewValue
@@ -606,18 +621,17 @@ Public Class DlgEditEvent
 
     Private Sub radNoteOff_90h_Checked_1(sender As Object, e As RoutedEventArgs) Handles radNoteOff_90h.Checked
         If IsLoaded = True Then
-            EditedEvent.Status = &H90
+            EditedEvent.Status = &H90 Or (CurrentEvent.Channel And &HF)
             StatusChanged()
             If EditedEvent.Data2 <> 0 Then
                 nudNoteOffData2.Value = 0
             End If
-
         End If
     End Sub
 
     Private Sub radNoteOff_80h_Checked_1(sender As Object, e As RoutedEventArgs) Handles radNoteOff_80h.Checked
         If IsLoaded = True Then
-            EditedEvent.Status = &H80
+            EditedEvent.Status = &H80 Or (CurrentEvent.Channel And &HF)
             StatusChanged()
         End If
     End Sub
@@ -735,6 +749,66 @@ Public Class DlgEditEvent
         DataXChanged()
     End Sub
 
+    Private ReadOnly F0SysExRegexPattern As String = "[Ff][0][ ]([0-7][\da-fA-F]{1}[ ]{1})+?[Ff][7]"
+    Private F0SysExRegex As New Text.RegularExpressions.Regex(F0SysExRegexPattern)
+
+    Private Sub tbF0SysEx_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbF0SysEx.TextChanged
+        If F0SysExRegex.IsMatch(tbF0SysEx.Text) Then
+            btnF0SysExSet.IsEnabled = True
+            F0SysExValidator.BorderBrush = Brushes.Green
+        Else
+            btnF0SysExSet.IsEnabled = False
+            F0SysExValidator.BorderBrush = Brushes.Red
+        End If
+    End Sub
+
+    Private Sub btnF0SysExSet_Click(sender As Object, e As RoutedEventArgs) Handles btnF0SysExSet.Click
+        Dim str As String
+        str = F0SysExRegex.Match(tbF0SysEx.Text).ToString()         ' remove leading and trailing chars
+
+        '--- convert to byte array --- 
+        Dim arr As String() = str.Split(CChar(" "))
+        Dim SysExMsg As Byte() = New Byte(arr.Length - 1) {}
+
+        For i = 1 To arr.Length
+            SysExMsg(i - 1) = Convert.ToByte(arr(i - 1), 16)
+        Next
+
+        '--- set ---
+        EditedEvent.DataX = SysExMsg
+        DataXChanged()
+    End Sub
+
+    ' The F7 Part is not tested
+    Private ReadOnly F7SysExRegexPattern As String = "([Ff][7])([ ][0-7][\da-fA-F])+([ ][Ff][7])?"
+    Private F7SysExRegex As New Text.RegularExpressions.Regex(F7SysExRegexPattern)
+
+    Private Sub tbF7SysEx_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbF7SysEx.TextChanged
+        If F7SysExRegex.IsMatch(tbF7SysEx.Text) Then
+            btnF7SysExSet.IsEnabled = True
+            F7SysExValidator.BorderBrush = Brushes.Green
+        Else
+            btnF7SysExSet.IsEnabled = False
+            F7SysExValidator.BorderBrush = Brushes.Red
+        End If
+    End Sub
+
+    Private Sub btnF7SysExSet_Click(sender As Object, e As RoutedEventArgs) Handles btnF7SysExSet.Click
+        Dim str As String
+        str = F7SysExRegex.Match(tbF7SysEx.Text).ToString()         ' remove leading and trailing chars
+
+        '--- convert to byte array --- 
+        Dim arr As String() = str.Split(CChar(" "))
+        Dim SysExMsg As Byte() = New Byte(arr.Length - 1) {}
+
+        For i = 1 To arr.Length
+            SysExMsg(i - 1) = Convert.ToByte(arr(i - 1), 16)
+        Next
+
+        '--- set ---
+        EditedEvent.DataX = SysExMsg
+        DataXChanged()
+    End Sub
 
 
 

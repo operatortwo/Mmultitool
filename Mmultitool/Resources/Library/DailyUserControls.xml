@@ -230,6 +230,70 @@ MessageWindow
 InitializeComponent
 </summary>
 </member>
+<member name="T:DailyUserControls.QuestionWindow">
+<summary>
+QuestionWindow
+</summary>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.Show(System.Windows.Window,System.String)">
+ <summary>
+ Simple question.
+ </summary>
+ <param name="owner"></param>
+ <param name="message"></param>
+ <returns></returns>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.Show(System.Windows.Window,System.String,System.String)">
+ <summary>
+ Simple question with caption.
+ </summary>
+ <param name="owner"></param>
+ <param name="message"></param>
+ <param name="caption"></param>
+ <returns></returns>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.QuestionWindowButton)">
+ <summary>
+ Question with caption and selectable buttons.
+ </summary>
+ <param name="owner"></param>
+ <param name="message"></param>
+ <param name="caption"></param>
+ <param name="buttons"></param>
+ <returns></returns>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.QuestionWindowButton,System.Windows.Media.Brush)">
+ <summary>
+ Question with caption, selectable buttons and background brush.
+ </summary>
+ <param name="owner"></param>
+ <param name="message"></param>
+ <param name="caption"></param>
+ <param name="buttons"></param>
+ <returns></returns>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.Show(System.Windows.Window,System.String,System.String,DailyUserControls.QuestionWindowButton,System.Windows.Media.Brush,System.Double)">
+ <summary>
+ Question with caption, selectable buttons, background brush and font size.
+ </summary>
+ <param name="owner"></param>
+ <param name="message"></param>
+ <param name="caption"></param>
+ <param name="buttons"></param>
+ <returns></returns>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.SetFontSize(DailyUserControls.QuestionWindow,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="dlg"></param>
+ <param name="desiredSize">between 10 and 20, else the default size is set</param>
+</member>
+<member name="M:DailyUserControls.QuestionWindow.InitializeComponent">
+<summary>
+InitializeComponent
+</summary>
+</member>
 <member name="T:DailyUserControls.ImageButton">
 <summary>
 ImageButton
@@ -627,36 +691,6 @@ VU_Bar
 <member name="M:DailyUserControls.VU_Bar.InitializeComponent">
 <summary>
 InitializeComponent
-</summary>
-</member>
-<member name="T:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper">
-<summary>
-GeneratedInternalTypeHelper
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
-<summary>
-CreateInstance
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
-<summary>
-GetPropertyValue
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
-<summary>
-SetPropertyValue
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
-<summary>
-CreateDelegate
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
-<summary>
-AddEventHandler
 </summary>
 </member>
 </members>

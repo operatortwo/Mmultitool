@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2014 10 18		1.0.4.1		fixes and improvements in dialog new event and dialog edit event
 2024 10 04		1.0.4.0		test Dialog edit event
 2024 09 15		1.0.3.8		fixed MidiFileWrite SequenceNumber, MidiChannel- and MidiPortPrefix
 2024 09 13		1.0.3.7		test Dialog new event

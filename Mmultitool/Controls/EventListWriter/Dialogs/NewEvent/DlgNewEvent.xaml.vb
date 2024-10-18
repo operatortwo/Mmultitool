@@ -1,28 +1,29 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Text
+Imports DailyUserControls
 
 
 
 Public Class DlgNewEvent
-        Private Evliw As EventListWriter
-        ''' <summary>
-        ''' When starting, this is the selected item which is used to make a suggestion for 
-        ''' time, track and channel of the new item. Nothing if no item is selected.
-        ''' </summary>
-        Public StartReferenceItem As TrackEventX
-        ''' <summary>
-        ''' The last inserted TrackEventX which can be used for SetFocusToSelectedRow
-        ''' </summary>
-        Public LastInsertedEvent As TrackEventX
-        ''' <summary>
-        ''' Dialog to insert one ore more new TrackEvnetX. When DialogResult is set to TRUE, LastInsertedEvent 
-        ''' can be used to cjange the selected row in the DataGrid.
-        ''' </summary>
-        ''' <param name="instance">Instance of the calling EventListWriter</param>    
-        Public Sub New(instance As EventListWriter)
-            InitializeComponent()                   ' required for the Designer
-            Evliw = instance
-        End Sub
+    Private Evliw As EventListWriter
+    ''' <summary>
+    ''' When starting, this is the selected item which is used to make a suggestion for 
+    ''' time, track and channel of the new item. Nothing if no item is selected.
+    ''' </summary>
+    Public StartReferenceItem As TrackEventX
+    ''' <summary>
+    ''' The last inserted TrackEventX which can be used for SetFocusToSelectedRow
+    ''' </summary>
+    Public LastInsertedEvent As TrackEventX
+    ''' <summary>
+    ''' Dialog to insert one ore more new TrackEvnetX. When DialogResult is set to TRUE, LastInsertedEvent 
+    ''' can be used to cjange the selected row in the DataGrid.
+    ''' </summary>
+    ''' <param name="instance">Instance of the calling EventListWriter</param>    
+    Public Sub New(instance As EventListWriter)
+        InitializeComponent()                   ' required for the Designer
+        Evliw = instance
+    End Sub
 
     Private ReadOnly Property localTPQ As Integer
     Private CurrentEvent As TrackEventX
@@ -62,9 +63,9 @@ Public Class DlgNewEvent
 
     Private evtinfo As EventTypeX_Information
 
-        Private Sub cmbEventTypeX_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles cmbEventTypeX.SelectionChanged
-            Dim sel = cmbEventTypeX.SelectedItem
-            If sel IsNot Nothing Then
+    Private Sub cmbEventTypeX_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles cmbEventTypeX.SelectionChanged
+        Dim sel = cmbEventTypeX.SelectedItem
+        If sel IsNot Nothing Then
             evtinfo = GetEventTypeX_Info(sel)               ' get Info for selected TypeX
             InitializeEvent(sel)
 
@@ -73,31 +74,31 @@ Public Class DlgNewEvent
             SetEditTab()
 
         End If
-        End Sub
+    End Sub
 
-        Private buffer() As Byte = {}
-        Private Sub InitializeEvent(tp As EventTypeX)
-            CurrentEvent.TypeX = tp
-            CurrentEvent.Type = GetEventType(CurrentEvent.TypeX)
+    Private buffer() As Byte = {}
+    Private Sub InitializeEvent(tp As EventTypeX)
+        CurrentEvent.TypeX = tp
+        CurrentEvent.Type = GetEventType(CurrentEvent.TypeX)
 
-            CurrentEvent.Data2 = 0
-            CurrentEvent.Duration = 0
+        CurrentEvent.Data2 = 0
+        CurrentEvent.Duration = 0
 
-            If evtinfo.IsMidiEvent = True Then
-                CurrentEvent.Status = CurrentEvent.TypeX And &HFF
-                CurrentEvent.DataX = Nothing
-            Else
-                CurrentEvent.Status = 0
-                CurrentEvent.DataX = buffer
-                ' Data1 contains Meta and SysEx type number
-                Dim val As Integer = CurrentEvent.TypeX
-                val = val And &HFF
-                CurrentEvent.Data1 = val
+        If evtinfo.IsMidiEvent = True Then
+            CurrentEvent.Status = (CurrentEvent.TypeX And &HF0) Or (CurrentEvent.Channel And &HF)
+            CurrentEvent.DataX = Nothing
+        Else
+            CurrentEvent.Status = 0
+            CurrentEvent.DataX = buffer
+            ' Data1 contains Meta and SysEx type number
+            Dim val As Integer = CurrentEvent.TypeX
+            val = val And &HFF
+            CurrentEvent.Data1 = val
             tbEditMetaText.Text = ""
         End If
 
 
-        End Sub
+    End Sub
 
 
 
@@ -192,17 +193,12 @@ Public Class DlgNewEvent
 #Region "Insert Event"
 
     Private InsertCounter As Integer
-        Private ReadOnly ASCIIenc As New ASCIIEncoding
+    Private ReadOnly ASCIIenc As New ASCIIEncoding
 
     Private Sub btnInsertEvent_Click(sender As Object, e As RoutedEventArgs) Handles btnInsertEvent.Click
         CurrentEvent.Time = MBT_Editor1.NewValue
 
-
-        'If evtinfo.IsTextEvent Then
-        '    CurrentEvent.DataX = ASCIIenc.GetBytes(tbEditMetaText.Text)
-        'End If
-
-        GetEditData()
+        If GetEditData() = False Then Exit Sub
 
         CurrentEvent.DataStr = GetData(CurrentEvent)
 
@@ -219,7 +215,7 @@ Public Class DlgNewEvent
     End Sub
 
 
-    Private Sub GetEditData()
+    Private Function GetEditData() As Boolean
         Select Case evtinfo.enumtype
             Case EventTypeX.NoteOffEvent
                 If radNoteOff_90h.IsChecked = True Then
@@ -249,11 +245,19 @@ Public Class DlgNewEvent
                 CurrentEvent.Data1 = dat.Byte1
                 CurrentEvent.Data2 = dat.Byte2
             Case EventTypeX.F0SysExEvent
-                ' not yet                
-                CurrentEvent.DataX = New Byte() {}
+                If F0SysExRegex.IsMatch(tbF0SysEx.Text) Then
+                    GetEditData_F0
+                Else
+                    MessageWindow.Show(Me, "The SysEx string is invalid.", "New TrackEvent", MessageIcon.Warning)
+                    Return False
+                End If
             Case EventTypeX.F7SysExEvent
-                ' not yet
-                CurrentEvent.DataX = New Byte() {}
+                If F7SysExRegex.IsMatch(tbF7SysEx.Text) Then
+                    GetEditData_F7()
+                Else
+                    MessageWindow.Show(Me, "The SysEx string is invalid.", "New TrackEvent", MessageIcon.Warning)
+                    Return False
+                End If
             Case EventTypeX.SequenceNumber
                 ' Meta 2 bytes
                 Dim barr = New Byte(1) {}
@@ -333,6 +337,38 @@ Public Class DlgNewEvent
                 ' not listed --> unknown
 
         End Select
+
+        Return True
+    End Function
+
+    Private Sub GetEditData_F0()
+        Dim str As String
+        str = F0SysExRegex.Match(tbF0SysEx.Text).ToString()         ' remove leading and trailing chars
+
+        '--- convert to byte array --- 
+        Dim arr As String() = str.Split(CChar(" "))
+        Dim SysExMsg As Byte() = New Byte(arr.Length - 1) {}
+
+        For i = 1 To arr.Length
+            SysExMsg(i - 1) = Convert.ToByte(arr(i - 1), 16)
+        Next
+
+        CurrentEvent.DataX = SysExMsg
+    End Sub
+
+    Private Sub GetEditData_F7()
+        Dim str As String
+        str = F7SysExRegex.Match(tbF7SysEx.Text).ToString()         ' remove leading and trailing chars
+
+        '--- convert to byte array --- 
+        Dim arr As String() = str.Split(CChar(" "))
+        Dim SysExMsg As Byte() = New Byte(arr.Length - 1) {}
+
+        For i = 1 To arr.Length
+            SysExMsg(i - 1) = Convert.ToByte(arr(i - 1), 16)
+        Next
+
+        CurrentEvent.DataX = SysExMsg
     End Sub
 
 #End Region
@@ -453,6 +489,24 @@ Public Class DlgNewEvent
         txblPolyKeyPressureNoteName.Text = NoteNumber_to_NoteName(e.NewValue)
     End Sub
 
+    Private ReadOnly F0SysExRegexPattern As String = "[Ff][0][ ]([0-7][\da-fA-F]{1}[ ]{1})+?[Ff][7]"
+    Private F0SysExRegex As New Text.RegularExpressions.Regex(F0SysExRegexPattern)
+    Private Sub tbF0SysEx_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbF0SysEx.TextChanged
+        If F0SysExRegex.IsMatch(tbF0SysEx.Text) Then
+            F0SysExValidator.BorderBrush = Brushes.Green
+        Else
+            F0SysExValidator.BorderBrush = Brushes.Red
+        End If
+    End Sub
 
+    Private ReadOnly F7SysExRegexPattern As String = "([Ff][7])([ ][0-7][\da-fA-F])+([ ][Ff][7])?"
+    Private F7SysExRegex As New Text.RegularExpressions.Regex(F7SysExRegexPattern)
+    Private Sub tbF7SysEx_TextChanged(sender As Object, e As TextChangedEventArgs) Handles tbF7SysEx.TextChanged
+        If F7SysExRegex.IsMatch(tbF7SysEx.Text) Then
+            F7SysExValidator.BorderBrush = Brushes.Green
+        Else
+            F7SysExValidator.BorderBrush = Brushes.Red
+        End If
+    End Sub
 End Class
 

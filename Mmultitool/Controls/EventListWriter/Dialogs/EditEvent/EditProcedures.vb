@@ -147,6 +147,9 @@ Partial Public Class DlgEditEvent
     Private Sub StatusChanged()
         CompareStatus()
         CheckIfChanged()
+
+        EditedEvent.DataStr = GetData(EditedEvent)
+        CompareDataStr()
     End Sub
     Private Sub Data1Changed()
         CompareData1()

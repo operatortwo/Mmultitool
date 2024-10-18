@@ -199,22 +199,31 @@ Public Class MidiFileWrite
 
                         Case EventType.F0SysxEvent
                             varlen.Write(ev.Time, writer)                   ' time
+                            ' the sequence in file is: F0 <Length> <bytes after F0 including F7>                            
                             WriteByte(writer, EventType.F0SysxEvent)        ' F0   
-                            varlen.Write(ev.DataX.Count, writer)            ' length
-                            WriteDataBytes(ev.DataX, writer)                ' data
+                            If ev.DataX.Count > 0 Then
+                                varlen.Write(ev.DataX.Count - 1, writer)    ' length
+                                WriteDataBytes(ev.DataX, 1, writer)         ' bytes after F0
+                            Else
+                                varlen.Write(0, writer)                     ' length = 0
+                            End If
                             lastStatus = 0
 
                         Case EventType.F7SysxEvent
                             varlen.Write(ev.Time, writer)                   ' time
+                            ' the sequence in file is: F7 <Length> <bytes to be transmitted>
                             WriteByte(writer, EventType.F7SysxEvent)        ' F7  
-                            varlen.Write(ev.DataX.Count, writer)            ' length
-                            WriteDataBytes(ev.DataX, writer)                ' data
+                            If ev.DataX.Count > 0 Then
+                                varlen.Write(ev.DataX.Count - 1, writer)    ' length
+                                WriteDataBytes(ev.DataX, 1, writer)         ' bytes to be transmitted
+                            Else
+                                varlen.Write(0, writer)                     ' length = 0
+                            End If
                             lastStatus = 0
 
                         Case EventType.Unkown
 
                     End Select
-
 
                 Next
 
@@ -390,6 +399,20 @@ Public Class MidiFileWrite
     Private Sub WriteDataBytes(buffer As Byte(), writer As BinaryWriter)
         If buffer Is Nothing Then Exit Sub
         For i = 1 To buffer.Count
+            writer.Write(buffer(i - 1))
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Writes all bytes contained in the buffer.
+    ''' Works also when no data is present and therefore buffer is Nothing.
+    ''' </summary>
+    ''' <param name="buffer"></param>
+    ''' <param name="srcOffset">Zero-based byte offset in buffer. Start writing from this position</param>
+    ''' <param name="writer"></param>
+    Private Sub WriteDataBytes(buffer As Byte(), srcOffset As Integer, writer As BinaryWriter)
+        If buffer Is Nothing Then Exit Sub
+        For i = srcOffset + 1 To buffer.Count
             writer.Write(buffer(i - 1))
         Next
     End Sub

@@ -315,16 +315,34 @@ Public Class MidifileRead
 
         ElseIf Data0 = EventType.F0SysxEvent Then        ' F0
             ev.Type = EventType.F0SysxEvent
-            length = ReadVariableLength(reader)         ' Data length            
-            ev.DataX = reader.ReadBytes(length)          ' read to Byte()
+            ' the sequence in file is: F0 <Length> <bytes after F0 including F7>
+            length = ReadVariableLength(reader)         ' Data length (after F0)                        
+            If length > 0 Then
+                Dim barr() As Byte
+                barr = reader.ReadBytes(length)
+                ev.DataX = New Byte(length) {}              ' (upper bound)
+                ev.DataX(0) = &HF0
+                Buffer.BlockCopy(barr, 0, ev.DataX, 1, length)
+            Else
+                ev.DataX = New Byte() {}                ' empty byte() instead of Nothing
+            End If
 
-        ElseIf Data0 = EventType.F7SysxEvent Then       ' F7
+        ElseIf Data0 = EventType.F7SysxEvent Then       ' F7            
+            ' the sequence in file is: F7 <Length> <bytes to be transmitted>
             ev.Type = EventType.F7SysxEvent
-            length = ReadVariableLength(reader)         ' Data length             
-            ev.DataX = reader.ReadBytes(length)          ' read to Byte()
+                length = ReadVariableLength(reader)         ' Data length             
+            If length > 0 Then
+                Dim barr() As Byte
+                barr = reader.ReadBytes(length)
+                ev.DataX = New Byte(length) {}              ' (upper bound)
+                ev.DataX(0) = &HF0
+                Buffer.BlockCopy(barr, 0, ev.DataX, 1, length)
+            Else
+                ev.DataX = New Byte() {}                ' empty byte() instead of Nothing
+            End If
 
         Else
-            ev.Type = EventType.Unkown                  ' neither MidiEvent nor MetaEvent nor SysxEvent
+                ev.Type = EventType.Unkown                  ' neither MidiEvent nor MetaEvent nor SysxEvent
             Return False
         End If
 

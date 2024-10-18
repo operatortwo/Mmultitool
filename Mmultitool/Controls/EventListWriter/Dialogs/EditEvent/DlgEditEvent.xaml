@@ -8,7 +8,7 @@
         DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
         KeyboardNavigation.DirectionalNavigation="Contained"
-        Title="Edit Event" Height="500" Width="780" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+        Title="Edit Event" Height="500" Width="780" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <SolidColorBrush x:Key="GridBorderBrush1" Color="#FF737373"/>
         <SolidColorBrush x:Key="DataBgBrush" Color="#FFFEFEF2"/>
@@ -114,8 +114,6 @@
             <TextBlock x:Name="tblEventInfo" Text="Info" TextWrapping="Wrap" Padding="5,0,5,0"/>
         </Grid>
 
-
-
         <TabControl x:Name="TabControlEdit" HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Margin="269,170,0,0" Background="#FFE9FEFF" Width="480" SelectedIndex="0">
             <!-- set all TabItems to Collapsed to remove TabControl's Header-->
 
@@ -128,8 +126,8 @@
                         <duc:NumericUpDown x:Name="nudNoteOffData1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127" Value="60" Margin="10,28,0,0"/>
                         <duc:NumericUpDown x:Name="nudNoteOffData2" Height="26" Margin="100,28,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" MaximumValue="127"/>
 
+                        <RadioButton x:Name="radNoteOff_90h" HorizontalAlignment="Left" VerticalAlignment="Top" Content="use NoteOn with velocity 0" Margin="10,89,0,0" IsChecked="False"/>
                         <RadioButton x:Name="radNoteOff_80h" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Content="use NoteOff (80 hex)" Margin="206,89,0,0"/>
-                        <RadioButton x:Name="radNoteOff_90h" HorizontalAlignment="Left" VerticalAlignment="Top" Content="use NoteOn with velocity 0" Margin="10,89,0,0" IsChecked="True"/>
 
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="206,13,0,0" TextWrapping="Wrap" Height="54" Width="223" Padding="5,0,0,0" Background="{DynamicResource InfoBgBrush}">
                      It is <Bold>not</Bold> necessary to insert NoteOff's because NoteDurations are used. <LineBreak/>
@@ -376,17 +374,25 @@
             </TabItem>
 
             <TabItem x:Name="Ti_F0SysEx" Visibility="Collapsed">
-                <GroupBox  Header="F0 SysEx" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="#FFFFA566">
+                <GroupBox  Header="F0 SysEx" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="140" VerticalAlignment="Top" BorderBrush="#FFFFA566">
                     <Grid>
-                        <TextBlock Text="no editor available yet" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                        <TextBlock Text="Full SysEx string:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                        <Border x:Name="F0SysExValidator" Margin="40,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1,1,1,1" BorderBrush="Red">
+                            <TextBox x:Name="tbF0SysEx" HorizontalAlignment="Left" VerticalAlignment="Top"  MaxLength="256" Width="220" Margin="1,1,1,1"/>
+                        </Border>
+                        <Button x:Name="btnF0SysExSet" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Set" Margin="40,77,0,0" Width="60" Background="#FFE4FFE6" />
                     </Grid>
                 </GroupBox>
             </TabItem>
 
             <TabItem x:Name="Ti_F7SysEx" Visibility="Collapsed">
-                <GroupBox  Header="F7 SysEx" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="69" VerticalAlignment="Top" BorderBrush="#FFFFA566">
+                <GroupBox  Header="F7 SysEx" Margin="7,5,0,0" HorizontalAlignment="Left" Width="441" Height="140" VerticalAlignment="Top" BorderBrush="#FFFFA566">
                     <Grid>
-                        <TextBlock Text="no editor available yet" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                        <TextBlock Text="Full SysEx string:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"/>
+                        <Border x:Name="F7SysExValidator" Margin="40,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1,1,1,1" BorderBrush="Red">
+                            <TextBox x:Name="tbF7SysEx" HorizontalAlignment="Left" VerticalAlignment="Top"  MaxLength="256" Width="220" Margin="1,1,1,1"/>
+                        </Border>
+                        <Button x:Name="btnF7SysExSet" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Set" Margin="40,77,0,0" Width="60" Background="#FFE4FFE6" />
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -402,8 +408,8 @@
         </TabControl>
 
         <duc:ImageButton x:Name="Navigate" Width="128" Height="48" Margin="45,0,0,20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Navigate" Background="#FFD3E2FF" Image="/Mmultitool;component/Resources/Images/UpDownArrows.png" TextPadding="0,5,0,5" BorderThickness="2,2,2,2" ImageMargin="5,2,5,2" TabIndex="1010"/>
-        <duc:ImageButton x:Name="btnClose" Margin="341,0,0,25" Text="Close" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="102" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" TextAlignment="Left" TextPadding="5,0,0,0" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True" TabIndex="1020"/>
-        <duc:ImageButton x:Name="btnSaveChanges" Height="30" Width="158" Margin="560,0,0,25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Save  Changes" Image="/Mmultitool;component/Resources/Images/store_x32.png" Background="#FFD2FFD7" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="7,0,5,0" IsEnabled="False" TabIndex="1030"/>
+        <duc:ImageButton x:Name="btnClose" Margin="0,0,0,23" Text="Close" HorizontalAlignment="Center" Width="100" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" TextAlignment="Left" TextPadding="5,1,0,1" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True" TabIndex="1020" Height="28" VerticalAlignment="Bottom"/>
+        <duc:ImageButton x:Name="btnSaveChanges" Height="28" Width="158" Margin="560,0,0,25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="Save  Changes" Image="/Mmultitool;component/Resources/Images/store_x32.png" Background="#FFD2FFD7" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" IsEnabled="False" TabIndex="1030" ImageMargin="5,2,0,2" TextPadding="0,1,0,1"/>
 
         <GroupBox Width="190" Height="127" HorizontalAlignment="Left" Margin="45,170,0,0" VerticalAlignment="Top" BorderBrush="{DynamicResource GroupBoxBorderBrush1}" Header="Time">
             <Grid>
