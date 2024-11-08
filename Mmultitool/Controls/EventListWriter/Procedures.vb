@@ -1,4 +1,5 @@
 ﻿Imports System.Diagnostics.Eventing.Reader
+Imports System.Text
 
 Partial Public Class EventListWriter
 
@@ -192,6 +193,140 @@ Partial Public Class EventListWriter
 
     End Sub
 
+
+    ''' <summary>
+    ''' Add a track without TrackName Event
+    ''' </summary>
+    Private Sub AddTrack()
+        Dim ntrk As New NamedTrack
+        ntrk.TrackNumber = TrackList.Count
+        TrackList.Add(ntrk)
+        cbflistTrack.ItemListUpdate()
+    End Sub
+
+    Private ReadOnly ASCIIenc As New ASCIIEncoding
+
+    ''' <summary>
+    ''' Add a Track and insert a TrackName Event
+    ''' </summary>    
+    ''' <param name="trackname">Text part of the TrackName Event</param>
+    ''' <param name="nameEventPosition">Position of TrackName Event</param>
+    Private Sub AddTrack(trackname As String, nameEventPosition As UInteger)
+        Dim ntrk As New NamedTrack
+        ntrk.TrackNumber = TrackList.Count
+        ntrk.TrackName = trackname
+        TrackList.Add(ntrk)
+        cbflistTrack.ItemListUpdate()
+
+        Dim trev As New TrackEventX
+        trev.TypeX = EventTypeX.SequenceOrTrackName
+        trev.Type = GetEventType(trev.TypeX)
+        trev.Data1 = EventTypeX.SequenceOrTrackName And &HFF
+        trev.Time = nameEventPosition
+        trev.TrackNumber = ntrk.TrackNumber
+        If trackname IsNot Nothing Then
+            trev.DataX = ASCIIenc.GetBytes(trackname)
+            trev.DataStr = GetData(trev)
+        End If
+        InsertEvent(trev)
+    End Sub
+
+    ''' <summary>
+    ''' Remove one or more tracks and change the numbers of the remaining tracks to a consecutive number sequence.
+    ''' </summary>
+    ''' <param name="removelist">List of track numbers to be removed</param>
+    Private Sub RemoveTrack(removelist As List(Of Byte))
+        If removelist Is Nothing Then Exit Sub
+        If removelist.Count = 0 Then Exit Sub
+        removelist.Sort()
+
+        Dim rlist As New List(Of TrackChangeItem)
+
+        '--- insert all tracknumbers
+        For Each track In TrackList                  ' existing list of NamedTrack
+            rlist.Add(New TrackChangeItem With {.Tracknumber = track.TrackNumber})
+        Next
+
+        '--- set remove flag
+        For Each item In rlist
+            If removelist.Contains(item.Tracknumber) Then
+                item.remove = True
+            End If
+        Next
+
+        '--- set new tracknumbers
+
+        Dim ntrk As Byte
+        For Each item In rlist
+            If item.remove = False Then
+                item.newTracknumber = ntrk
+                ntrk += 1
+            End If
+        Next
+
+        '--- remove events of selected tracks
+
+        TrackEvents.BulkOperationStart()
+
+        '--- remove events
+        Dim ndx As Integer
+
+        For Each ritem In rlist
+            If ritem.remove = True Then
+                ndx = 0
+
+                While ndx < TrackEvents.Count
+                    If TrackEvents(ndx).TrackNumber = ritem.Tracknumber Then
+                        TrackEvents.RemoveAt(ndx)
+                    Else
+                        ndx += 1
+                    End If
+                End While
+
+            End If
+        Next
+
+        '--- renumber events
+
+        For Each ritem In rlist
+            If ritem.remove = False Then
+                If ritem.Tracknumber <> ritem.newTracknumber Then
+                    For Each item In TrackEvents
+                        If item.TrackNumber = ritem.Tracknumber Then
+                            item.TrackNumber = ritem.newTracknumber
+                        End If
+                    Next
+                End If
+            End If
+        Next
+
+        TrackEvents.BulkOperationEnd()
+
+        '--- update tracklist
+        Dim tndx As Integer
+
+        For Each item In rlist
+            If item.remove = True Then
+                tndx = TrackList.FindIndex(Function(x) x.TrackNumber = item.Tracknumber)
+                If tndx <> -1 Then
+                    TrackList.RemoveAt(tndx)
+                End If
+            End If
+        Next
+
+
+        cbflistTrack.ItemListUpdate()
+
+    End Sub
+
+    Private Class TrackChangeItem
+        Public Tracknumber As Byte
+        Public remove As Boolean
+        Public newTracknumber As Byte
+    End Class
+
+
+#Region "Aux"
     ''' <summary>
     ''' Create a temporary channel list of the specified object and extend the channel list of 
     ''' this control if necessary
@@ -256,7 +391,7 @@ Partial Public Class EventListWriter
     End Sub
 
     ''' <summary>
-    ''' When adding a new TrackEventX, it checks if TrackEventX.Channel is already contained in the ChannelList.
+    ''' When adding a new TrackEventX, it checks if TrackEventX.TrackNumber is already contained in the TrackList.
     ''' Otherwise the ChannelList will be expanded.
     ''' </summary>    
     Private Sub UpdateTrackList(trev As TrackEventX)
@@ -273,7 +408,7 @@ Partial Public Class EventListWriter
 
     End Sub
     ''' <summary>
-    ''' When adding a new TrackEventX, it checks if TrackEventX.TrackNumber is already contained in the TrackList.
+    ''' When adding a new TrackEventX, it checks if TrackEventX.Channel is already contained in the ChannelList.
     ''' Otherwise the ChannelList will be expanded.
     ''' </summary>    
     Private Sub UpdateChannelList(trev As TrackEventX)
@@ -285,5 +420,6 @@ Partial Public Class EventListWriter
             cbflistChannel.ItemListUpdate()
         End If
     End Sub
+#End Region
 
 End Class

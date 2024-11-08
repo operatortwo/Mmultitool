@@ -10,7 +10,7 @@ Partial Public Class EventListWriter
 
 
         ''' <summary>
-        ''' Start a bulk operation. Further calls of insert and emove will bypass Notifications. 
+        ''' Start a bulk operation. Further calls of insert and remove will bypass Notifications. 
         ''' When the operation is completed, BulkOperationEnd must be called.
         ''' </summary>
         Public Sub BulkOperationStart()

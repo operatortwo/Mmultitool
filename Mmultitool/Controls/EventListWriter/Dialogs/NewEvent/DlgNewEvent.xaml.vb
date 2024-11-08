@@ -45,9 +45,10 @@ Public Class DlgNewEvent
         End If
 
         nudTrack.MaximumValue = Evliw.TrackList.Count - 1
-        nudTrack.Value = StartReferenceItem.TrackNumber
-
-        nudChannel.Value = StartReferenceItem.Channel
+        If StartReferenceItem IsNot Nothing Then
+            nudTrack.Value = StartReferenceItem.TrackNumber
+            nudChannel.Value = StartReferenceItem.Channel
+        End If
 
 
         nudNoteOnDuration.MaximumValue = 4 * localTPQ

@@ -110,6 +110,9 @@
     <Compile Include="Controls\EventListWriter\Dialogs\Track\DlgAddTrack.xaml.vb">
       <DependentUpon>DlgAddTrack.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EventListWriter\Dialogs\Track\DlgRemoveTrack.xaml.vb">
+      <DependentUpon>DlgRemoveTrack.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EventListWriter\EventListWriter.xaml.vb">
       <DependentUpon>EventListWriter.xaml</DependentUpon>
     </Compile>
@@ -189,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\EventListWriter\Dialogs\Track\DlgAddTrack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventListWriter\Dialogs\Track\DlgRemoveTrack.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

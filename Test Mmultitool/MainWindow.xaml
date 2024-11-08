@@ -38,9 +38,9 @@
             </Menu>
             <ToolBarTray Height="29" VerticalAlignment="Top" DockPanel.Dock="Top" KeyboardNavigation.TabNavigation="Continue">
                 <ToolBar VerticalAlignment="Top" Height="29" KeyboardNavigation.TabNavigation="Continue" TabIndex="200">
-                    <duc:ImageButton x:Name="btnRestartSequencer" Height="26" Text="" Image="/Resources/Images/PreviousTrack_x22.png" Margin="1,0,0,0" Width="26" TabIndex="11" IsTabStop="True" />
-                    <duc:ImageButton x:Name="btnStopSequencer" Height="26" Text="" Image="/Resources/Images/Stop_x22.png" Width="26" Margin="1,0,0,0" TabIndex="21" IsTabStop="True"/>
-                    <duc:ImageButton x:Name="btnStartSequencer" Height="26" Text="" Image="/Resources/Images/Play_x22.png" Width="26" Margin="1,0,0,0" TabIndex="31" Focusable="True" IsTabStop="True"/>
+                    <duc:ImageButton x:Name="btnRestartSequencer" Height="26" Text="" Image="/Resources/Images/PreviousTrack_x22.png" Margin="1,0,0,0" Width="26" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" />
+                    <duc:ImageButton x:Name="btnStopSequencer" Height="26" Text="" Image="/Resources/Images/Stop_x22.png" Width="26" Margin="1,0,0,0" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}"/>
+                    <duc:ImageButton x:Name="btnStartSequencer" Height="26" Text="" Image="/Resources/Images/Play_x22.png" Width="26" Margin="1,0,0,0" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}"/>
                     <Label Content="Position:" Height="26" VerticalAlignment="Top" />
                     <Label x:Name="lblSequencerPosition" Height="26" Width="100" TabIndex="50" HorizontalAlignment="Left"/>
                     <Label Content="BPM:" Height="26" VerticalAlignment="Top" />

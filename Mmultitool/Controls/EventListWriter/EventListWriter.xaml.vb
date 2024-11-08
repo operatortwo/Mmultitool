@@ -559,20 +559,25 @@ Public Class EventListWriter
     End Function
 
     Private Sub btnAddTrack_Click(sender As Object, e As RoutedEventArgs) Handles btnAddTrack.Click
-
-        'Dim ntrk As New NamedTrack
-        'ntrk.TrackNumber = TrackList.Count
-        'TrackList.Add(ntrk)
-        'cbflistTrack.ItemListUpdate()
-
         Dim win As New DlgAddTrack(Me)
         win.Owner = Application.Current.MainWindow
         win.ShowDialog()
-
+        If win.DialogResult = True Then
+            If win.RetAddTrackNameEvent = False Then
+                AddTrack()
+            Else
+                AddTrack(win.RetTrackName, win.RetPosition)
+            End If
+        End If
     End Sub
 
     Private Sub btnRemoveTrack_Click(sender As Object, e As RoutedEventArgs) Handles btnRemoveTrack.Click
+        Dim win As New DlgRemoveTrack(Me)
+        win.Owner = Application.Current.MainWindow
+        win.ShowDialog()
+        If win.DialogResult = True Then
+            RemoveTrack(win.RetRemoveList)
+        End If
 
-        Beep()
     End Sub
 End Class

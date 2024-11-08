@@ -18,8 +18,8 @@
             </Grid>
         </GroupBox>
 
-        <duc:ImageButton Width="70" Text="Ok" Margin="59,0,0,20" Image="/Mmultitool;component/Resources/Images/Ok_g_x32.png" HorizontalAlignment="Left" IsDefault="True" Height="24" VerticalAlignment="Bottom" Click="ImageButton_Click"/>
-        <duc:ImageButton Width="70" Text="Cancel" Margin="164,0,0,20" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalAlignment="Left" IsCancel="True" Height="24" VerticalAlignment="Bottom"/>
+        <duc:ImageButton x:Name="btnOk" Width="70" Text="Ok" Margin="59,0,0,20" Image="/Mmultitool;component/Resources/Images/Ok_g_x32.png" HorizontalAlignment="Left" IsDefault="True" Height="24" VerticalAlignment="Bottom"/>
+        <duc:ImageButton x:Name="btnCancel" Width="70" Text="Cancel" Margin="164,0,0,20" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalAlignment="Left" IsCancel="True" Height="24" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

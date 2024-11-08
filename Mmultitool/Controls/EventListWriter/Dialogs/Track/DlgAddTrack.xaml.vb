@@ -1,5 +1,11 @@
 ﻿Public Class DlgAddTrack
 
+
+    Public RetAddTrackNameEvent As Boolean
+    Public RetTrackName As String
+    Public RetPosition As UInteger
+
+
     Private Evliw As EventListWriter
 
     Public Sub New(instance As EventListWriter)
@@ -11,7 +17,11 @@
 
     End Sub
 
-    Private Sub ImageButton_Click(sender As Object, e As RoutedEventArgs)
-        Beep()
+    Private Sub btnOk_Click(sender As Object, e As RoutedEventArgs) Handles btnOk.Click
+        RetAddTrackNameEvent = cbAddTrackEvent.IsChecked
+        RetTrackName = tbTrackName.Text
+        RetPosition = MBTE1.NewValue
+        DialogResult = True
+        Close()
     End Sub
 End Class
