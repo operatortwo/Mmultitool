@@ -119,12 +119,19 @@
     <Compile Include="Controls\EventListWriter\EventListWriterConverter.vb" />
     <Compile Include="Controls\EventListWriter\ObservableCollection.vb" />
     <Compile Include="Controls\EventListWriter\Procedures.vb" />
+    <Compile Include="Controls\TrackView\Panels\TrackPanel.xaml.vb">
+      <DependentUpon>TrackPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\VoicePanel.xaml.vb">
+      <DependentUpon>VoicePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Midi\Common\EventList.vb" />
     <Compile Include="Midi\Common\EventTypeInfo.vb" />
     <Compile Include="Midi\Common\MCalc.vb" />
     <Compile Include="Midi\Common\MDecode.vb" />
     <Compile Include="Midi\Common\MModule1.vb" />
     <Compile Include="Midi\Common\NoteNames.vb" />
+    <Compile Include="Midi\Common\TrackList.vb" />
     <Compile Include="Midi\File\Read\MidifileRead.vb" />
     <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
     <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
@@ -203,6 +210,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TrackView\Panels\TrackPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\VoicePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Notes\Note_eight.png" />
@@ -230,8 +245,10 @@
     <Resource Include="Resources\Images\Ok_g_x32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Controls\TrackView\TrackView design notes.txt" />
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

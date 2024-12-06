@@ -1,4 +1,5 @@
 ﻿Imports System.Data
+Imports System.Security.Cryptography
 Imports DailyUserControls
 Imports Mmultitool
 
@@ -12,7 +13,8 @@ Class MainWindow
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         If mifir.ReadMidiFile("Echoes1.mid") = True Then
-            ShowMidifileInfo()
+            tbEvListerFilename.Text = mifir.MidiName
+            tbEvListerMessage.Text = GetMidiFileInfo()
             Dim evlic As EventListContainer
             evlic = CreateEventListContainer(mifir.TrackList, mifir.TPQ)
             EventLister1.SetEventListContainer(evlic)
@@ -125,9 +127,9 @@ Class MainWindow
             tbEvListerFilename.Text = ofd.SafeFileName
             tbEvListerMessage.Clear()
             If ret = True Then
-                ShowMidifileInfo()
+                tbEvListerMessage.Text = GetMidiFileInfo()
             Else
-                EvListerMessage("Errortext:" & mifir.ErrorText)
+                tbEvListerMessage.Text = "Errortext:" & mifir.ErrorText
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message & mifir.ErrorText, "Error reading Midi-File")
@@ -149,6 +151,14 @@ Class MainWindow
         EvListerMessage("Format: " & mifir.SmfFormat & " - " & "Time division: " & mifir.TPQ)
         EvListerMessage("Tracks count: " & mifir.NumberOfTracks)
     End Sub
+
+    Private Function GetMidiFileInfo() As String
+        Dim str As String
+        str = "File loaded: " & mifir.MidiName & vbCrLf
+        str = str & "Format: " & mifir.SmfFormat & " - " & "Time division: " & mifir.TPQ & vbCrLf
+        str = str & "Tracks count: " & mifir.NumberOfTracks & vbCrLf
+        Return str
+    End Function
 
     Private Sub EvListerMessage(str As String)
         If tbEvListerMessage.LineCount > 50 Then tbEvListerMessage.Clear()
@@ -279,12 +289,12 @@ Class MainWindow
 
         Try
             ret = mifir.ReadMidiFile(ofd.FileName)
-            tbEvListerFilename.Text = ofd.SafeFileName
-            tbEvListerMessage.Clear()
+            tbEvListWriterFilename.Text = ofd.SafeFileName
+            tbEvListWriterMessage.Clear()
             If ret = True Then
-                ShowMidifileInfo()
+                tbEvListWriterMessage.Text = GetMidiFileInfo()
             Else
-                EvListerMessage("Errortext:" & mifir.ErrorText)
+                tbEvListWriterMessage.Text = "Errortext:" & mifir.ErrorText
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message & mifir.ErrorText, "Error reading Midi-File")
@@ -297,4 +307,45 @@ Class MainWindow
         End If
 
     End Sub
+
+    Private Sub btnTrackViewOpenFile_Click(sender As Object, e As RoutedEventArgs) Handles btnTrackViewOpenFile.Click
+        Dim ofd As New Microsoft.Win32.OpenFileDialog
+
+        ofd.Filter = "Midi files|*.mid"
+        If ofd.ShowDialog() = False Then Exit Sub
+        Dim ret As Boolean
+
+        Try
+            ret = mifir.ReadMidiFile(ofd.FileName)
+            tbEvListerFilename.Text = ofd.SafeFileName
+            tbEvListerMessage.Clear()
+            If ret = True Then
+                tbTrackViewFilename.Text = mifir.MidiName
+                tbTrackViewMessage.Text = GetMidiFileInfo()
+            Else
+                tbTrackViewMessage.Text = "Errortext:" & mifir.ErrorText
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message & mifir.ErrorText, "Error reading Midi-File")
+        End Try
+
+
+        Dim trklist As New Tracklist
+        'trklist.Tracks.Add(New Track)
+        'trklist.Tracks(0).Events.Add(New TrackEventX)
+        If ret = True Then
+            trklist = CreateTracklist(mifir.TrackList, mifir.TPQ)
+            ' set trklist to trklist view
+        End If
+    End Sub
+
+    Private Sub btnTest_Click(sender As Object, e As RoutedEventArgs) Handles btnTest.Click
+        If TrackPanel1.IsExpanded = True Then
+            TrackPanel1.Collapse()
+        Else
+            TrackPanel1.Expand()
+        End If
+    End Sub
+
+
 End Class

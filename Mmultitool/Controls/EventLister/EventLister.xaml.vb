@@ -262,6 +262,14 @@ Public Class EventLister
         DataGrid1.SelectAll()               ' a fast way to select all events in the DataGrid
     End Sub
 
+    Private Sub DataGrid1_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs) Handles DataGrid1.PreviewMouseDown
+        ' handling MouseDown on SelectAll Button (top left rectangle)
+        ' SelectAll works only when Datagrid is focused
+        If DataGrid1.IsFocused = False Then
+            DataGrid1.Focus()
+        End If
+    End Sub
+
     Private Sub cmbTimeFormat_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles cmbTimeFormat.SelectionChanged
         If cmbTimeFormat.SelectedItem IsNot Nothing Then
             If DesiredTimeFormat <> cmbTimeFormat.SelectedItem Then
@@ -395,5 +403,6 @@ Public Class EventLister
         Next
         Return sb.ToString
     End Function
+
 
 End Class

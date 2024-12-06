@@ -306,6 +306,14 @@ Public Class EventListWriter
         SetFocusToSelectedRow()
     End Sub
 
+    Private Sub DataGrid1_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs) Handles DataGrid1.PreviewMouseDown
+        ' handling MouseDown on SelectAll Button (top left rectangle)
+        ' SelectAll works only when Datagrid is focused
+        If DataGrid1.IsFocused = False Then
+            DataGrid1.Focus()
+        End If
+    End Sub
+
 #End Region
 
 #End Region
@@ -580,4 +588,6 @@ Public Class EventListWriter
         End If
 
     End Sub
+
+
 End Class

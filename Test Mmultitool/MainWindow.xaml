@@ -51,7 +51,8 @@
                 </ToolBar>
             </ToolBarTray>
             <StatusBar DockPanel.Dock="Bottom" Height="26" VerticalAlignment="Bottom" />
-            <TabControl x:Name="TabControl1" IsTabStop="True" TabIndex="300">
+            <!-- TabControl SelectedIndex is set for editing/developing-->
+            <TabControl x:Name="TabControl1" IsTabStop="True" TabIndex="300" SelectedIndex="2">
                 <TabItem Header="EventLister">
                     <Grid>
                         <Mmultitool:EventLister x:Name="EventLister1"  Margin="10,89,10,10" DataGridRowBackground="#FFFFFDF4" IsTabStop="True" TabIndex="500"/>
@@ -69,12 +70,31 @@
                 <TabItem Header="EventList Writer">
                     <Grid>
                         <Mmultitool:EventListWriter x:Name="EventListWriter1"  Margin="10,89,10,10" DataGridRowBackground="#FFFFFDF4" Grid.ColumnSpan="2"/>
+                        <TextBox x:Name="tbEvListWriterFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
+                        <TextBox x:Name="tbEvListWriterMessage" HorizontalAlignment="Left" Margin="533,7,0,0" TextWrapping="Wrap" Width="251" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
                         <duc:ImageButton x:Name="btnEvListWrSelectAll" Text="Select All" TextAlignment="Center" Margin="10,49,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/SelectAll_x32.png" Width="86" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF3F3F3" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
                         <duc:ImageButton x:Name="btnEvListWrPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" Grid.Column="1" TextPadding="0,1,0,1"/>
                         <duc:ToggleButton x:Name="tgbtnEvListWrLoop" Margin="247,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="{DynamicResource ButtonBorderBrush1}" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" Grid.Column="1"/>
                         <duc:ImageButton x:Name="btnEvlistWrStop" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="312,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Grid.Column="1"/>
                         <duc:ImageButton x:Name="btnSaveAs" Height="26" Width="110" Margin="400,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save As ..." Image="/Resources/Images/SaveAs_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="0,1,0,1"/>
                         <duc:ImageButton x:Name="btnEvListWrOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="TrackView">
+                    <Grid>
+                        <duc:ImageButton x:Name="btnTrackViewOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1"/>
+                        <TextBox x:Name="tbTrackViewFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
+                        <TextBox x:Name="tbTrackViewMessage" HorizontalAlignment="Left" Margin="360,7,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
+                        <Grid Margin="0,108,0,0" Background="#FFEDF5FF">
+                            <Label Content="Scale X" Margin="321,12,0,0" HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" Padding="5,0,5,0" />
+                            <duc:SmallSlider x:Name="sldScaleX" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6"  HorizontalAlignment="Left" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1" Margin="374,10,0,0" Height="22" VerticalAlignment="Top"/>
+
+                            <Mmultitool:TrackPanel x:Name="TrackPanel1" Margin="50,109,118,0" Height="180" VerticalAlignment="Top" />
+
+                            <Label Content="for all Tracks" HorizontalAlignment="Left" Margin="514,4,0,0" VerticalAlignment="Top"/>
+                            <Button x:Name="btnTest" Content="TrackP Test" HorizontalAlignment="Left" Margin="100,21,0,0" VerticalAlignment="Top"/>
+
+                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>
