@@ -1,7 +1,18 @@
 ﻿Imports System.ComponentModel
 Public Class TrackPanel
+
+    Friend TrackView As TrackView           ' Parent, set in TrackPanel _Loaded
+
+    Public TrackData As New Track           ' reference to item in TrackView's TrackList
+
+
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         SetInitialHeight()
+        '--- set accesors in child Panels ---
+        VoicePanel.TrackPanel = Me
+        TrackHeaderPanel.TrackPanel = Me
+        KeyPanel.TrackPanel = Me
+        NotePanel.TrackPanel = Me
     End Sub
 
 
@@ -118,6 +129,37 @@ Public Class TrackPanel
     ''' </summary>
     Public Sub Collapse()
         IsExpanded = False
+    End Sub
+
+    Private Sub MasterVScroll_Scroll(sender As Object, e As Primitives.ScrollEventArgs) Handles MasterVScroll.Scroll
+        KeyPanel.KeyPanelVScroll.ScrollToVerticalOffset(MasterVScroll.Value)
+    End Sub
+
+    Private Sub VoiceTrackSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles VoiceTrackSplitter.DragCompleted
+        If e.HorizontalChange <> 0 Then
+            If TrackView IsNot Nothing Then
+                Dim NewWidth As Double = VoiceColumn.ActualWidth
+                TrackView.UpdateVoiceColumnWidth(NewWidth)
+            End If
+        End If
+    End Sub
+
+    Private Sub TrackKeysSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles TrackKeysSplitter.DragCompleted
+        If e.HorizontalChange <> 0 Then
+            If TrackView IsNot Nothing Then
+                Dim NewWidth As Double = TrackHeaderColumn.ActualWidth
+                TrackView.UpdateTrackHeaderColumnWidth(NewWidth)
+            End If
+        End If
+    End Sub
+
+    Private Sub KeysNotesSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles KeysNotesSplitter.DragCompleted
+        If e.HorizontalChange <> 0 Then
+            If TrackView IsNot Nothing Then
+                Dim NewWidth As Double = KeysColumn.ActualWidth
+                TrackView.UpdateKeysColumnColumnWidth(NewWidth)
+            End If
+        End If
     End Sub
 
 #End Region

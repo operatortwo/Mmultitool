@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mmultitool"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="800" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="1,1,1,1" MaxHeight="300" MinHeight="32"  Loaded="UserControl_Loaded">
+             d:DesignHeight="250" d:DesignWidth="800" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="1,1,1,1" MaxHeight="400" MinHeight="32"  Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <SolidColorBrush x:Key="BorderBrush1" Color="Gray"/>
         <SolidColorBrush x:Key="SplitterBorderBrush1" Color="Gray"/>
@@ -21,7 +21,7 @@
             <ColumnDefinition x:Name="VoiceTrackSplitterColumn" Width="5"/>
             <ColumnDefinition x:Name="TrackHeaderColumn" Width="90" MaxWidth="200" MinWidth="10"/>
             <ColumnDefinition x:Name="TrackKeysSplitterColumn" Width="5"/>
-            <ColumnDefinition x:Name="KeysColumn" Width="60" MaxWidth="150" MinWidth="10"/>
+            <ColumnDefinition x:Name="KeysColumn" Width="90" MaxWidth="150" MinWidth="10"/>
             <ColumnDefinition x:Name="KeysNotesSplitterColumn" Width="6"/>
             <ColumnDefinition x:Name="NotesColumn" Width="4*"/>
             <ColumnDefinition x:Name="KeysAndNotesVScroll_Column" Width="Auto"/>
@@ -34,12 +34,15 @@
         <GridSplitter x:Name="TrackKeysSplitter" Grid.Column="4" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource SplitterBorderBrush1}" HorizontalAlignment="Stretch"/>
         <GridSplitter x:Name="KeysNotesSplitter" Grid.Column="6" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource SplitterBorderBrush1}" HorizontalAlignment="Stretch"/>
         <!-- VoiceColumn content -->
-        <local:VoicePanel Grid.Column="1"/>
+        <local:VoicePanel x:Name="VoicePanel" Grid.Column="1"/>
         <!-- TrackHeaderColumn content -->
-
-
+        <local:TrackHeaderPanel x:Name="TrackHeaderPanel" Grid.Column="3"/>
         <!---->
-        <ScrollBar Grid.Column="9"/>
+        <local:KeyPanel x:Name="KeyPanel" Grid.Column="5"/>
+        <!---->
+        <local:NotePanel x:Name="NotePanel" Grid.Column="7"/>
+        <!---->
+        <ScrollBar x:Name="MasterVScroll" Grid.Column="9"/>
         <!-- Vertical Splitter -->
         <GridSplitter x:Name="HeightSplitter" Grid.Row="1" BorderBrush="{DynamicResource SplitterBorderBrush1}" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch" Grid.ColumnSpan="9" Focusable="False"/>
     </Grid>

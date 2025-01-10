@@ -86,14 +86,7 @@
                         <TextBox x:Name="tbTrackViewFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
                         <TextBox x:Name="tbTrackViewMessage" HorizontalAlignment="Left" Margin="360,7,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
                         <Grid Margin="0,108,0,0" Background="#FFEDF5FF">
-                            <Label Content="Scale X" Margin="321,12,0,0" HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" Padding="5,0,5,0" />
-                            <duc:SmallSlider x:Name="sldScaleX" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6"  HorizontalAlignment="Left" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1" Margin="374,10,0,0" Height="22" VerticalAlignment="Top"/>
-
-                            <Mmultitool:TrackPanel x:Name="TrackPanel1" Margin="50,109,118,0" Height="180" VerticalAlignment="Top" />
-
-                            <Label Content="for all Tracks" HorizontalAlignment="Left" Margin="514,4,0,0" VerticalAlignment="Top"/>
-                            <Button x:Name="btnTest" Content="TrackP Test" HorizontalAlignment="Left" Margin="100,21,0,0" VerticalAlignment="Top"/>
-
+                            <Mmultitool:TrackView x:Name="TrackView1"/>
                         </Grid>
                     </Grid>
                 </TabItem>

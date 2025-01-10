@@ -268,6 +268,12 @@ Module MDecode
         Return NoteNr_to_NoteName(NoteNumber)
     End Function
 
+    Public Function IsBlackKey(NoteNumber As Integer) As Boolean
+        If NoteNumber > 127 Then Return False
+        Return Not octave_keys(NoteNumber Mod 12).white
+    End Function
+
+
     ''' <summary>
     ''' Converts a byte array to hex string. f.e. (A1, B2, C3, 54) to 'A1 B2 C3 54'
     ''' </summary>

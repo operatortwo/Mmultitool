@@ -15,7 +15,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("Testing the Mmultitool library")>
 <Assembly: AssemblyCompany("SQ Programming")>
 <Assembly: AssemblyProduct("Test_Mmultitool")>
-<Assembly: AssemblyCopyright("Copyright ©  2024   operatortwo")>
+<Assembly: AssemblyCopyright("Copyright ©  2024 - 2025  operatortwo")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 

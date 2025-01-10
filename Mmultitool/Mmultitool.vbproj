@@ -119,8 +119,29 @@
     <Compile Include="Controls\EventListWriter\EventListWriterConverter.vb" />
     <Compile Include="Controls\EventListWriter\ObservableCollection.vb" />
     <Compile Include="Controls\EventListWriter\Procedures.vb" />
+    <Compile Include="Controls\TrackView\Dialogs\DlgSetKeyList.xaml.vb">
+      <DependentUpon>DlgSetKeyList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\KeyCanvas.xaml.vb">
+      <DependentUpon>KeyCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\KeyPanel.xaml.vb">
+      <DependentUpon>KeyPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\NoteCanvas.xaml.vb">
+      <DependentUpon>NoteCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\NotePanel.xaml.vb">
+      <DependentUpon>NotePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\TrackHeaderPanel.xaml.vb">
+      <DependentUpon>TrackHeaderPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TrackView\Panels\TrackPanel.xaml.vb">
       <DependentUpon>TrackPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackView\Panels\TrackView.xaml.vb">
+      <DependentUpon>TrackView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TrackView\Panels\VoicePanel.xaml.vb">
       <DependentUpon>VoicePanel.xaml</DependentUpon>
@@ -138,6 +159,7 @@
     <Compile Include="Midi\Sequencer\SequencerSeq.vb" />
     <Compile Include="Midi\Sequencer\SequencerPlay.vb" />
     <Compile Include="Midi\Sequencer\Sequencer.vb" />
+    <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -210,7 +232,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TrackView\Dialogs\DlgSetKeyList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\KeyCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\KeyPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\NoteCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\NotePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\TrackHeaderPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TrackView\Panels\TrackPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\TrackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

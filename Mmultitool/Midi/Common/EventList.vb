@@ -119,4 +119,21 @@ Public Module EventList
         Return retstr
     End Function
 
+    ''' <summary>
+    ''' For Single Track EventList
+    ''' </summary>    
+    Public Function GetTrackName(Eventlist As List(Of TrackEventX)) As String
+        Dim retstr As String = ""
+        If Eventlist Is Nothing Then Return retstr
+
+        For Each ev In Eventlist
+            If ev.TypeX = EventTypeX.SequenceOrTrackName Or ev.TypeX = EventTypeX.TextEvent Then
+                Dim ascii As Encoding = Encoding.ASCII
+                retstr = retstr & "  " & ascii.GetChars(ev.DataX)
+            End If
+        Next
+
+        Return retstr
+    End Function
+
 End Module

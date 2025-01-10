@@ -15,7 +15,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("MIDI Multi-Tool")>
 <Assembly: AssemblyCompany("SQ Programming")>
 <Assembly: AssemblyProduct("Mmultitool")>
-<Assembly: AssemblyCopyright("Copyright @  2024   operatortwo")>
+<Assembly: AssemblyCopyright("Copyright @  2024 - 2025   operatortwo")>
 <Assembly: AssemblyTrademark("")> 
 <Assembly: ComVisible(false)>
 

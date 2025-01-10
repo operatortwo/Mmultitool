@@ -8,6 +8,39 @@
         Public Name As String = ""
         Public Channel As Byte
         Public EventList As New List(Of TrackEventX)
+
+        Public Class UsedNotesInfo
+            Public ListOfUsedNotes As New List(Of Byte)
+            Public NoteRangeStart As Byte = 0
+            Public NoteRangeEnd As Byte = 127
+        End Class
+
+        ''' <summary>
+        ''' Returns NoteRangeStart, NoteRangeEnd and a list of the note numbers used.
+        ''' </summary>        
+        ''' <returns></returns>
+        Public Function GetUsedNotesInfo() As UsedNotesInfo
+            Dim info As New UsedNotesInfo
+            If EventList.Count = 0 Then Return info
+
+            For Each ev In EventList
+
+                If ev.TypeX = EventTypeX.NoteOnEvent Then
+
+                    If Not info.ListOfUsedNotes.Contains(ev.Data1) Then
+                        info.ListOfUsedNotes.Add(ev.Data1)
+                    End If
+
+                End If
+            Next
+
+            info.ListOfUsedNotes.Sort()
+            info.NoteRangeStart = info.ListOfUsedNotes.FirstOrDefault
+            info.NoteRangeEnd = info.ListOfUsedNotes.LastOrDefault
+
+            Return info
+        End Function
+
     End Class
 
 
@@ -58,6 +91,10 @@
 
         Return trklist
     End Function
+
+
+
+
 
 
 End Module

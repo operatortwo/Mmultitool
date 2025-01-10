@@ -50,6 +50,22 @@ Class MainWindow
             evlic2 = CreateEventListContainer(mifir2.TrackList, mifir2.TPQ)
             EventListWriter1.SetEventListContainer(evlic2)
         End If
+
+        Dim mifir3 As New MidifileRead
+        If mifir3.ReadMidiFile("Echoes1.mid") = True Then
+            tbTrackViewFilename.Text = mifir.MidiName
+
+            Dim trklist As New Tracklist
+            trklist = CreateTracklist(mifir3.TrackList, mifir3.TPQ)
+
+            TrackView1.SetTracklist(trklist)
+
+            'If trklist.Tracks.Count > 1 Then
+            '    TrackPanel1.TrackData = trklist.Tracks(1)
+            '    lblXnrOfEvents.Content = TrackPanel1.TrackData.EventList.Count & " Events"
+            'End If
+        End If
+
         '---
     End Sub
 
@@ -317,8 +333,8 @@ Class MainWindow
 
         Try
             ret = mifir.ReadMidiFile(ofd.FileName)
-            tbEvListerFilename.Text = ofd.SafeFileName
-            tbEvListerMessage.Clear()
+            tbTrackViewFilename.Text = ofd.SafeFileName
+            tbTrackViewMessage.Clear()
             If ret = True Then
                 tbTrackViewFilename.Text = mifir.MidiName
                 tbTrackViewMessage.Text = GetMidiFileInfo()
@@ -336,16 +352,13 @@ Class MainWindow
         If ret = True Then
             trklist = CreateTracklist(mifir.TrackList, mifir.TPQ)
             ' set trklist to trklist view
+
+            TrackView1.SetTracklist(trklist)
+
         End If
     End Sub
 
-    Private Sub btnTest_Click(sender As Object, e As RoutedEventArgs) Handles btnTest.Click
-        If TrackPanel1.IsExpanded = True Then
-            TrackPanel1.Collapse()
-        Else
-            TrackPanel1.Expand()
-        End If
-    End Sub
+
 
 
 End Class
