@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mmultitool"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="250" Loaded="UserControl_Loaded">
+             d:DesignHeight="150" d:DesignWidth="250" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged">
     <Grid Background="#FFEDD6F3">
         <ScrollViewer x:Name="NotePanelScroll" VerticalScrollBarVisibility="Hidden"  HorizontalScrollBarVisibility="Hidden" >
             <local:NoteCanvas x:Name="NoteCanvas" VerticalAlignment="Top" Height="40" ClipToBounds="True"/>

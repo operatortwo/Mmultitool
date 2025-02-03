@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:Mmultitool"
              xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="850">
+             d:DesignHeight="400" d:DesignWidth="850" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="BorderBrush1" Color="Gray"/>
+        <SolidColorBrush x:Key="SplitterBorderBrush1" Color="Gray"/>
+    </UserControl.Resources>
     <Grid>
         
         <Grid.RowDefinitions>
@@ -20,20 +24,35 @@
                 <local:TrackPanel/>
             </StackPanel>
         </ScrollViewer>
-        
-        
-        <Grid x:Name="HeaderGrid"  Background="#FFE1E6FF"/>
+
+
+        <Grid x:Name="HeaderGrid"  Background="#FFE1E6FF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="HeaderLeftColumn" Width="*"/>
+                <ColumnDefinition x:Name="HeaderNotesColumn" Width="400"/>
+                <ColumnDefinition x:Name="HeaderRightColumn" Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}" />
+            <Rectangle Grid.Column="1" Margin="0,0,0,1" Fill="#FFCDD2EC"/>
+            <local:MeasureStrip x:Name="MeasureStrip" Grid.Column="1"/>
+            <Label Content="Length:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,9,0,0"/>
+            <Label x:Name="lblNumberOfBeats" Content="xxx" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="61,9,0,0"/>
+
+        </Grid>
         <Grid x:Name="FooterGrid"  Grid.Row="2" Background="#FFE1E6FF">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition x:Name="FooterLeftColumn" Width="*"/>
+                <ColumnDefinition x:Name="FooterNotesColumn" Width="400"/>
+                <ColumnDefinition x:Name="FooterRightColumn" Width="40"/>
             </Grid.ColumnDefinitions>
+            <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="0,1,0,0" />
+            <Rectangle Grid.Column="1" Fill="#FFCDD2EC" Margin="0,1,0,0"/>
+            <Label Content="Scale X" Margin="37,13,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" />
+            <duc:SmallSlider x:Name="sldScaleX" Margin="80,10,0,0" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1"/>
 
-            <Label Content="Scale X" Margin="37,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" />
-            <duc:SmallSlider x:Name="sldScaleX" Margin="80,5,0,0" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1"/>
-
-
-            <ScrollBar x:Name="MasterHScroll" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,5,20,0" Grid.Column="1"/>
+            <Grid Grid.Column="0"/>
+            <Grid Grid.Column="1"/>
+            <ScrollBar x:Name="MasterHScroll" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,10,0,0" Grid.Column="1"/>
 
            
         </Grid>

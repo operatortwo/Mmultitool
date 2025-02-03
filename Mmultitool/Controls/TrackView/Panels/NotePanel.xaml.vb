@@ -6,6 +6,17 @@ Public Class NotePanel
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         NoteCanvas.TrackPanel = TrackPanel
         NoteCanvas.NotePanel = Me
+
+        If TrackPanel IsNot Nothing Then
+            If TrackPanel.TrackView IsNot Nothing Then
+                If TrackPanel.TrackView.HeaderNotesColumn.ActualWidth <> Me.ActualWidth Then
+                    TrackPanel.TrackView.HeaderNotesColumn.Width = New GridLength(Me.ActualWidth)
+                End If
+                If TrackPanel.TrackView.FooterNotesColumn.ActualWidth <> Me.ActualWidth Then
+                    TrackPanel.TrackView.FooterNotesColumn.Width = New GridLength(Me.ActualWidth)
+                End If
+            End If
+        End If
     End Sub
 
     Public Sub UpdateView()
@@ -39,6 +50,19 @@ Public Class NotePanel
         End If
     End Sub
 
-
+    Private Sub UserControl_SizeChanged(sender As Object, e As SizeChangedEventArgs)
+        If e.WidthChanged = True Then
+            If TrackPanel IsNot Nothing Then
+                If TrackPanel.TrackView IsNot Nothing Then
+                    If TrackPanel.TrackView.HeaderNotesColumn.ActualWidth <> e.NewSize.Width Then
+                        TrackPanel.TrackView.HeaderNotesColumn.Width = New GridLength(e.NewSize.Width)
+                    End If
+                    If TrackPanel.TrackView.FooterNotesColumn.ActualWidth <> e.NewSize.Width Then
+                        TrackPanel.TrackView.FooterNotesColumn.Width = New GridLength(e.NewSize.Width)
+                    End If
+                End If
+            End If
+        End If
+    End Sub
 End Class
 

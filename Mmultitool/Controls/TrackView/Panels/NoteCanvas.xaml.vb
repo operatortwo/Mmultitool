@@ -19,7 +19,6 @@
         ' Background
         dc.DrawRectangle(Brushes.LightGoldenrodYellow, Nothing, New Rect(0, 0, ActualWidth, ActualHeight))
 
-
         Dim glyphrun As GlyphRun = CreateGlyphRun("This is NoteCanvas", GlyphTypeface, 18, New Point(100, 40))
         dc.DrawGlyphRun(Brushes.Red, glyphrun)
 

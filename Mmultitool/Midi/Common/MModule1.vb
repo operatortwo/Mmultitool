@@ -601,6 +601,19 @@ Public Module MModule1
         Return CStr(meas) & " : " & CStr(beat) & " : " & CStr(ticks)                ' base 0
     End Function
 
+    Public Function TimeTo_MBT_0(time As Long, tpq As Integer) As String
+        If tpq < 1 Then Return ""
+
+        Dim meas As Long                            ' measure (assume: 4/4)
+        Dim beat As Integer                         ' beat inside measure
+        Dim ticks As Integer
+
+        meas = time \ (4 * tpq)            '  \ = returns an integer result        
+        beat = CInt((time \ tpq) Mod 4)
+        ticks = CInt(time Mod tpq)
+
+        Return CStr(meas) & " : " & CStr(beat) & " : " & CStr(ticks)                ' base 0
+    End Function
 
     ''' <summary>
     ''' Convert time or duration according to the TPQ ratio.
