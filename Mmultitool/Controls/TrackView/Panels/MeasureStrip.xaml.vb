@@ -21,7 +21,7 @@ Public Class MeasureStrip
         If TrackView.MeasureStrip Is Nothing Then Exit Sub
 
 
-        Dim ScaleX As Double = TrackView.sldScaleX.Value
+        Dim ScaleX As Double = Math.Round(TrackView.sldScaleX.Value, 1)
         Dim tpq As Integer = TrackView.TPQ
 
 
@@ -49,12 +49,13 @@ Public Class MeasureStrip
         Dim posx As Integer
         Dim ys As Integer = 1
 
-        Dim BeatPen As New Pen(Brushes.MediumBlue, 2.0)
+        Dim BeatPen As New Pen(Brushes.MediumBlue, 1.0)
         Dim BarPen As New Pen(Brushes.MediumBlue, 2.0)
         Dim BeatMarkHeight = 10
         Dim BarMarkHeight = 20
 
         For i = 0 To NumberOfMarks
+
             posx = (CurrentTick - StartTick) * TicksToPixelFactor * ScaleX
 
             If IsMeasure(CurrentTick) Then
@@ -91,26 +92,6 @@ Public Class MeasureStrip
         Else
             Return False
         End If
-    End Function
-
-
-    Private Function CreateGlyphRun(text As String, glyphTypeface As GlyphTypeface, emSize As Double, baselineOrigin As Point) As GlyphRun
-        If text Is Nothing Then Return Nothing
-        If text.Length = 0 Then Return Nothing
-        If glyphTypeface Is Nothing Then Return Nothing
-
-        Dim glyphIndices As UShort() = New UShort(text.Length - 1) {}
-        Dim advanceWidths As Double() = New Double(text.Length - 1) {}
-
-        For i = 0 To text.Length - 1
-            Dim glyphIndex As UShort
-            glyphTypeface.CharacterToGlyphMap.TryGetValue(AscW(text(i)), glyphIndex)
-            glyphIndices(i) = glyphIndex
-            advanceWidths(i) = glyphTypeface.AdvanceWidths(glyphIndex) * emSize
-        Next
-
-        Return New GlyphRun(glyphTypeface, 0, False, emSize, glyphIndices, baselineOrigin,
-            advanceWidths, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
     End Function
 
 End Class

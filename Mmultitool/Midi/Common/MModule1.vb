@@ -615,6 +615,37 @@ Public Module MModule1
         Return CStr(meas) & " : " & CStr(beat) & " : " & CStr(ticks)                ' base 0
     End Function
 
+    Public Prefer_MBT_1_1_0 As Boolean              ' to be set by main application Preferences
+
+    ''' <summary>
+    ''' A general function to convert MIDI ticks to Measure:Beat:Ticks. 
+    ''' By default the counting starts at 0:0:0. 
+    ''' If the variable Prefer_MBT_1_1_0 is set to TRUE the counting starts at 1:1:0 
+    ''' which may be preferred by some users.
+    ''' </summary>
+    ''' <param name="time">Ticks</param>
+    ''' <param name="TPQ">Ticks per quater note</param>
+    ''' <returns></returns>
+    Public Function TimeTo_MBT(time As UInteger, TPQ As Integer) As String
+        If TPQ <= 0 Then Return ""                  ' avoid div 0
+
+        Dim meas As Long                            ' measure (assume: 4/4)
+        Dim beat As Integer                         ' beat inside measure
+        Dim ticks As Integer
+
+        meas = time \ (4 * TPQ)                      '  \ = returns an integer result                
+        beat = CInt((time \ TPQ) Mod 4)
+        ticks = CInt(time Mod TPQ)
+
+        If Prefer_MBT_1_1_0 = False Then
+            Return meas & " : " & beat & " : " & ticks.ToString("D3")                ' base 0
+        Else
+            'TimeFormat.MBT_1_based
+            Return meas + 1 & " : " & beat + 1 & " : " & ticks.ToString("D3")        ' base 1
+        End If
+
+    End Function
+
     ''' <summary>
     ''' Convert time or duration according to the TPQ ratio.
     ''' </summary>

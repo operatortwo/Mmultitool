@@ -1,4 +1,6 @@
-﻿Public Class TrackView
+﻿Imports System.Windows.Controls.Primitives
+
+Public Class TrackView
 
     Public Property TrackList As New Tracklist
 
@@ -31,6 +33,9 @@
                 For Each trev In trk.EventList
                     'Newtime = Time * DestinationTPQ / SourceTPQ
                     trev.Time = trev.Time * TPQ / trklist.TPQ
+                    If trev.Duration > 0 Then
+                        trev.Duration = trev.Duration * TPQ / trklist.TPQ       ' scale up duration
+                    End If
                 Next
             Next
             trklist.MaxLength = trklist.MaxLength * TPQ / trklist.TPQ
@@ -39,6 +44,12 @@
 
         Dim beatlen As Single = trklist.MaxLength / trklist.TPQ
         lblNumberOfBeats.Content = beatlen & "  " & TimeTo_MBT_0(trklist.MaxLength, TPQ)
+        MasterHScroll.Value = 0
+        Dim e As New ScrollEventArgs(ScrollEventType.First, 0)
+        MasterHScroll_Scroll(Me, e)
+
+
+
 
         For Each track In TrackList.Tracks
             Dim trkp As New TrackPanel
@@ -124,11 +135,24 @@
     Private Sub sldScaleX_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles sldScaleX.ValueChanged
         If MasterHScroll IsNot Nothing Then SetHScrollValues()
         MeasureStrip.InvalidateVisual()
+
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            panel.NotePanel.NoteCanvas.InvalidateVisual()
+        Next
     End Sub
 
     Private Sub MasterHScroll_Scroll(sender As Object, e As Primitives.ScrollEventArgs) Handles MasterHScroll.Scroll
         MeasureStrip.InvalidateVisual()
+
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            panel.NotePanel.NoteCanvas.InvalidateVisual()
+        Next
     End Sub
+
+    Private Sub TrackPanelStack_RequestBringIntoView(sender As Object, e As RequestBringIntoViewEventArgs) Handles TrackPanelStack.RequestBringIntoView
+        e.Handled = True            ' prevents scrollbar scrolling when MouseLeftBittonDown on GridSplitter
+    End Sub
+
 
 #End Region
 End Class

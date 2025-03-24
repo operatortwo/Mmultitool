@@ -114,4 +114,12 @@ Public Class KeyCanvas
             advanceWidths, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
     End Function
 
+    Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)
+        Dim pt As Point = e.GetPosition(Me)
+        TrackPanel.TrackView.lbl_MousePosition_Note.Content = Math.Round(pt.X, 2) & " " & Math.Round(pt.Y, 2)
+    End Sub
+
+    Private Sub UserControl_MouseLeave(sender As Object, e As MouseEventArgs)
+        TrackPanel.TrackView.lbl_MousePosition_Note.Content = "Leave"
+    End Sub
 End Class

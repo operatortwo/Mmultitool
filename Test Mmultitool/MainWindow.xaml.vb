@@ -31,6 +31,9 @@ Class MainWindow
             My.Settings.Save()
         End If
 
+        Mi_Prefer_MBT_1_1_0.IsChecked = My.Settings.Prefer_MBT_1_1_0
+        Prefer_MBT_1_1_0 = Mi_Prefer_MBT_1_1_0.IsChecked
+
         OpenMidiOutPort()
 
         TabControl1.SelectedIndex = My.Settings.LastTabIndex
@@ -75,7 +78,10 @@ Class MainWindow
 
         My.Settings.LastMidiOut = MidiOut_Selected
         My.Settings.LastTabIndex = TabControl1.SelectedIndex
+        My.Settings.Prefer_MBT_1_1_0 = Mi_Prefer_MBT_1_1_0.IsChecked
         My.Settings.Save()
+
+
 
         MIO._End()                          ' close all MIDI-Ports
     End Sub
@@ -358,7 +364,11 @@ Class MainWindow
         End If
     End Sub
 
-
-
-
+    Private Sub Mi_Prefer_MBT_1_1_0_Click(sender As Object, e As RoutedEventArgs) Handles Mi_Prefer_MBT_1_1_0.Click
+        If Mi_Prefer_MBT_1_1_0.IsChecked = True Then
+            Prefer_MBT_1_1_0 = True
+        Else
+            Prefer_MBT_1_1_0 = False            ' Measure:Beat:Ticks starts at 0:0:0 in TrackView
+        End If
+    End Sub
 End Class

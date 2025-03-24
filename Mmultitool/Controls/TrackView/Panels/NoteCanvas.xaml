@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mmultitool"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="250">
+             d:DesignHeight="40" d:DesignWidth="250" MouseLeave="UserControl_MouseLeave" MouseMove="UserControl_MouseMove">
     <Grid>
             
     </Grid>

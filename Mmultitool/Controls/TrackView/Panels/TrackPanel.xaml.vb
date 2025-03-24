@@ -136,27 +136,54 @@ Public Class TrackPanel
     End Sub
 
     Private Sub VoiceTrackSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles VoiceTrackSplitter.DragCompleted
+        'If e.HorizontalChange <> 0 Then
+        '    If TrackView IsNot Nothing Then
+        '        Dim NewWidth As Double = VoiceColumn.ActualWidth
+        '        TrackView.UpdateVoiceColumnWidth(NewWidth)
+        '    End If
+        'End If
+    End Sub
+
+    Private Sub TrackKeysSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles TrackKeysSplitter.DragCompleted
+        'If e.HorizontalChange <> 0 Then
+        '    If TrackView IsNot Nothing Then
+        '        Dim NewWidth As Double = TrackHeaderColumn.ActualWidth
+        '        TrackView.UpdateTrackHeaderColumnWidth(NewWidth)
+        '    End If
+        'End If        
+    End Sub
+
+    Private Sub KeysNotesSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles KeysNotesSplitter.DragCompleted
+        'If e.HorizontalChange <> 0 Then
+        '    If TrackView IsNot Nothing Then
+        '        Dim NewWidth As Double = KeysColumn.ActualWidth
+        '        TrackView.UpdateKeysColumnColumnWidth(NewWidth)
+        '    End If
+        'End If
+    End Sub
+
+    Private Sub VoiceTrackSplitter_DragDelta(sender As Object, e As Primitives.DragDeltaEventArgs) Handles VoiceTrackSplitter.DragDelta
         If e.HorizontalChange <> 0 Then
             If TrackView IsNot Nothing Then
-                Dim NewWidth As Double = VoiceColumn.ActualWidth
+                Dim NewWidth As Double = VoiceColumn.ActualWidth + e.HorizontalChange
                 TrackView.UpdateVoiceColumnWidth(NewWidth)
             End If
         End If
     End Sub
 
-    Private Sub TrackKeysSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles TrackKeysSplitter.DragCompleted
+    Private Sub TrackKeysSplitter_DragDelta(sender As Object, e As Primitives.DragDeltaEventArgs) Handles TrackKeysSplitter.DragDelta
         If e.HorizontalChange <> 0 Then
             If TrackView IsNot Nothing Then
-                Dim NewWidth As Double = TrackHeaderColumn.ActualWidth
+                Dim NewWidth As Double = TrackHeaderColumn.ActualWidth + e.HorizontalChange
                 TrackView.UpdateTrackHeaderColumnWidth(NewWidth)
             End If
         End If
     End Sub
 
-    Private Sub KeysNotesSplitter_DragCompleted(sender As Object, e As Primitives.DragCompletedEventArgs) Handles KeysNotesSplitter.DragCompleted
+    Private Sub KeysNotesSplitter_DragDelta(sender As Object, e As Primitives.DragDeltaEventArgs) Handles KeysNotesSplitter.DragDelta
         If e.HorizontalChange <> 0 Then
             If TrackView IsNot Nothing Then
-                Dim NewWidth As Double = KeysColumn.ActualWidth
+                Dim NewWidth As Double = KeysColumn.ActualWidth + e.HorizontalChange
                 TrackView.UpdateKeysColumnColumnWidth(NewWidth)
             End If
         End If

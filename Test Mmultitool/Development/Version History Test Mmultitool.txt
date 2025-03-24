@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2025 03 24		1.0.4.6		TrackView: draw notes
 2025 02 03		1.0.4.5		Measure for TrackView
 2025 01 10		1.0.4.4		TrackView continued
 2024 11 08		1.0.4.3		EventListWriter: added addTrack and RemoveTrack

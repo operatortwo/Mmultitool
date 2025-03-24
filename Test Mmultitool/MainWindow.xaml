@@ -28,6 +28,9 @@
                     <MenuItem x:Name="Mi_Send_GM_On" Header="Send _GM On"/>
                     <MenuItem x:Name="Mi_ResetSound" Header="Reset Sound"/>
                 </MenuItem>
+                <MenuItem Header="Preferences">
+                    <CheckBox x:Name="Mi_Prefer_MBT_1_1_0" Content="Prefer_MBT_1_1_0" ToolTip="Switch between Measure:Beat:Tick Start at 0:0:0 and 1:1:0 for TrackView"/>
+                </MenuItem>
                 <MenuItem Header="_Info">
                     <MenuItem x:Name="Mi_About" Header="_About">
                         <MenuItem.Icon>

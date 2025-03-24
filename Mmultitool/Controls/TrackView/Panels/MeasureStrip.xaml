@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mmultitool"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="200" SnapsToDevicePixels="True" UseLayoutRounding="False" ClipToBounds="True">
+             d:DesignHeight="30" d:DesignWidth="200" SnapsToDevicePixels="True"  ClipToBounds="True">
     <Grid>
             
     </Grid>

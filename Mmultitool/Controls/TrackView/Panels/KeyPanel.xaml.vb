@@ -107,6 +107,28 @@
         List.Add(item)
     End Sub
 
+    Public Function GetKeyItem(NoteNumber As Byte) As KeyItem
+        Dim list As List(Of KeyItem)
+
+        If SelectedView = ViewType.RandomList Then
+            list = RandomList
+        ElseIf SelectedView = ViewType.RangeList Then
+            list = RangeList
+        Else
+            list = FullRangeList
+        End If
+
+        Dim kitem As KeyItem
+        kitem = list.Find(Function(x) x.NoteNumber = NoteNumber)
+
+        If kitem Is Nothing Then
+            Dim nfo As Track.UsedNotesInfo = TrackPanel.TrackData.GetUsedNotesInfo
+            Return New KeyItem
+        End If
+
+        Return kitem
+    End Function
+
 
     Private KeyPanelMaxWidth As Double = 50.0
     Private ScaleY As Double = 1.0
@@ -247,6 +269,7 @@
             TrackPanel.MasterVScroll.Value = KeyPanelVScroll.VerticalOffset
         End If
     End Sub
+
 
     'Private Sub KeyPanel_MouseMove(sender As Object, e As MouseEventArgs) Handles KeyPanel.MouseMove
     '    Dim pt As Point
