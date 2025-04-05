@@ -1,6 +1,6 @@
 # Mmultitool
 **Midi Multi Tool** is intended to be a library that will provide various functions related to MIDI data. Instead of working on similar functions in several projects, parts of this work are brought together here.  
-The library is written for .Net Framework and the preferred application type is a WPF app (.Net Framework)
+The library is currently written for .Net Framework and the preferred application type is a WPF app (.Net Framework)
 
 
 
@@ -20,14 +20,21 @@ The selected events can be copied to the Clipboard using **right-click**. From t
 The player is designed for monitoring one or more events in the list and also for other internal purposes.
 
 ### Midifile Writer
-Just started. Mainly to write created or edited content to a standard MidiFile.  
-Further development work is still necessary
+Just started. Mainly to write created or edited content to a standard MidiFile Type 1.  
+Further development work is still necessary, for example implementing Type 0 and an option dialog. 
+
+### EventList Writer
+Allows changing single events in the list. Contains some code parts for converting, displaying and changing MidiEvents and MetaEvents.
+
+### TrackView
+The well-known piano roll view. **Currently only a view, no editing options yet**.  
+Contains work related to displaying notes in a scalable and scrollable panel. These panels are then stacked vertically to display multiple tracks at once.
 
 ---
 ### Using from WinForms
 The library can also be used by a WinForms application, although there may be restrictions when using the controls.  
-For example, in a WPF Application, EventLister's DataGridRowBackground property appears in the VisualStudio Properties window and can be edited there, 
-while in a WinForms application the EventLister control is hidden behind the ElementHost and the properties are only accessible via code.  
+For example, in a **WPF** application, EventLister's DataGridRowBackground property appears in the VisualStudio Properties window and can be edited there, 
+while in a **WinForms** application the EventLister control is hidden behind the ElementHost and the properties are only accessible via code.  
 
 ```
 EventLister1.DataGridRowBackground = Brushes.AliceBlue
