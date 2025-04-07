@@ -305,9 +305,10 @@
     <Resource Include="Controls\TrackView\TrackView design notes.txt" />
     <Resource Include="Resources\Images\ChevronUpGroup_24x.png" />
     <Resource Include="Resources\Images\ChevronDownGroup_24x.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

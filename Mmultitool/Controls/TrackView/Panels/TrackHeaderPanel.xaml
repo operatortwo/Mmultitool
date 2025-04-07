@@ -14,7 +14,7 @@
         <Button x:Name="btnSwitchMode" Content="V" HorizontalAlignment="Left" Margin="61,45,0,0" VerticalAlignment="Top" ClickMode="Press" Width="18" Height="20" Background="#FFECF7F9"/>
         <CheckBox x:Name="cbDrumView" Content="DrumView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,80,0,0"/>
 
-        <duc:SmallSlider x:Name="sldTrackScaleY" Height="20" Width="80" Margin="5,130,0,5" VerticalAlignment="Top" HorizontalAlignment="Left" DecimalPlaces="1" MaximumValue="2.5" MinimumValue="0.2" StepValue="0.1" Value="1" ValueChanged="sldTrackScaleY_ValueChanged" SliderBrush="#FF9C40FD" Background="#FFEDD6F3"/>
+        <duc:SmallSlider x:Name="sldTrackScaleY" Height="20" Width="80" Margin="5,130,0,5" VerticalAlignment="Top" HorizontalAlignment="Left" DecimalPlaces="1" MaximumValue="2.5" MinimumValue="0.2" StepValue="0.1" Value="1" ValueChanged="sldTrackScaleY_ValueChanged" SliderBrush="#FF9C40FD" Background="#FFEDD6F3" MouseWheelHandled="True"/>
         <Label Content="Scale Y" HorizontalAlignment="Left" Margin="5,109,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
     </Grid>
 </UserControl>

@@ -375,6 +375,11 @@ Knob
  </summary>
  <param name="args">Arguments associated with the ValueChanged event.</param>
 </member>
+<member name="F:DailyUserControls.Knob.MouseWheelHandledProperty">
+ <summary>
+ Set to true to prevent MouseWheel-Event from bubbling up. For example, if the control belongs to the content of a ScrollViewer.
+ </summary>
+</member>
 <member name="M:DailyUserControls.Knob.InitializeComponent">
 <summary>
 InitializeComponent
@@ -448,6 +453,11 @@ NumericUpDown
  Simulate DownButton_Click. This can be used for cascading controls.
  </summary>
 </member>
+<member name="F:DailyUserControls.NumericUpDown.MouseWheelHandledProperty">
+ <summary>
+ Set to true to prevent MouseWheel-Event from bubbling up. For example, if the control belongs to the content of a ScrollViewer.
+ </summary>
+</member>
 <member name="M:DailyUserControls.NumericUpDown.InitializeComponent">
 <summary>
 InitializeComponent
@@ -519,6 +529,11 @@ SelectorButton
  </summary>
  <param name="args">Arguments associated with the ValueChanged event.</param>
 </member>
+<member name="F:DailyUserControls.SelectorButton.MouseWheelHandledProperty">
+ <summary>
+ Set to true to prevent MouseWheel-Event from bubbling up. For example, if the control belongs to the content of a ScrollViewer.
+ </summary>
+</member>
 <member name="M:DailyUserControls.SelectorButton.InitializeComponent">
 <summary>
 InitializeComponent
@@ -577,6 +592,11 @@ SmallSlider
   the UI with operations in code, and in other special situations.
  </summary>
  <param name="Value"></param>
+</member>
+<member name="F:DailyUserControls.SmallSlider.MouseWheelHandledProperty">
+ <summary>
+ Set to true to prevent MouseWheel-Event from bubbling up. For example, if the control belongs to the content of a ScrollViewer.
+ </summary>
 </member>
 <member name="M:DailyUserControls.SmallSlider.InitializeComponent">
 <summary>
@@ -691,6 +711,36 @@ VU_Bar
 <member name="M:DailyUserControls.VU_Bar.InitializeComponent">
 <summary>
 InitializeComponent
+</summary>
+</member>
+<member name="T:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+<summary>
+GeneratedInternalTypeHelper
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+<summary>
+CreateInstance
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+<summary>
+GetPropertyValue
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+<summary>
+SetPropertyValue
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+<summary>
+CreateDelegate
+</summary>
+</member>
+<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+<summary>
+AddEventHandler
 </summary>
 </member>
 </members>
