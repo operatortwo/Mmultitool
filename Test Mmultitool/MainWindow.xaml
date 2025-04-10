@@ -33,7 +33,7 @@
                     <MenuItem x:Name="Mi_ResetSound" Header="Reset Sound"/>
                 </MenuItem>
                 <MenuItem Header="Preferences">
-                    <CheckBox x:Name="Mi_Prefer_MBT_1_1_0" Content="Prefer_MBT_1_1_0" ToolTip="Switch between Measure:Beat:Tick Start at 0:0:0 and 1:1:0 for TrackView"/>
+                    <MenuItem x:Name="Mi_Prefer_MBT_1_1_0" Header="Start M:B:T at 1:1:0" ToolTip="Switch between Measure:Beat:Tick Start at 0:0:0 and 1:1:0" IsCheckable="True"/>
                 </MenuItem>
                 <MenuItem Header="_Info">
                     <MenuItem x:Name="Mi_About" Header="_About">

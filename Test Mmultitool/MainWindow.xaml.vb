@@ -370,5 +370,7 @@ Class MainWindow
         Else
             Prefer_MBT_1_1_0 = False            ' Measure:Beat:Ticks starts at 0:0:0 in TrackView
         End If
+
+
     End Sub
 End Class

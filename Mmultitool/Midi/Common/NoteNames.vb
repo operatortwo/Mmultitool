@@ -6,6 +6,9 @@
     ' GM_VoiceNames -- SortedList(Of Integer, String)       {0, "Acoustic Grand Piano"},...
     ' Get_GM_DrumVoiceName(KeyNum As Byte) As String        35 --> "Acoustic Bass Drum"
     ' GM_DrumVoiceNames -- SortedList(Of Integer, String)   {35, "Acoustic Bass Drum"},...
+    ' GS DrumPatchNames -- SortedList(Of Integer, String)   {24, "Electric"},
+    ' Get_GS_DrumPatchName(PatchNum As Byte) As String      24 --> "Electric"   --  "" if not listed
+
 
     ' assumed (not verified) a Standard 88Keys Keyboard goes from  A0 - C8  (NoteNumber 21 - 108)
 
@@ -533,5 +536,40 @@
 
         Return List
     End Function
+
+
+#Region "GS DrumPatchNames"
+
+    ''' <summary>
+    ''' Returns the GS DrumPatchName from GS DrumKeyNumber
+    ''' </summary>
+    ''' <param name="PatchNum"></param>
+    ''' <returns>Patchname if listed, else ""</returns>
+    Public Function Get_GS_DrumPatchName(PatchNum As Byte) As String
+        Dim str As String = ""
+
+        If GS_DrumPatchNames.TryGetValue(PatchNum, str) = True Then
+            Return str
+        Else
+            Return ""
+        End If
+
+    End Function
+    ''' <summary>
+    ''' GS DrumPatchNames sorted by PatchNumber
+    ''' </summary>
+    Public ReadOnly GS_DrumPatchNames As New SortedList(Of Integer, String) From
+          {
+{8, "GS Room"},
+{16, "GS Power"},
+{24, "GS Electric"},
+{25, "GS TR808"},
+{32, "GS Jazz"},
+{40, "GS Brush"},
+{48, "GS Orchestral"},
+{56, "GS Sound FX"}
+}
+
+#End Region
 
 End Module

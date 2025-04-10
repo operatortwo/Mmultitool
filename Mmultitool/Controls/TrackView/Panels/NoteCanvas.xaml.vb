@@ -1,4 +1,6 @@
-﻿Public Class NoteCanvas
+﻿Imports Mmultitool.KeyPanel
+
+Public Class NoteCanvas
     Friend TrackPanel As TrackPanel                 ' Parent of Parent, set in NotePanel _Loaded
     Friend NotePanel As NotePanel                   ' Parent, set in NotePanel _Loaded
 
@@ -172,11 +174,26 @@
 
 
     Private Sub UserControl_MouseLeave(sender As Object, e As MouseEventArgs)
-        TrackView.lbl_MousePosition.Content = "Leave"
+        TrackView.lbl_MousePosition.Content = "NC Leave"
     End Sub
 
     Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)
         Dim pt As Point = e.GetPosition(Me)
-        TrackView.lbl_MousePosition.Content = Math.Round(pt.X, 2) & " " & Math.Round(pt.Y, 2)
+
+        Dim scb = TrackView.MasterHScroll
+        Dim TickAtPtX As Integer = (scb.Value + pt.X) / ScaleX * TrackView.PixelToTicksFactor
+        Dim posx As String = TimeTo_MBT(TickAtPtX, TrackView.TPQ)
+
+        Dim kitem As KeyItem = TrackPanel.KeyPanel.GetKeyItem(CInt(pt.Y / ScaleY))
+        If kitem IsNot Nothing Then
+            If TrackPanel.KeyPanel.IsDrumView = False Then
+                TrackPanel.TrackView.lbl_MousePosition.Content = kitem.NoteName & "   " & posx
+            Else
+                TrackPanel.TrackView.lbl_MousePosition.Content = kitem.DrumName & "   " & posx
+            End If
+        Else
+            TrackPanel.TrackView.lbl_MousePosition.Content = "Nothing"
+        End If
+
     End Sub
 End Class

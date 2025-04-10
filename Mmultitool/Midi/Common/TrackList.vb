@@ -18,7 +18,8 @@
 
     Public Class Track
         Public Name As String = ""
-        Public Channel As Byte
+        Public Mute As Boolean
+        Public EventListPtr As Integer                      ' ptr to EventList, f.e. ptr to next event while playing
         Public EventList As New List(Of TrackEventX)
 
         Public Class UsedNotesInfo

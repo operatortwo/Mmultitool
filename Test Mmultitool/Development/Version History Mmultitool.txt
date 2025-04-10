@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2025 04 10		1.0.4.9		added preload, before big clean-up
 2025 04 07		1.0.4.8		duc 1.0.8.3 to prevent track scrolling with mousewheel when over SmallSlider or NumericUpDown
 2025 04 05		1.0.4.7		TrackView: vertical grid for notes
 2025 03 24		1.0.4.6		TrackView: draw notes

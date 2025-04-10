@@ -78,10 +78,6 @@ Public Class TrackView
 
         Next
 
-        '--- convert Evets to 480 TPQ base ---
-
-
-
     End Sub
 
     Public Sub UpdateVoiceColumnWidth(newwidth As Double)
@@ -171,6 +167,59 @@ Public Class TrackView
         Next
     End Sub
 
-
 #End Region
+
+
+
+    Private Sub btnPreload_Click(sender As Object, e As RoutedEventArgs) Handles btnPreload.Click
+
+        ' get channel of first MidiEvent
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            For Each trev In panel.TrackData.EventList
+                If trev.Type = EventType.MidiEvent Then
+                    panel.VoicePanel.nudMidiChannel.Value = trev.Channel
+                    Exit For
+                End If
+            Next
+        Next
+
+        ' get first program change
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            For Each trev In panel.TrackData.EventList
+                If trev.TypeX = EventTypeX.ProgramChange Then
+                    panel.VoicePanel.nudGmVoice.Value = trev.Data1
+                    Exit For
+                End If
+            Next
+        Next
+
+        ' get first channel volume
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            For Each trev In panel.TrackData.EventList
+                If trev.TypeX = EventTypeX.ControlChange Then
+                    If trev.Data1 = 7 Then
+                        panel.VoicePanel.ssldVolume.Value = trev.Data2
+                        Exit For
+                    End If
+                End If
+            Next
+        Next
+
+
+        ' get first pan
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            For Each trev In panel.TrackData.EventList
+                If trev.TypeX = EventTypeX.ControlChange Then
+                    If trev.Data1 = 10 Then
+                        panel.VoicePanel.ssldPan.Value = trev.Data2
+                        Exit For
+                    End If
+                End If
+            Next
+        Next
+
+
+    End Sub
+
+
 End Class

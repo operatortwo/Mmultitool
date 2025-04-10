@@ -116,10 +116,76 @@ Public Class KeyCanvas
 
     Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)
         Dim pt As Point = e.GetPosition(Me)
-        TrackPanel.TrackView.lbl_MousePosition_Note.Content = Math.Round(pt.X, 2) & " " & Math.Round(pt.Y, 2)
+        Dim kitem As KeyItem = KeyPanel.GetKeyItem(CInt(pt.Y / ScaleY))
+        If kitem IsNot Nothing Then
+            If KeyPanel.IsDrumView = False Then
+                TrackPanel.TrackView.lbl_MousePosition_Note.Content = kitem.NoteName
+            Else
+                TrackPanel.TrackView.lbl_MousePosition_Note.Content = kitem.DrumName
+            End If
+        Else
+                TrackPanel.TrackView.lbl_MousePosition_Note.Content = "Nothing"
+        End If
+
+        '---
+
+        If kitem IsNot Nothing Then
+            If e.LeftButton = MouseButtonState.Pressed Then
+
+                If kitem.NoteNumber <> NoteNumberPlaying Then
+                    PlayTrev.Status = &H90 Or TrackPanel.VoicePanel.nudMidiChannel.Value
+                    PlayTrev.Data1 = NoteNumberPlaying
+                    PlayTrev.Data2 = 0
+                    Play_Manually(PlayTrev)                         ' previous note off
+                    '--- new note on
+                    PlayTrev.Data1 = kitem.NoteNumber
+                    PlayTrev.Data2 = 100
+                    Play_Manually(PlayTrev)
+                    NoteNumberPlaying = kitem.NoteNumber
+                End If
+            End If
+        End If
+
+    End Sub
+
+
+    Private NoteNumberPlaying As Byte = 128
+    Private PlayTrev As New TrackEventX With {.Type = EventType.MidiEvent}
+
+    Private Sub UserControl_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
+        Dim pt As Point = e.GetPosition(Me)
+        Dim kitem As KeyItem = KeyPanel.GetKeyItem(CInt(pt.Y / ScaleY))
+        If kitem IsNot Nothing Then
+            PlayTrev.Status = &H90 Or TrackPanel.VoicePanel.nudMidiChannel.Value
+            PlayTrev.Data1 = kitem.NoteNumber
+            PlayTrev.Data2 = 100
+            Play_Manually(PlayTrev)
+            NoteNumberPlaying = kitem.NoteNumber
+        End If
+
+    End Sub
+
+    Private Sub UserControl_MouseLeftButtonUp(sender As Object, e As MouseButtonEventArgs)
+        If NoteNumberPlaying < 128 Then
+            PlayTrev.Status = &H90 Or TrackPanel.VoicePanel.nudMidiChannel.Value
+            PlayTrev.Data1 = NoteNumberPlaying
+            PlayTrev.Data2 = 0
+            Play_Manually(PlayTrev)
+            NoteNumberPlaying = 128
+        End If
     End Sub
 
     Private Sub UserControl_MouseLeave(sender As Object, e As MouseEventArgs)
-        TrackPanel.TrackView.lbl_MousePosition_Note.Content = "Leave"
+        TrackPanel.TrackView.lbl_MousePosition_Note.Content = "KC Leave"
+
+        If NoteNumberPlaying < 128 Then
+            PlayTrev.Status = &H90 Or TrackPanel.VoicePanel.nudMidiChannel.Value
+            PlayTrev.Data1 = NoteNumberPlaying
+            PlayTrev.Data2 = 0
+            Play_Manually(PlayTrev)
+            NoteNumberPlaying = 128
+        End If
     End Sub
+
+
 End Class

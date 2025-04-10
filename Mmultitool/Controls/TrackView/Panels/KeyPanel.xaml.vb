@@ -122,13 +122,37 @@
 
         Dim kitem As KeyItem
         kitem = list.Find(Function(x) x.NoteNumber = NoteNumber)
-
-        If kitem Is Nothing Then
-            Dim nfo As Track.UsedNotesInfo = TrackPanel.TrackData.GetUsedNotesInfo
-            Return New KeyItem
-        End If
+        If kitem Is Nothing Then kitem = New KeyItem
 
         Return kitem
+    End Function
+
+    Public Function GetKeyItem(Position As Integer) As KeyItem
+        Dim list As List(Of KeyItem)
+
+        If SelectedView = ViewType.RandomList Then
+            list = RandomList
+        ElseIf SelectedView = ViewType.RangeList Then
+            list = RangeList
+        Else
+            list = FullRangeList
+        End If
+
+        Dim rangeStart As Integer = Position
+        Dim rangeEnde As Integer = Position + KeyItemDefaultHeight - 1
+
+        Dim kitem As KeyItem
+
+        For Each item As KeyItem In list
+            If Position >= item.StartPosition Then
+                If Position <= (item.StartPosition + KeyItemDefaultHeight) Then
+                    kitem = item
+                    Return kitem
+                End If
+            End If
+        Next
+
+        Return Nothing
     End Function
 
 
@@ -140,17 +164,11 @@
         ScaleY = TrackPanel.TrackHeaderPanel.TrackScaleY
 
         KeyCanvas.Height = GetKeyPanelHeight()
-
         UpdateMasterVScroll()
-
-
         KeyCanvas.InvalidateVisual()
 
-
         'DrawKeys()
-
         TrackPanel.NotePanel.UpdateView()
-
     End Sub
 
     Public Sub UpdateMasterVScroll()
@@ -163,79 +181,45 @@
     End Sub
 
 
-    Private Sub DrawKeys()
-        If TrackPanel IsNot Nothing Then
-            KeyPanelMaxWidth = TrackPanel.KeysColumn.MaxWidth
-            If TrackPanel.TrackHeaderPanel IsNot Nothing Then
-                Dim scaleY As Double = TrackPanel.TrackHeaderPanel.sldTrackScaleY.Value
-            End If
-        End If
+    'Private Sub DrawKeys()
+    '    If TrackPanel IsNot Nothing Then
+    '        KeyPanelMaxWidth = TrackPanel.KeysColumn.MaxWidth
+    '        If TrackPanel.TrackHeaderPanel IsNot Nothing Then
+    '            Dim scaleY As Double = TrackPanel.TrackHeaderPanel.sldTrackScaleY.Value
+    '        End If
+    '    End If
 
-        'KeyPanel.Children.Clear()
+    '    'KeyPanel.Children.Clear()
 
-        If SelectedView = ViewType.FullRangeList Then
-            DrawKeys(FullRangeList)
-        ElseIf SelectedView = ViewType.RangeList Then
-            DrawKeys(RangeList)
-        ElseIf SelectedView = ViewType.RandomList Then
-            DrawKeys(RandomList)
-        End If
-    End Sub
-
-    Private Sub DrawKeys(List As List(Of KeyItem))
-        Exit Sub
-
-
-        For Each item In List
-
-            If IsDrumView = False Then
-                If item.IsBlackKey = True Then
-                    'InsertRectangle(KeyPanel, 1, item.StartPosition * ScaleY, 50, item.Height * ScaleY)
-                End If
-            End If
-
-            If IsDrumView = False Then
-                ' InsertText(KeyPanel, item.NoteName, 5, item.StartPosition * ScaleY)
-            Else
-                ' InsertText(KeyPanel, item.DrumName, 5, item.StartPosition * ScaleY)
-            End If
-
-            ' InsertHorizontalLine(KeyPanel, 5, KeyPanelMaxWidth, (item.StartPosition + item.Height) * ScaleY)
-
-        Next
-
-    End Sub
-
-    'Private Sub InsertText(panel As Canvas, text As String, left As Double, top As Double)
-    '    Dim tb As New TextBlock
-    '    tb.Text = text
-    '    Canvas.SetLeft(tb, left)
-    '    Canvas.SetTop(tb, top)
-    '    tb.IsHitTestVisible = False
-    '    panel.Children.Add(tb)
+    '    If SelectedView = ViewType.FullRangeList Then
+    '        DrawKeys(FullRangeList)
+    '    ElseIf SelectedView = ViewType.RangeList Then
+    '        DrawKeys(RangeList)
+    '    ElseIf SelectedView = ViewType.RandomList Then
+    '        DrawKeys(RandomList)
+    '    End If
     'End Sub
 
-    'Private Sub InsertHorizontalLine(panel As Canvas, left As Double, right As Double, top As Double)
-    '    Dim line As New Line
-    '    line.X1 = left
-    '    line.X2 = right
-    '    line.Y1 = top
-    '    line.Y2 = top
-    '    line.Stroke = Brushes.Gray
-    '    line.StrokeThickness = 0.5
-    '    line.IsHitTestVisible = False
-    '    panel.Children.Add(line)
-    'End Sub
+    'Private Sub DrawKeys(List As List(Of KeyItem))
+    '    Exit Sub
 
-    'Private Sub InsertRectangle(panel As Canvas, left As Double, top As Double, width As Double, height As Double)
-    '    Dim rect As New Rectangle
-    '    Canvas.SetLeft(rect, left)
-    '    Canvas.SetTop(rect, top)
-    '    rect.Width = width
-    '    rect.Height = height
-    '    rect.Fill = Brushes.LightGray
-    '    rect.IsHitTestVisible = False
-    '    panel.Children.Add(rect)
+    '    For Each item In List
+
+    '        If IsDrumView = False Then
+    '            If item.IsBlackKey = True Then
+    '                'InsertRectangle(KeyPanel, 1, item.StartPosition * ScaleY, 50, item.Height * ScaleY)
+    '            End If
+    '        End If
+
+    '        If IsDrumView = False Then
+    '            ' InsertText(KeyPanel, item.NoteName, 5, item.StartPosition * ScaleY)
+    '        Else
+    '            ' InsertText(KeyPanel, item.DrumName, 5, item.StartPosition * ScaleY)
+    '        End If
+
+    '        ' InsertHorizontalLine(KeyPanel, 5, KeyPanelMaxWidth, (item.StartPosition + item.Height) * ScaleY)
+    '    Next
+
     'End Sub
 
     Private Function GetKeyPanelHeight() As Double
