@@ -120,8 +120,8 @@ Partial Public Module Sequencer
                 End If
             End If
 
-            ElseIf (tev.Status = &HF0) Or (tev.Status = &HF7) Then
-                If tev.DataX.Count > 0 Then
+        ElseIf (tev.Status = &HF0) Or (tev.Status = &HF7) Then
+            If tev.DataX.Count > 0 Then
                 Dim sysex(tev.DataX.Count) As Byte
                 sysex(0) = tev.Status
                 tev.DataX.CopyTo(sysex, 1)

@@ -2,16 +2,7 @@
     Public Class Tracklist
         Public Tracks As New List(Of Track)
 
-        Private _TPQ As Integer = 120
-        Public Property TPQ As Integer
-            Get
-                Return _TPQ
-            End Get
-            Set(value As Integer)
-                If value < 1 Then value = 1
-                _TPQ = value
-            End Set
-        End Property
+        Public Const TPQ = 480
 
         Public MaxLength As UInteger
     End Class
@@ -67,8 +58,6 @@
     Public Function CreateTracklist(Mtracks As List(Of TrackChunk), TPQsource As Integer) As Tracklist
         Dim trklist As New Tracklist
 
-        trklist.TPQ = TPQsource
-
         If Mtracks Is Nothing Then Return trklist          ' no data
 
         Dim ntrk As Track
@@ -99,6 +88,20 @@
 
         Next
 
+        '--- convert time and duration to TPQ 480 based if necessary.
+
+        If TPQsource <> Tracklist.TPQ Then
+            For Each trk In trklist.Tracks
+                For Each trev In trk.EventList
+                    'Newtime = Time * DestinationTPQ / SourceTPQ                    
+                    trev.Time = trev.Time * Tracklist.TPQ / TPQsource
+                    If trev.Duration > 0 Then
+                        trev.Duration = trev.Duration * Tracklist.TPQ / TPQsource      ' scale up duration
+                    End If
+                Next
+            Next
+        End If
+
         '--- get length (ticks)
 
         Dim ttrev As TrackEventX
@@ -111,17 +114,13 @@
             End If
         Next
 
-        lasttime = MModule1.GetTimeOfNextBeat(lasttime, TPQsource)          ' round to beat
+        lasttime = MModule1.GetTimeOfNextBeat(lasttime, Tracklist.TPQ)          ' round to beat
         trklist.MaxLength = lasttime
 
         ' split multichannel track to singlechannel tracks
 
         Return trklist
     End Function
-
-
-
-
 
 
 End Module

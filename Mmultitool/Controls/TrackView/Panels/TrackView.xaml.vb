@@ -28,28 +28,12 @@ Public Class TrackView
         lblNumberOfBeats.Content = ""
         If TrackList Is Nothing Then Exit Sub
 
-        If trklist.TPQ <> TPQ Then
-            For Each trk In trklist.Tracks
-                For Each trev In trk.EventList
-                    'Newtime = Time * DestinationTPQ / SourceTPQ
-                    trev.Time = trev.Time * TPQ / trklist.TPQ
-                    If trev.Duration > 0 Then
-                        trev.Duration = trev.Duration * TPQ / trklist.TPQ       ' scale up duration
-                    End If
-                Next
-            Next
-            trklist.MaxLength = trklist.MaxLength * TPQ / trklist.TPQ
-            trklist.TPQ = TPQ
-        End If
+        Dim beatlen As Single = trklist.MaxLength / Tracklist.TPQ
+        lblNumberOfBeats.Content = beatlen & "  " & TimeTo_MBT(trklist.MaxLength - 1, TPQ)
 
-        Dim beatlen As Single = trklist.MaxLength / trklist.TPQ
-        lblNumberOfBeats.Content = beatlen & "  " & TimeTo_MBT_0(trklist.MaxLength, TPQ)
         MasterHScroll.Value = 0
         Dim e As New ScrollEventArgs(ScrollEventType.First, 0)
         MasterHScroll_Scroll(Me, e)
-
-
-
 
         For Each track In TrackList.Tracks
             Dim trkp As New TrackPanel
