@@ -1,43 +1,65 @@
-﻿Imports MS.Internal
-
-Public Module Sequencer
+﻿Public Module Player
     'High-frequency timer should be limited to a single instance to conserve system resources.
     'That's why a module and not a class is used here. This prevents multiple instances.
 
-    Public Event TestEvent()            ' works
     Public Event MidiOutShortMsg(status As Byte, data1 As Byte, data2 As Byte)
     Public Event MidiOutLongMsg(SysExData As Byte())
 
-    Public ReadOnly Property PlaySequenceErrors As Integer  ' Number of Catches in the Play_Sequence Sub
-    Public ReadOnly Property SequencerTime As Double        ' Sequencer Ticks, Sequencer position
-    Public ReadOnly Property IsSequencerRunning As Boolean           ' Is Sequencer Running ?
+    Public Const PlayerTPQ = 480                            ' Ticks per Quarter Note 
+    Private Const TPQdiv60 = 8                              ' auxiliary  480 \  60 = 8
 
-    Public Const SequencerTPQ = 960                                  ' Ticks per Quarter Note 
-    Private Const TPQdiv60 = SequencerTPQ \ 60                       ' auxiliary
+    ' plays one or more tracks simultaneously
+    Public ReadOnly Property TrackPlayerErrors As Integer       ' Number of Catches in Play TrackList
+    Public ReadOnly Property TrackPlayerTime As Double          ' TrackPlayer Ticks, TrackPlayer position
+    Public ReadOnly Property IsTrackPlayerRunning As Boolean     ' True while TrackPlayer is running
 
-    Private _BPM As Single = 120
+    ' plays one or more sequences independently
+    Public ReadOnly Property SequencePlayerErrors As Integer    ' Number of Catches in Play SequenceList
+    Public ReadOnly Property SequencePlayerTime As Double       ' SequencePlayer Ticks, SequencePlayer position
+    Public ReadOnly Property IsSequencePlayerRunning As Boolean ' True while SequencePlayer is running
+
+    Private _TrackPlayerBPM As Single = 120
     ''' <summary>
     ''' Tempo (BeatsPerMinute) Minimum: 10, Maximum: 300. Values above and below will be corrected    
     ''' </summary>
     ''' <returns></returns>
-    Public Property SequencerBPM As Single                      ' tempo (Beats per Minute)
+    Public Property TrackPlayerBPM As Single                      ' tempo (Beats per Minute)
         Get
-            Return _BPM
+            Return _TrackPlayerBPM
         End Get
         Set(value As Single)
             If value < 10 Then
-                _BPM = 10
+                _TrackPlayerBPM = 10
             ElseIf value > 300 Then
-                _BPM = 300
+                _TrackPlayerBPM = 300
             Else
-                _BPM = value
+                _TrackPlayerBPM = value
+            End If
+        End Set
+    End Property
+
+    Private _SequencePlayerBPM As Single = 120
+    ''' <summary>
+    ''' Tempo (BeatsPerMinute) Minimum: 10, Maximum: 300. Values above and below will be corrected    
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property SequencePlayerBPM As Single                      ' tempo (Beats per Minute)
+        Get
+            Return _SequencePlayerBPM
+        End Get
+        Set(value As Single)
+            If value < 10 Then
+                _SequencePlayerBPM = 10
+            ElseIf value > 300 Then
+                _SequencePlayerBPM = 300
+            Else
+                _SequencePlayerBPM = value
             End If
         End Set
     End Property
 
     Private ReadOnly Stopwatch As New Stopwatch         ' to accurately measure elapsed time
     Private LastStopwatchTick As Long                   ' last Stopwatch.elapsedTicks    
-
 
     Private Declare Auto Function timeBeginPeriod Lib "winmm.dll" (uPeriod As UInteger) As UInteger
     Private Declare Auto Function timeEndPeriod Lib "winmm.dll" (uPeriod As UInteger) As UInteger
@@ -111,7 +133,6 @@ Public Module Sequencer
 
         Dim currentTick As Long = Stopwatch.ElapsedTicks
         Dim DeltaTicks As Long                                      'stopwatch ticks
-        Dim DeltaSongTicks As Double                                ' player ticks
 
         DeltaTicks = currentTick - LastStopwatchTick
         LastStopwatchTick = currentTick
@@ -119,20 +140,42 @@ Public Module Sequencer
         'Dim DeltaMilliSeconds As Double = DeltaTicks / Stopwatch.Frequency * 1000
 
         ' Ticks = time(ms) * BPM * TPQ / 60'000
-        ' Ticks = time(sec) * BPM * TPQ / 60                        ' 960 / 60 = 16     (TPQdiv60)
+        ' Ticks = time(sec) * BPM * TPQ / 60                        ' 480 / 60 = 8     (TPQdiv60)
         ' Ticks = time(sec) * BPM * 16
-        DeltaSongTicks = DeltaTicks / Stopwatch.Frequency * SequencerBPM * TPQdiv60
 
-        '--- Sequencer ---
-        If IsSequencerRunning = True Then
-            _SequencerTime += DeltaSongTicks
+
+        '--- Play TrackList ---
+
+        If IsTrackPlayerRunning = True Then
+            Dim DeltaTrackPlayerTicks As Double
+            DeltaTrackPlayerTicks = DeltaTicks / Stopwatch.Frequency * TrackPlayerBPM * TPQdiv60
+
+            _TrackPlayerTime += DeltaTrackPlayerTicks
 
             ' catch exceptions, make sure the tick ends as quickly as possible
             Try
-                Do_TimedNoteOff(SequencerTime)                      ' NoteOff processing
+                TrackPlayer.Do_TimedNoteOff(TrackPlayerTime)         ' NoteOff processing for TrackPlayer
+                'PlayTrackList      xxxx
+            Catch
+                _TrackPlayerErrors += 1
+            End Try
+
+        End If
+
+        '--- Play SequenceList ---
+
+        If IsSequencePlayerRunning = True Then
+            Dim DeltaSequencePlayerTicks As Double
+            DeltaSequencePlayerTicks = DeltaTicks / Stopwatch.Frequency * SequencePlayerBPM * TPQdiv60
+
+            _SequencePlayerTime += DeltaSequencePlayerTicks
+
+            ' catch exceptions, make sure the tick ends as quickly as possible
+            Try
+                SequencePlayer.Do_TimedNoteOff(SequencePlayerTime)                     ' NoteOff processing for SequencePlayer
                 PlaySequenceList()
             Catch
-                _PlaySequenceErrors += 1
+                _SequencePlayerErrors += 1
             End Try
 
         End If
@@ -140,26 +183,26 @@ Public Module Sequencer
     End Sub
 
     Public Sub StartSequencer()
-        If IsSequencerRunning = True Then Exit Sub
+        If IsSequencePlayerRunning = True Then Exit Sub
         Start_Timer()
-        _IsSequencerRunning = True
+        _IsSequencePlayerRunning = True
     End Sub
 
     Public Sub StopSequencer()
-        If IsSequencerRunning = False Then Exit Sub
-        AllRunningNotesOff()
+        If IsSequencePlayerRunning = False Then Exit Sub
+        SequencePlayer.AllRunningNotesOff()
         Stop_Timer()
-        _IsSequencerRunning = False
+        _IsSequencePlayerRunning = False
     End Sub
 
     Public Sub Set_SequencerTime(newTime As Double)
-        If IsSequencerRunning = True Then
-            If newTime < SequencerTime Then
-                AllRunningNotesOff()
+        If IsSequencePlayerRunning = True Then
+            If newTime < SequencePlayerTime Then
+                SequencePlayer.AllRunningNotesOff()
             End If
         End If
 
-        _SequencerTime = newTime
+        _SequencePlayerTime = newTime
     End Sub
 
 End Module

@@ -397,7 +397,7 @@ Public Class EventListWriter
 
             Dim seq As Sequence
             seq = CreateSequence(DataGrid1.SelectedItems, EvliTPQ)
-            Sequencer.PlaySequence(seq, DoLoop)
+            Player.PlaySequence(seq, DoLoop)
         End If
     End Sub
 

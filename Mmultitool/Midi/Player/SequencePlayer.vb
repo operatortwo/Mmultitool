@@ -1,4 +1,90 @@
-﻿Partial Public Module Sequencer
+﻿Partial Public Module Player
+
+
+    Private SequenceList As New List(Of Sequence)
+
+    Private Sub PlaySequenceList()
+        Dim CurrenTime As Long = SequencePlayerTime
+        For Each seq In SequenceList
+            PlayThisSequence(seq, CurrenTime)
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Start sequencer if necessary, clear SequenceList and add sequence to SequeneList
+    ''' </summary>
+    ''' <param name="seq">sequence to play</param>
+    ''' <param name="DoLoop">repeat sequence at the end ?</param>
+    Public Sub PlaySequence(seq As Sequence, DoLoop As Boolean)
+        ' the public sub 
+        If IsSequencePlayerRunning = False Then StartSequencer()
+        '--- insert seq to sequence list
+        SequenceList.Clear()                                    ' remove old sequences
+        seq.StartTime = GetTimeOfNextBeat(SequencePlayerTime)
+        seq.StartOffset = 0
+        seq.DoLoop = DoLoop
+        SequenceList.Add(seq)
+    End Sub
+
+    Private Sub PlayThisSequence(seq As Sequence, CurrentTime As Long)
+        If seq Is Nothing Then Exit Sub
+        If seq.Ended = True Then Exit Sub
+        If CurrentTime < seq.StartTime Then Exit Sub
+        If seq.EventListPtr >= seq.EventList.Count Then Exit Sub
+
+        Dim tev As TrackEventX
+
+        tev = seq.EventList(seq.EventListPtr)
+
+        While seq.StartTime + seq.StartOffset + tev.Time <= CurrentTime
+            SequencePlayer.PlayEvent(CurrentTime, seq.StartTime + seq.StartOffset + tev.Time, tev)
+            MoveEventListPtr(seq)
+            If seq.EventListPtr >= seq.EventList.Count Then Exit While
+            tev = seq.EventList(seq.EventListPtr)
+        End While
+
+        'tev = seq.EventList(seq.EventListPtr)
+        'If seq.StartTime + seq.StartOffset + tev.Time <= CurrentTime Then
+        '    PlayEvent(CurrentTime, seq.StartTime + seq.StartOffset + tev.Time, tev)
+        '    seq.EventListPtr += 1                       ' xxx
+        'End If
+
+        'Public Property Name As String = ""             ' need Property for WPF DataBinding
+        'Public StartTime As UInteger                    ' in Ticks 
+        'Public StartOffset As UInteger                  ' for repeated play
+        'Public Length As UInteger                       ' in ticks (1 beat = 960), for the sequence itself
+        'Public Duration As UInteger                     ' while
+        'Public DoLoop As Boolean                        ' restart at end (higher priority than Duration)
+        'Public Ended As Boolean                         ' needed ?
+        'Public EventListPtr As Integer                  ' ptr to next item in EventList
+        'Public EventList As New List(Of TrackEventX)
+        'Public StartValues As New SequenceStartValues   ' optional
+
+    End Sub
+
+    Private Sub MoveEventListPtr(seq As Sequence)
+        seq.EventListPtr += 1                           ' xxx
+        If seq.EventListPtr >= seq.EventList.Count Then
+            ' if do loop
+            If seq.DoLoop = True Then
+                seq.StartOffset += seq.Length
+                seq.EventListPtr = 0
+                Exit Sub
+            End If
+
+            ' duration ?
+        End If
+
+    End Sub
+
+
+    Public Sub PlaySingleEvent(tev As TrackEventX, SourceTPQ As Integer)
+        If IsSequencePlayerRunning = False Then StartSequencer()
+        Dim tev2 As TrackEventX = tev.Copy(False)
+        tev2.Duration = ToSeqTime(tev.Duration, SourceTPQ)
+        SequencePlayer.PlayEvent(SequencePlayerTime, SequencePlayerTime, tev2)
+    End Sub
+
 
     Public Function CreateSequence(items As IList, TPQsource As Integer) As Sequence
         Dim seq As New Sequence
@@ -40,7 +126,7 @@
     End Function
 
 
-    Public Class Sequence                               ' Fixed TPQ: always 960
+    Public Class Sequence                               ' Fixed TPQ: always 480
         Public Property Name As String = ""             ' need Property for WPF DataBinding
         Public StartTime As UInteger                    ' in Ticks 
         Public StartOffset As UInteger                  ' for repeated play
@@ -73,7 +159,7 @@
     ''' <returns>Time 1 rounded up to next beat mark</returns>
     Public Function GetTimeOfNextBeat(Time As UInteger) As UInteger
         Dim Newtime As UInteger
-        Dim TicksPerUnit As Integer = SequencerTPQ          ' here a unit is a beat = 1 quaterNote Length
+        Dim TicksPerUnit As Integer = PlayerTPQ             ' here a unit is a beat = 1 quaterNote Length
         Dim ElapsedTicks As UInteger                        ' in this unit
         Dim RemainingTicks As UInteger                      ' in this unit     
 
@@ -91,7 +177,7 @@
     ''' <returns>Time 1 rounded down to previous beat mark</returns>
     Public Function GetTimeOfPreviousBeat(Time As UInteger) As UInteger
         Dim Newtime As UInteger
-        Dim TicksPerUnit As UInteger = SequencerTPQ           ' here a unit is a beat = 1 quaterNote Length
+        Dim TicksPerUnit As UInteger = PlayerTPQ            ' here a unit is a beat = 1 quaterNote Length
         Dim ElapsedTicks As UInteger                        ' in this unit
 
         ElapsedTicks = Time Mod TicksPerUnit

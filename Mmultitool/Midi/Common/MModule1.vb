@@ -594,9 +594,9 @@ Public Module MModule1
         Dim beat As Integer                         ' beat inside measure
         Dim ticks As Integer
 
-        meas = time \ (4 * SequencerTPQ)            '  \ = returns an integer result        
-        beat = CInt((time \ 960) Mod 4)
-        ticks = CInt(time Mod 960)
+        meas = time \ (4 * PlayerTPQ)            '  \ = returns an integer result        
+        beat = CInt((time \ PlayerTPQ) Mod 4)
+        ticks = CInt(time Mod PlayerTPQ)
 
         Return CStr(meas) & " : " & CStr(beat) & " : " & CStr(ticks)                ' base 0
     End Function
@@ -635,8 +635,8 @@ Public Module MModule1
     ''' <returns>Converted time in sequencer ticks</returns>
     Public Function ToSeqTime(Time As UInteger, SourceTPQ As Integer) As UInteger
         If SourceTPQ = 0 Then Return Time
-        If SourceTPQ = SequencerTPQ Then Return Time
-        Return Time * SequencerTPQ / SourceTPQ
+        If SourceTPQ = PlayerTPQ Then Return Time
+        Return Time * PlayerTPQ / SourceTPQ
     End Function
 
 

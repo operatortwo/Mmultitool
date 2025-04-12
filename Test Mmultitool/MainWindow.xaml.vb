@@ -20,8 +20,8 @@ Class MainWindow
             EventLister1.SetEventListContainer(evlic)
         End If
 
-        AddHandler Sequencer.MidiOutShortMsg, AddressOf MidiOutShortMsg
-        AddHandler Sequencer.MidiOutLongMsg, AddressOf MidiOutLongMsg
+        AddHandler Player.MidiOutShortMsg, AddressOf MidiOutShortMsg
+        AddHandler Player.MidiOutLongMsg, AddressOf MidiOutLongMsg
         AddHandler ScreenRefreshTimer.Elapsed, AddressOf ScreenRefreshTimer_Tick
 
         '--- in case the Application Version has changed, Upgrade the settings ---
@@ -70,6 +70,7 @@ Class MainWindow
         End If
 
         '---
+
     End Sub
 
     Private Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
@@ -91,7 +92,7 @@ Class MainWindow
         Close()
     End Sub
     Private Sub Mi_MidiPorts_Click(sender As Object, e As RoutedEventArgs) Handles Mi_MidiPorts.Click
-        If IsSequencerRunning = True Then StopSequencer()
+        If IsSequencePlayerRunning = True Then StopSequencer()
         Dim dlg As New DlgMidiPorts(Me)
         dlg.Owner = Me
         dlg.ShowDialog()
@@ -196,16 +197,16 @@ Class MainWindow
 
     Public Delegate Sub ScreenRefresh_Delegate()
     Private Sub ScreenRefresh()
-        Dim time As Long = CLng(Sequencer.SequencerTime)
+        Dim time As Long = CLng(Player.SequencePlayerTime)
         lblSequencerPosition.Content = TimeTo_MBT_0(time)
 
 
         '--- check if BPM was changed by SetTempo event
-        If SequencerBPM <> BpmSlider.Value Then
+        If SequencePlayerBPM <> BpmSlider.Value Then
             ' it's more clear to have no decimal digits on the slider, even when some files
             ' can SetTempo to BPM with 2 decimal digits.
             ' (f.e 109.46 BPM, but most creators use Integer values)
-            BpmSlider.SetValueSilent(Math.Round(SequencerBPM, 0))       ' update without ValueChanged event
+            BpmSlider.SetValueSilent(Math.Round(SequencePlayerBPM, 0))       ' update without ValueChanged event
         End If
 
     End Sub
@@ -222,7 +223,7 @@ Class MainWindow
     End Sub
 
     Private Sub BpmSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles BpmSlider.ValueChanged
-        SequencerBPM = BpmSlider.Value
+        SequencePlayerBPM = BpmSlider.Value
     End Sub
 
     Private Sub MainVolumeSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles MainVolumeSlider.ValueChanged

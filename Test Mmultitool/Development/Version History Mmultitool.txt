@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2025 04 12		1.0.4.11	Sequencer divided into TrackPlayer and SequencePlayer
 2025 04 10		1.0.4.10	TrackList fixed to TPQ 480
 2025 04 10		1.0.4.9		added preload, before big clean-up
 2025 04 07		1.0.4.8		duc 1.0.8.3 to prevent track scrolling with mousewheel when over SmallSlider or NumericUpDown

@@ -338,7 +338,7 @@ Public Class EventLister
         If sel IsNot Nothing Then
             Dim tev As TrackEventX = TryCast(sel, TrackEventX)
             If tev IsNot Nothing Then
-                Sequencer.PlaySingleEvent(tev, EvliTPQ)
+                Player.PlaySingleEvent(tev, EvliTPQ)
             End If
         End If
     End Sub
@@ -350,7 +350,7 @@ Public Class EventLister
 
             Dim seq As Sequence
             seq = CreateSequence(DataGrid1.SelectedItems, EvliTPQ)
-            Sequencer.PlaySequence(seq, DoLoop)
+            Player.PlaySequence(seq, DoLoop)
         End If
     End Sub
 

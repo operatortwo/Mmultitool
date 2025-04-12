@@ -159,9 +159,10 @@
     <Compile Include="Midi\File\Read\MidifileRead.vb" />
     <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
     <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
-    <Compile Include="Midi\Sequencer\SequencerSeq.vb" />
-    <Compile Include="Midi\Sequencer\SequencerPlay.vb" />
-    <Compile Include="Midi\Sequencer\Sequencer.vb" />
+    <Compile Include="Midi\Player\Common.vb" />
+    <Compile Include="Midi\Player\SequencePlayer.vb" />
+    <Compile Include="Midi\Player\OutputStage.vb" />
+    <Compile Include="Midi\Player\Timer.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
