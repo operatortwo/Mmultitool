@@ -163,6 +163,7 @@
     <Compile Include="Midi\Player\SequencePlayer.vb" />
     <Compile Include="Midi\Player\OutputStage.vb" />
     <Compile Include="Midi\Player\Timer.vb" />
+    <Compile Include="Midi\Player\TrackPlayer.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>

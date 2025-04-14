@@ -2,8 +2,8 @@
 
 Partial Public Module Player
 
-    Friend TrackPlayer As New NoteOffProcessor
-    Friend SequencePlayer As New NoteOffProcessor
+    Friend WithEvents TrackPlayer As New NoteOffProcessor
+    Friend WithEvents SequencePlayer As New NoteOffProcessor
 
     ' TrackPlayer and SequencePlayer have their own Time, BPM, NoteOffList.
     ' However, the events are sent to the same MIDI device and are only separated by the MIDI channel
@@ -11,7 +11,19 @@ Partial Public Module Player
     ' For example, if the SequencePlayer sends a ProgramChange to Midi channel 2,
     ' then all notes sent by TrackPlayer on channel 2 will also be played with this sound.
 
+    Private Sub TrackPlayer_SetTempo(BPM As Single) Handles TrackPlayer.SetTempo
+        TrackPlayerBPM = BPM
+    End Sub
+
+    Private Sub SequencePlayer_SetTempo(BPM As Single) Handles SequencePlayer.SetTempo
+        SequencePlayerBPM = BPM
+    End Sub
+
+
     Friend Class NoteOffProcessor
+
+        Public Event SetTempo(BPM As Single)
+
         ''' <summary>
         ''' Play a TrackEventX
         ''' </summary>
@@ -41,7 +53,8 @@ Partial Public Module Player
                     If tev.DataX.Count >= 3 Then
                         Dim micros As Integer
                         micros = tev.DataX(0) * 65536 + tev.DataX(1) * 256 + tev.DataX(2)
-                        SequencePlayerBPM = CSng(Math.Round(60 * 1000 * 1000 / micros, 2))       ' 2 Decimal places
+                        'SequencePlayerBPM = CSng(Math.Round(60 * 1000 * 1000 / micros, 2))       ' 2 Decimal places
+                        RaiseEvent SetTempo(CSng(Math.Round(60 * 1000 * 1000 / micros, 2)))     ' 2 Decimal places                        
                     End If
                 End If
 

@@ -95,6 +95,7 @@
                         <Grid Margin="0,108,0,0" Background="#FFEDF5FF">
                             <Mmultitool:TrackView x:Name="TrackView1"/>
                         </Grid>
+                        <Button x:Name="btnPlayTracklist" Content="Play Tracklist" HorizontalAlignment="Left" Margin="192,64,0,0" VerticalAlignment="Top" Width="84"/>
                     </Grid>
                 </TabItem>
             </TabControl>

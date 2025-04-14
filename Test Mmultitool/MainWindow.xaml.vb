@@ -74,7 +74,8 @@ Class MainWindow
     End Sub
 
     Private Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
-        StopSequencer()
+        StopTrackPlayer()
+        StopSequencePlayer()
         ScreenRefreshTimer.Stop()
 
         My.Settings.LastMidiOut = MidiOut_Selected
@@ -92,7 +93,8 @@ Class MainWindow
         Close()
     End Sub
     Private Sub Mi_MidiPorts_Click(sender As Object, e As RoutedEventArgs) Handles Mi_MidiPorts.Click
-        If IsSequencePlayerRunning = True Then StopSequencer()
+        If IsSequencePlayerRunning = True Then StopTrackPlayer()
+        If IsSequencePlayerRunning = True Then StopSequencePlayer()
         Dim dlg As New DlgMidiPorts(Me)
         dlg.Owner = Me
         dlg.ShowDialog()
@@ -213,13 +215,13 @@ Class MainWindow
 
 
     Private Sub btnRestartSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnRestartSequencer.Click
-        Set_SequencerTime(0)
+        Set_SequencePlayerTime(0)
     End Sub
     Private Sub btnStopSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnStopSequencer.Click
-        StopSequencer()
+        StopSequencePlayer()
     End Sub
     Private Sub btnStartSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnStartSequencer.Click
-        StartSequencer()
+        StartSequencePlayer()
     End Sub
 
     Private Sub BpmSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles BpmSlider.ValueChanged
@@ -245,7 +247,7 @@ Class MainWindow
     End Sub
 
     Private Sub btnEvlisterStop_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlisterStop.Click
-        StopSequencer()
+        StopSequencePlayer()
         'Set_SequencerTime(0)
     End Sub
 
@@ -269,7 +271,7 @@ Class MainWindow
     End Sub
 
     Private Sub btnEvlistWrStop_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlistWrStop.Click
-        StopSequencer()
+        StopSequencePlayer()
         'Set_SequencerTime(0)
     End Sub
 
@@ -365,6 +367,12 @@ Class MainWindow
         End If
     End Sub
 
+
+    Private Sub btnPlayTracklist_Click(sender As Object, e As RoutedEventArgs) Handles btnPlayTracklist.Click
+        PlayTracklist(TrackView1.TrackList)
+    End Sub
+
+
     Private Sub Mi_Prefer_MBT_1_1_0_Click(sender As Object, e As RoutedEventArgs) Handles Mi_Prefer_MBT_1_1_0.Click
         If Mi_Prefer_MBT_1_1_0.IsChecked = True Then
             Prefer_MBT_1_1_0 = True
@@ -374,4 +382,6 @@ Class MainWindow
 
 
     End Sub
+
+
 End Class

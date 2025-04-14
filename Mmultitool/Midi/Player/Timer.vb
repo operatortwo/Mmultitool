@@ -155,7 +155,7 @@
             ' catch exceptions, make sure the tick ends as quickly as possible
             Try
                 TrackPlayer.Do_TimedNoteOff(TrackPlayerTime)         ' NoteOff processing for TrackPlayer
-                'PlayTrackList      xxxx
+                PlayTrackList()
             Catch
                 _TrackPlayerErrors += 1
             End Try
@@ -182,27 +182,50 @@
 
     End Sub
 
-    Public Sub StartSequencer()
+
+    Public Sub StartTrackPlayer()
+        If TimerID = 0 Then Start_Timer()
+        If IsTrackPlayerRunning = True Then Exit Sub
+        _IsTrackPlayerRunning = True
+    End Sub
+
+    Public Sub StopTrackPlayer()
+        If IsTrackPlayerRunning = False Then Exit Sub
+        TrackPlayer.AllRunningNotesOff()
+        _IsTrackPlayerRunning = False
+    End Sub
+
+    Public Sub Set_TrackPlayerTime(newTime As Double)
+        If IsTrackPlayerRunning = True Then
+            If newTime < TrackPlayerTime Then
+                TrackPlayer.AllRunningNotesOff()
+            End If
+        End If
+        _TrackPlayerTime = newTime
+    End Sub
+
+
+    Public Sub StartSequencePlayer()
+        If TimerID = 0 Then Start_Timer()
         If IsSequencePlayerRunning = True Then Exit Sub
-        Start_Timer()
         _IsSequencePlayerRunning = True
     End Sub
 
-    Public Sub StopSequencer()
+    Public Sub StopSequencePlayer()
         If IsSequencePlayerRunning = False Then Exit Sub
         SequencePlayer.AllRunningNotesOff()
         Stop_Timer()
         _IsSequencePlayerRunning = False
     End Sub
 
-    Public Sub Set_SequencerTime(newTime As Double)
+    Public Sub Set_SequencePlayerTime(newTime As Double)
         If IsSequencePlayerRunning = True Then
             If newTime < SequencePlayerTime Then
                 SequencePlayer.AllRunningNotesOff()
             End If
         End If
-
         _SequencePlayerTime = newTime
     End Sub
+
 
 End Module

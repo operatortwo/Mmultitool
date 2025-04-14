@@ -3,27 +3,13 @@
 
     Private SequenceList As New List(Of Sequence)
 
-    Private Sub PlaySequenceList()
+#Region "Play"
+
+    Private Sub PlaySequenceList()                      ' called from Timer TickCallback
         Dim CurrenTime As Long = SequencePlayerTime
         For Each seq In SequenceList
             PlayThisSequence(seq, CurrenTime)
         Next
-    End Sub
-
-    ''' <summary>
-    ''' Start sequencer if necessary, clear SequenceList and add sequence to SequeneList
-    ''' </summary>
-    ''' <param name="seq">sequence to play</param>
-    ''' <param name="DoLoop">repeat sequence at the end ?</param>
-    Public Sub PlaySequence(seq As Sequence, DoLoop As Boolean)
-        ' the public sub 
-        If IsSequencePlayerRunning = False Then StartSequencer()
-        '--- insert seq to sequence list
-        SequenceList.Clear()                                    ' remove old sequences
-        seq.StartTime = GetTimeOfNextBeat(SequencePlayerTime)
-        seq.StartOffset = 0
-        seq.DoLoop = DoLoop
-        SequenceList.Add(seq)
     End Sub
 
     Private Sub PlayThisSequence(seq As Sequence, CurrentTime As Long)
@@ -77,14 +63,35 @@
 
     End Sub
 
+#End Region
+
+#Region "Set Sequence"
+
+
+    ''' <summary>
+    ''' Start sequencer if necessary, clear SequenceList and add sequence to SequeneList
+    ''' </summary>
+    ''' <param name="seq">sequence to play</param>
+    ''' <param name="DoLoop">repeat sequence at the end ?</param>
+    Public Sub PlaySequence(seq As Sequence, DoLoop As Boolean)
+        ' the public sub 
+        If IsSequencePlayerRunning = False Then StartSequencePlayer()
+        '--- insert seq to sequence list
+        SequenceList.Clear()                                    ' remove old sequences
+        seq.StartTime = GetTimeOfNextBeat(SequencePlayerTime)
+        seq.StartOffset = 0
+        seq.DoLoop = DoLoop
+        SequenceList.Add(seq)
+    End Sub
+
+
 
     Public Sub PlaySingleEvent(tev As TrackEventX, SourceTPQ As Integer)
-        If IsSequencePlayerRunning = False Then StartSequencer()
+        If IsSequencePlayerRunning = False Then StartSequencePlayer()
         Dim tev2 As TrackEventX = tev.Copy(False)
         tev2.Duration = ToSeqTime(tev.Duration, SourceTPQ)
         SequencePlayer.PlayEvent(SequencePlayerTime, SequencePlayerTime, tev2)
     End Sub
-
 
     Public Function CreateSequence(items As IList, TPQsource As Integer) As Sequence
         Dim seq As New Sequence
@@ -125,6 +132,7 @@
         Return seq
     End Function
 
+#End Region
 
     Public Class Sequence                               ' Fixed TPQ: always 480
         Public Property Name As String = ""             ' need Property for WPF DataBinding
