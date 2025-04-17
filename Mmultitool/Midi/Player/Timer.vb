@@ -1,4 +1,6 @@
-﻿Public Module Player
+﻿Imports System.IO
+
+Public Module Player
     'High-frequency timer should be limited to a single instance to conserve system resources.
     'That's why a module and not a class is used here. This prevents multiple instances.
 
@@ -110,6 +112,27 @@
         End Set
     End Property
 
+    Sub New()
+        If Application.Current IsNot Nothing Then
+            If Application.Current.MainWindow IsNot Nothing Then
+                AddHandler Application.Current.MainWindow.Closing, AddressOf Dispose_Unmanaged_Resources
+            End If
+        End If
+    End Sub
+
+    Private Sub Dispose_Unmanaged_Resources()
+        ' stop Main Timer if still running
+        ' else we get Returncode 0xc0020001
+        Stop_Timer()
+    End Sub
+
+    ''' <summary>
+    ''' Only necessary when used from WinForms. 
+    ''' </summary>
+    Public Sub WinForms_Mmultitool_end()
+        Dispose_Unmanaged_Resources()
+    End Sub
+
     Private Sub Start_Timer()
         ' start the main timer
         If TimerID <> 0 Then Exit Sub
@@ -127,7 +150,6 @@
             TimerID = 0
         End If
     End Sub
-
 
     Private Sub TickCallback(uID As UInteger, uMsg As UInteger, dwUser As UInteger, dw1 As UInteger, dw2 As UInteger)
 
@@ -180,30 +202,9 @@
 
         End If
 
+
+
     End Sub
-
-
-    Public Sub StartTrackPlayer()
-        If TimerID = 0 Then Start_Timer()
-        If IsTrackPlayerRunning = True Then Exit Sub
-        _IsTrackPlayerRunning = True
-    End Sub
-
-    Public Sub StopTrackPlayer()
-        If IsTrackPlayerRunning = False Then Exit Sub
-        TrackPlayer.AllRunningNotesOff()
-        _IsTrackPlayerRunning = False
-    End Sub
-
-    Public Sub Set_TrackPlayerTime(newTime As Double)
-        If IsTrackPlayerRunning = True Then
-            If newTime < TrackPlayerTime Then
-                TrackPlayer.AllRunningNotesOff()
-            End If
-        End If
-        _TrackPlayerTime = newTime
-    End Sub
-
 
     Public Sub StartSequencePlayer()
         If TimerID = 0 Then Start_Timer()
@@ -213,8 +214,8 @@
 
     Public Sub StopSequencePlayer()
         If IsSequencePlayerRunning = False Then Exit Sub
+        _IsSequencePlayerRunning = False
         SequencePlayer.AllRunningNotesOff()
-        Stop_Timer()
         _IsSequencePlayerRunning = False
     End Sub
 
@@ -225,6 +226,46 @@
             End If
         End If
         _SequencePlayerTime = newTime
+    End Sub
+
+    Public Sub StartTrackPlayer()
+        If TimerID = 0 Then Start_Timer()
+        If IsTrackPlayerRunning = True Then Exit Sub
+        _IsTrackPlayerRunning = True
+    End Sub
+
+    Public Sub StopTrackPlayer()
+        If IsTrackPlayerRunning = False Then Exit Sub
+        _IsTrackPlayerRunning = False
+        TrackPlayer.AllRunningNotesOff()
+    End Sub
+
+    Public Sub Set_TrackPlayerTime(newTime As Double)
+        If IsTrackPlayerRunning = True Then
+            If newTime < TrackPlayerTime Then
+                TrackPlayer.AllRunningNotesOff()
+            End If
+        End If
+        _TrackPlayerTime = newTime
+        Set_TracklistEventPointers(newTime)
+    End Sub
+
+    Private Sub Set_TracklistEventPointers(newtime As Double)
+        If Tracklist1 IsNot Nothing Then
+            For Each trk In Tracklist1.Tracks
+                trk.EventListPtr = 0
+            Next
+
+            For Each trk In Tracklist1.Tracks
+                For Each trev In trk.EventList
+                    If trev.Time >= newtime Then
+                        Exit For
+                    End If
+                    trk.EventListPtr += 1
+                Next
+            Next
+        End If
+
     End Sub
 
 

@@ -11,7 +11,7 @@
         <Rectangle Fill="#FFE7E8FF" Stroke="#FFABADB3" Margin="2,0,0,0"/>
 
         <duc:ToggleButton x:Name="tgbtnMute" Width="32"  Height="20" Margin="18,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Mute" BorderBrush="#FF969697" BackgroundChecked="#FF9CEDFF" ClickMode="Press" TextChecked="Mute" TextUnchecked="Mute" />
-        <duc:VU_Bar x:Name="VU_Meter" Width="10" HorizontalAlignment="Left" Margin="5,2,0,0" BorderBrush="#FF969697" BorderThickness="1,1,1,1" Height="20" VerticalAlignment="Top"/>
+        <duc:VU_Bar x:Name="VU_Meter" Width="10" HorizontalAlignment="Left" Margin="5,2,0,0" BorderBrush="#FF969697" BorderThickness="1,1,1,1" Height="20" VerticalAlignment="Top" MaximumValue="127"/>
         <Label Content="Ch." HorizontalAlignment="Left" Margin="15,79,0,0" VerticalAlignment="Top" Padding="5,0"/>
         <duc:NumericUpDown x:Name="nudMidiChannel" MaximumValue="15" Margin="50,75,0,0" Height="23" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" MouseWheelHandled="True"/>
         <Label Content="GVc." HorizontalAlignment="Left" Margin="15,107,0,0" VerticalAlignment="Top" Padding="5,0"/>

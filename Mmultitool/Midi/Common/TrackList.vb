@@ -13,6 +13,20 @@
         Public EventListPtr As Integer                      ' ptr to EventList, f.e. ptr to next event while playing
         Public EventList As New List(Of TrackEventX)
 
+        ' for UI
+        Public ChannelUpdate As Boolean                     ' True if Updated
+        Public ProgramChangeUpdate As Boolean
+        Public ChannelVolumeUpdate As Boolean
+        Public PanUpdate As Boolean
+        Public VU_VelocityUpdate As Boolean
+
+        Public ChannelValue As Byte                         ' value if Update = True
+        Public ProgramChangeValue As Byte
+        Public ChannelVolumeValue As Byte
+        Public PanValue As Byte
+        Public VU_Velocity As Byte
+
+
         Public Class UsedNotesInfo
             Public ListOfUsedNotes As New List(Of Byte)
             Public NoteRangeStart As Byte = 0

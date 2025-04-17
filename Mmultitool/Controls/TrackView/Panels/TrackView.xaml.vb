@@ -19,7 +19,7 @@ Public Class TrackView
     End Sub
 
     ''' <summary>
-    ''' Assign a Tracklist to the TrackView and convert the Event times to TPQ 480 based if necessary.
+    ''' Assign a Tracklist to the TrackView. For playing it's also necessary to call Player.SetTracklist.
     ''' </summary>
     ''' <param name="trklist"></param>
     Public Sub SetTracklist(trklist As Tracklist)
@@ -46,8 +46,10 @@ Public Class TrackView
             TrackPanelStack.Children.Add(trkp)
         Next
 
-        Dim trkp0 As TrackPanel = TrackPanelStack.Children(0)
-        trkp0.IsExpanded = False
+        'Dim trkp0 As TrackPanel = TrackPanelStack.Children(0)
+        ' trkp0.IsExpanded = False
+
+        btnMuteUnMuteAll.IsChecked = False
 
         '--- Track 1 for development ---
         'If TrackList.Tracks.Count > 1 Then
@@ -63,6 +65,68 @@ Public Class TrackView
         Next
 
     End Sub
+
+    Public Sub ScreenRefresh()
+        If TrackPanelStack.CheckAccess = False Then Exit Sub   ' if the calling thread has no access to this object
+
+        Dim trk As Track
+
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            trk = panel.TrackData
+            If trk IsNot Nothing Then
+
+                If trk.ChannelUpdate = True Then
+                    panel.VoicePanel.nudMidiChannel.SetValueSilent(trk.ChannelValue)
+                    trk.ChannelUpdate = False
+                End If
+
+                If trk.ProgramChangeUpdate = True Then
+                    panel.VoicePanel.nudGmVoice.SetValueSilent(trk.ProgramChangeValue)
+
+                    If trk.ChannelValue <> 9 Then
+                        panel.VoicePanel.tbGmVoiceName.Text = Get_GM_VoiceName(trk.ProgramChangeValue)
+                    Else
+                        ' drum: maybe it's a known GS patch number
+                        Dim str As String = Get_GS_DrumPatchName(trk.ProgramChangeValue)
+                        If str = "" Then str = "Drum"
+                        panel.VoicePanel.tbGmVoiceName.Text = str
+                    End If
+
+                    trk.ProgramChangeUpdate = False
+                    End If
+
+                    If trk.ChannelVolumeUpdate = True Then
+                    panel.VoicePanel.ssldVolume.SetValueSilent(trk.ChannelVolumeValue)
+                    trk.ChannelVolumeUpdate = False
+                End If
+
+                If trk.PanUpdate = True Then
+                    panel.VoicePanel.ssldPan.SetValueSilent(trk.PanValue)
+                    trk.PanUpdate = False
+                End If
+
+
+                '--- VU Meter
+
+                If trk.VU_VelocityUpdate = True Then
+                    panel.VoicePanel.VU_Meter.Value = trk.VU_Velocity
+                    trk.VU_VelocityUpdate = False
+                Else
+                    'decrease value at each refresh
+                    If panel.VoicePanel.VU_Meter.Value > 0 Then
+                        If panel.VoicePanel.VU_Meter.Value < 20 Then
+                            panel.VoicePanel.VU_Meter.Value = 0
+                        Else
+                            panel.VoicePanel.VU_Meter.Value = panel.VoicePanel.VU_Meter.Value * 0.8
+                        End If
+                    End If
+                End If
+
+
+                End If
+        Next
+    End Sub
+
 
     Public Sub UpdateVoiceColumnWidth(newwidth As Double)
         For Each panel As TrackPanel In TrackPanelStack.Children
@@ -133,7 +197,41 @@ Public Class TrackView
         e.Handled = True            ' prevents scrollbar scrolling when MouseLeftBittonDown on GridSplitter
     End Sub
 
+    ''' <summary>
+    ''' Set all Tracks.IsExpanded to False
+    ''' </summary>
+    Public Sub CollapseAllTracks()
+        ' checked = AllCollapsed
+        If btnCollapseExpandAll.IsChecked = False Then
+            btnCollapseExpandAll.IsChecked = True                   ' Toggle
+        Else
+            For Each el In TrackPanelStack.Children
+                Dim tp As TrackPanel = TryCast(el, TrackPanel)
+                If tp IsNot Nothing Then
+                    tp.IsExpanded = False
+                End If
+            Next
+        End If
+    End Sub
+    ''' <summary>
+    ''' Set all Tracks.IsExpanded to True
+    ''' </summary>
+    Public Sub ExpandAllTracks()
+        ' unchecked = AllExpanded
+        If btnCollapseExpandAll.IsChecked = True Then
+            btnCollapseExpandAll.IsChecked = False                  ' Toggle
+        Else
+            For Each el In TrackPanelStack.Children
+                Dim tp As TrackPanel = TryCast(el, TrackPanel)
+                If tp IsNot Nothing Then
+                    tp.IsExpanded = True
+                End If
+            Next
+        End If
+    End Sub
+
     Private Sub btnCollapseExpandAll_Checked(sender As Object, e As RoutedEventArgs) Handles btnCollapseExpandAll.Checked
+        ' Set all Tracks.IsExpanded to False
         For Each el In TrackPanelStack.Children
             Dim tp As TrackPanel = TryCast(el, TrackPanel)
             If tp IsNot Nothing Then
@@ -143,6 +241,7 @@ Public Class TrackView
     End Sub
 
     Private Sub btnCollapseExpandAll_Unchecked(sender As Object, e As RoutedEventArgs) Handles btnCollapseExpandAll.Unchecked
+        ' Set all Tracks.IsExpanded to True
         For Each el In TrackPanelStack.Children
             Dim tp As TrackPanel = TryCast(el, TrackPanel)
             If tp IsNot Nothing Then
@@ -205,5 +304,15 @@ Public Class TrackView
 
     End Sub
 
+    Private Sub btnMuteUnMuteAll_Checked(sender As Object, e As RoutedEventArgs) Handles btnMuteUnMuteAll.Checked
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            panel.VoicePanel.tgbtnMute.IsChecked = True
+        Next
+    End Sub
 
+    Private Sub btnMuteUnMuteAll_Unchecked(sender As Object, e As RoutedEventArgs) Handles btnMuteUnMuteAll.Unchecked
+        For Each panel As TrackPanel In TrackPanelStack.Children
+            panel.VoicePanel.tgbtnMute.IsChecked = False
+        Next
+    End Sub
 End Class

@@ -166,6 +166,7 @@ Public Class TrackPanel
         If e.HorizontalChange <> 0 Then
             If TrackView IsNot Nothing Then
                 Dim NewWidth As Double = VoiceColumn.ActualWidth + e.HorizontalChange
+                If NewWidth < 0 Then NewWidth = 0
                 TrackView.UpdateVoiceColumnWidth(NewWidth)
             End If
         End If
@@ -175,6 +176,7 @@ Public Class TrackPanel
         If e.HorizontalChange <> 0 Then
             If TrackView IsNot Nothing Then
                 Dim NewWidth As Double = TrackHeaderColumn.ActualWidth + e.HorizontalChange
+                If NewWidth < 0 Then NewWidth = 0
                 TrackView.UpdateTrackHeaderColumnWidth(NewWidth)
             End If
         End If
@@ -184,6 +186,7 @@ Public Class TrackPanel
         If e.HorizontalChange <> 0 Then
             If TrackView IsNot Nothing Then
                 Dim NewWidth As Double = KeysColumn.ActualWidth + e.HorizontalChange
+                If NewWidth < 0 Then NewWidth = 0
                 TrackView.UpdateKeysColumnColumnWidth(NewWidth)
             End If
         End If

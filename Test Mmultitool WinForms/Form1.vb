@@ -1,4 +1,4 @@
-﻿Imports System.Windows.Media
+﻿Imports System.Windows
 Imports Mmultitool
 
 Public Class Form1
@@ -13,7 +13,7 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-
+        WinForms_Mmultitool_end()
     End Sub
 
     Private Sub btnOpen_Click(sender As Object, e As EventArgs) Handles btnOpen.Click

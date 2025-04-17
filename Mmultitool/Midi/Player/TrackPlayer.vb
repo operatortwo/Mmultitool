@@ -15,15 +15,17 @@
         If trk Is Nothing Then Exit Sub
         If trk.EventListPtr >= trk.EventList.Count Then Exit Sub
 
-        Dim tev As TrackEventX
+        Dim trev As TrackEventX
+        Dim mute As Boolean = trk.Mute
 
-        tev = trk.EventList(trk.EventListPtr)
+        trev = trk.EventList(trk.EventListPtr)
 
-        While tev.Time <= CurrentTime
-            TrackPlayer.PlayEvent(CurrentTime, tev.Time, tev)
+        While trev.Time <= CurrentTime
+            TrackPlayer.PlayEvent(CurrentTime, trev.Time, trev, mute)
+            Set_Track_UI_Notifications(trev, trk)
             trk.EventListPtr += 1
             If trk.EventListPtr >= trk.EventList.Count Then Exit While
-            tev = trk.EventList(trk.EventListPtr)
+            trev = trk.EventList(trk.EventListPtr)
         End While
 
     End Sub
@@ -34,23 +36,38 @@
 #Region "Set Tracklist"
 
     Public Sub PlayTracklist(tracklist As Tracklist)
-        Tracklist1 = tracklist
+        SetTracklist(tracklist)
+        StartTrackPlayer()
+    End Sub
 
+    ''' <summary>
+    ''' Assign a Tracklist to the Player. To to visualize it's also necessary to call Player.SetTracklist.
+    ''' The player itself also works without Trackview.
+    ''' </summary>
+    ''' <param name="tracklist"></param>
+    Public Sub SetTracklist(tracklist As Tracklist)
         If IsTrackPlayerRunning = True Then
             StopTrackPlayer()
         End If
 
+        Tracklist1 = tracklist
+
         '--- reset ptr to start --
+
         If tracklist IsNot Nothing Then
             For Each trk In tracklist.Tracks
                 trk.EventListPtr = 0
             Next
         End If
 
-        Set_TrackPlayerTime(0)
-        StartTrackPlayer()
+        For Each trk In tracklist.Tracks
+            Reset_UI_Notification(trk)
+        Next
 
+        Set_TrackPlayerTime(0)
     End Sub
+
+
 
 #End Region
 

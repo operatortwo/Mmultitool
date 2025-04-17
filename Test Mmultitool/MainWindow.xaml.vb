@@ -1,6 +1,4 @@
-﻿Imports System.Data
-Imports System.Security.Cryptography
-Imports DailyUserControls
+﻿Imports DailyUserControls
 Imports Mmultitool
 
 Class MainWindow
@@ -8,8 +6,6 @@ Class MainWindow
     Public Shared ScreenRefreshTimer As New Timers.Timer(50)       ' 80 ms Screen Timer (= 12.5 FPS)
 
     Private mifir As New MidifileRead
-
-
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         If mifir.ReadMidiFile("Echoes1.mid") = True Then
@@ -61,12 +57,10 @@ Class MainWindow
             Dim trklist As New Tracklist
             trklist = CreateTracklist(mifir3.TrackList, mifir3.TPQ)
 
-            TrackView1.SetTracklist(trklist)
-
-            'If trklist.Tracks.Count > 1 Then
-            '    TrackPanel1.TrackData = trklist.Tracks(1)
-            '    lblXnrOfEvents.Content = TrackPanel1.TrackData.EventList.Count & " Events"
-            'End If
+            TrackView1.SetTracklist(trklist)        ' Visualisation / UI
+            TrackView1.CollapseAllTracks()
+            Player.SetTracklist(trklist)            ' Player. Can also be used without TrackView.
+            ' wait for: StartTrackPlayer()
         End If
 
         '---
@@ -82,7 +76,6 @@ Class MainWindow
         My.Settings.LastTabIndex = TabControl1.SelectedIndex
         My.Settings.Prefer_MBT_1_1_0 = Mi_Prefer_MBT_1_1_0.IsChecked
         My.Settings.Save()
-
 
 
         MIO._End()                          ' close all MIDI-Ports
@@ -199,35 +192,64 @@ Class MainWindow
 
     Public Delegate Sub ScreenRefresh_Delegate()
     Private Sub ScreenRefresh()
-        Dim time As Long = CLng(Player.SequencePlayerTime)
-        lblSequencerPosition.Content = TimeTo_MBT_0(time)
 
 
-        '--- check if BPM was changed by SetTempo event
-        If SequencePlayerBPM <> BpmSlider.Value Then
-            ' it's more clear to have no decimal digits on the slider, even when some files
-            ' can SetTempo to BPM with 2 decimal digits.
-            ' (f.e 109.46 BPM, but most creators use Integer values)
-            BpmSlider.SetValueSilent(Math.Round(SequencePlayerBPM, 0))       ' update without ValueChanged event
+        If EventLister1.IsVisible Then
+            Dim time As Long = Player.SequencePlayerTime
+            lblSequencePlayerrPosition.Content = TimeTo_MBT(time, PlayerTPQ)
+            If SequencePlayerBPM <> ssldSequencePlayerBPM.Value Then
+                ssldSequencePlayerBPM.SetValueSilent(Math.Round(SequencePlayerBPM, 0))
+            End If
+
+        ElseIf TrackView1.IsVisible Then
+            Dim time As Long = Player.TrackPlayerTime
+            lblTrackPlayerrPosition.Content = TimeTo_MBT(time, PlayerTPQ)
+            If TrackPlayer.BpmUpdate = True Then
+                ssldTrackPlayerBPM.SetValueSilent(TrackPlayerBPM)
+                TrackPlayer.BpmUpdate = False
+            End If
+        End If
+
+
+        If TrackView1.IsVisible Then
+            TrackView1.ScreenRefresh()
         End If
 
     End Sub
 
-
-    Private Sub btnRestartSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnRestartSequencer.Click
-        Set_SequencePlayerTime(0)
+#Region "SequencePlayer"
+    Private Sub btnStartSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnStartSequencer.Click
+        StartSequencePlayer()
     End Sub
     Private Sub btnStopSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnStopSequencer.Click
         StopSequencePlayer()
     End Sub
-    Private Sub btnStartSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnStartSequencer.Click
-        StartSequencePlayer()
+    Private Sub btnRestartSequencer_Click(sender As Object, e As RoutedEventArgs) Handles btnRestartSequencer.Click
+        Set_SequencePlayerTime(0)
+    End Sub
+    Private Sub BpmSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldSequencePlayerBPM.ValueChanged
+        SequencePlayerBPM = ssldSequencePlayerBPM.Value
+    End Sub
+#End Region
+
+#Region "TrackPlayer"
+
+    Private Sub btnStartTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnStartTrackPlayer.Click
+        StartTrackPlayer()
     End Sub
 
-    Private Sub BpmSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles BpmSlider.ValueChanged
-        SequencePlayerBPM = BpmSlider.Value
+    Private Sub btnStopTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnStopTrackPlayer.Click
+        StopTrackPlayer()
     End Sub
 
+    Private Sub btnRestartTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnRestartTrackPlayer.Click
+        Set_TrackPlayerTime(0)
+    End Sub
+    Private Sub ssldTrackPlayerBPM_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldTrackPlayerBPM.ValueChanged
+        TrackPlayerBPM = ssldTrackPlayerBPM.Value
+    End Sub
+
+#End Region
     Private Sub MainVolumeSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles MainVolumeSlider.ValueChanged
         ' Master Volume for GM Instruments, Universal Real Time SysEx
         'F0 7F 7F 04 01 ll mm F7        ' ll = volume LSB, mm = volume MSB
@@ -362,16 +384,13 @@ Class MainWindow
             trklist = CreateTracklist(mifir.TrackList, mifir.TPQ)
             ' set trklist to trklist view
 
-            TrackView1.SetTracklist(trklist)
+            TrackView1.SetTracklist(trklist)        ' Visualisation / UI
+            TrackView1.CollapseAllTracks()
+            Player.SetTracklist(trklist)            ' Player. Can also be used without TrackView.
+            ' wait for: StartTrackPlayer()
 
         End If
     End Sub
-
-
-    Private Sub btnPlayTracklist_Click(sender As Object, e As RoutedEventArgs) Handles btnPlayTracklist.Click
-        PlayTracklist(TrackView1.TrackList)
-    End Sub
-
 
     Private Sub Mi_Prefer_MBT_1_1_0_Click(sender As Object, e As RoutedEventArgs) Handles Mi_Prefer_MBT_1_1_0.Click
         If Mi_Prefer_MBT_1_1_0.IsChecked = True Then

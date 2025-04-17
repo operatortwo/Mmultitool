@@ -35,7 +35,9 @@
         If nudMidiChannel.Value <> 9 Then
             tbGmVoiceName.Text = Get_GM_VoiceName(nudGmVoice.Value)         ' it's a voice name
         Else
-            tbGmVoiceName.Text = Get_GS_DrumPatchName(nudGmVoice.Value)     ' drum: maybe it's a known GS patch number
+            Dim str As String = Get_GS_DrumPatchName(nudGmVoice.Value)      ' drum: maybe it's a known GS patch number
+            If str = "" Then str = "Drum"
+            tbGmVoiceName.Text = str
         End If
     End Sub
 
@@ -51,5 +53,13 @@
         mtrev.Data1 = 10                                ' Panorama MSB
         mtrev.Data2 = e.NewValue
         Play_Manually(mtrev)
+    End Sub
+
+    Private Sub tgbtnMute_Checked(sender As Object, e As RoutedEventArgs) Handles tgbtnMute.Checked
+        TrackPanel.TrackData.Mute = True
+    End Sub
+
+    Private Sub tgbtnMute_Unchecked(sender As Object, e As RoutedEventArgs) Handles tgbtnMute.Unchecked
+        TrackPanel.TrackData.Mute = False
     End Sub
 End Class

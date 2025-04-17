@@ -2,43 +2,111 @@
 
 Partial Public Module Player
 
-    Friend WithEvents TrackPlayer As New NoteOffProcessor
-    Friend WithEvents SequencePlayer As New NoteOffProcessor
+    Public WithEvents SequencePlayer As New NoteOffProcessor
+    Public WithEvents TrackPlayer As New NoteOffProcessor
 
-    ' TrackPlayer and SequencePlayer have their own Time, BPM, NoteOffList.
+    ' SequencePlayer and TrackPlayer have their own Time, BPM, NoteOffList.
     ' However, the events are sent to the same MIDI device and are only separated by the MIDI channel
 
     ' For example, if the SequencePlayer sends a ProgramChange to Midi channel 2,
     ' then all notes sent by TrackPlayer on channel 2 will also be played with this sound.
 
-    Private Sub TrackPlayer_SetTempo(BPM As Single) Handles TrackPlayer.SetTempo
-        TrackPlayerBPM = BPM
-    End Sub
 
     Private Sub SequencePlayer_SetTempo(BPM As Single) Handles SequencePlayer.SetTempo
         SequencePlayerBPM = BPM
+        SequencePlayer.BPMUpdate = True
+    End Sub
+
+    Private Sub TrackPlayer_SetTempo(BPM As Single) Handles TrackPlayer.SetTempo
+        TrackPlayerBPM = BPM
+        TrackPlayer.BPMUpdate = True
     End Sub
 
 
-    Friend Class NoteOffProcessor
+    Private Sub Reset_UI_Notification(trk As Track)
+        trk.ChannelUpdate = False
+        trk.ProgramChangeUpdate = False
+        trk.ChannelVolumeUpdate = False
+        trk.PanUpdate = False
+
+        trk.ChannelValue = 0
+        trk.ProgramChangeValue = 0
+        trk.ChannelVolumeValue = 100            ' initial value
+        trk.PanValue = 64                       ' 64 = Center
+    End Sub
+
+    Private Sub Set_Track_UI_Notifications(trev As TrackEventX, trk As Track)
+        Dim status_high As Byte = trev.Status And &HF0
+        Dim channel As Byte = trev.Status And &HF
+
+        If status_high >= &H90 AndAlso status_high <= &HE0 Then
+
+            '--- channel ---
+
+            If trk.ChannelValue <> channel Then
+                trk.ChannelUpdate = True
+                trk.ChannelValue = channel
+            End If
+
+            ' &hA0, &hB0, &hC0, &hD0, &hE0,     PolyKeyPress, CtrlChg, ProgChg, ChPress, PitchBend
+            If status_high = MidiEventType.ProgramChange Then
+                trk.ProgramChangeUpdate = True
+                trk.ProgramChangeValue = trev.Data1
+            ElseIf status_high = MidiEventType.ControlChange Then
+                If trev.Data1 = 7 Then                                   ' Channel volume coarse (MSB)                    
+                    trk.ChannelVolumeUpdate = True
+                    trk.ChannelVolumeValue = trev.Data2
+                ElseIf trev.Data1 = 10 Then                              ' Panorama MSB
+                    trk.PanUpdate = True
+                    trk.PanValue = trev.Data2
+                End If
+            End If
+
+            '--- VU_Meter ---
+
+            If status_high = &H90 AndAlso trev.Data2 > 0 Then
+                trk.VU_Velocity = trev.Data2
+                trk.VU_VelocityUpdate = True
+            End If
+
+        End If
+
+    End Sub
+
+
+
+    Public Class NoteOffProcessor
 
         Public Event SetTempo(BPM As Single)
+
+        Public BPMUpdate As Boolean
+
+        ''' <summary>
+        ''' Play a TrackEventX with Mute option
+        ''' </summary>
+        ''' <param name="CurrentTime">Player Time</param>
+        ''' <param name="PlannedTime">calculated event time</param>
+        ''' <param name="tev">TrackEvent data</param>
+        Friend Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX)
+            PlayEvent(CurrentTime, PlannedTime, tev, False)
+        End Sub
 
         ''' <summary>
         ''' Play a TrackEventX
         ''' </summary>
-        ''' <param name="CurrentTime">Sequencer Time</param>
-        ''' <param name="PlannedTime">StartTime + StartOffset + TevTime</param>
-        ''' <param name="tev">Event data</param>
-        Public Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX)
+        ''' <param name="CurrentTime">Player Time</param>
+        ''' <param name="PlannedTime">calculated event time</param>
+        ''' <param name="tev">TrackEvent data</param>
+        ''' <param name="mute">mute NoteOn if set to TRUE</param>
+        Friend Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX, mute As Boolean)
             Dim status As Byte = tev.Status And &HF0            ' status without channel
 
             If (status >= &H80) And (status < &HF0) Then        ' corresponds to MidiEvent
 
-                If (status = &H90) And (tev.Data2 > 0) Then
-                    ' is NoteOn, excluding NoteOn with Velocity 0 (NoteOff), --> ignore &h9x NoteOff
-                    ' remove this note if already running (?)                
-                    PlayNote(CurrentTime, PlannedTime, tev.Channel, tev.Data1, tev.Data2, tev.Duration)       ' Note On + Duration
+                If (status = &H90) And (tev.Data2 > 0) Then     ' NoteOn                    
+                    If mute = False Then
+                        PlayNote(CurrentTime, PlannedTime, tev.Channel, tev.Data1, tev.Data2, tev.Duration)       ' Note On + Duration
+                    End If
                 Else
                     If status <> &H80 Then                                  ' --> ignore &h8x NoteOff
                         ' &hA0, &hB0, &hC0, &hD0, &hE0,     PolyKeyPress, CtrlChg, ProgChg, ChPress, PitchBend
@@ -67,10 +135,6 @@ Partial Public Module Player
                 End If
 
             End If
-
-            '--- Update values for sequencer panel (UI) ---
-
-            'PropertyUpdates(tev)
 
         End Sub
 
