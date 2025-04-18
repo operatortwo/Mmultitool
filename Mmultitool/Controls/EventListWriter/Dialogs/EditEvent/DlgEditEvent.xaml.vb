@@ -42,6 +42,12 @@ Public Class DlgEditEvent
         ChangedBgBrush = TryCast(Me.Resources("ChangedBgBrush"), Brush)           ' defined in xaml
         UnChangedBgBrush = TryCast(Me.Resources("UnChangedBgBrush"), Brush)           ' defined in xaml
 
+
+        If Evliw.DesiredTimeFormat = EventListWriter.TimeFormat.MBT_1_based Then
+            MBT_Editor1.IsMBT_Base1 = True
+            MBT_InputBox1.IsMBT_Base1 = True
+        End If
+
     End Sub
 
     Private evtinfo As EventTypeX_Information

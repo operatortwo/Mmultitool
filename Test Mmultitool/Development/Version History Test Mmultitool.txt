@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2025 05 18		1.0.4.15	some UI improvenments
 2025 04 17		1.0.4.14	Improvements for TrackPlayer and TrackView
 2025 04 14      1.0.4.12    V 1.0.4.12 added PlayTracklist
 2025 04 12		1.0.4.11	Sequencer divided into TrackPlayer and SequencePlayer

@@ -31,6 +31,14 @@ Public Class EventLister
         bind.Converter = StatusConvert              ' set converter for Status Column
     End Sub
 
+    Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
+        If Prefer_MBT_1_1_0 = False Then
+            cmbTimeFormat.SelectedIndex = 1
+        Else
+            cmbTimeFormat.SelectedIndex = 2
+        End If
+    End Sub
+
     '--- main data ---
     ''' <summary>
     ''' Collection of all Events, sorted by Time
@@ -199,6 +207,8 @@ Public Class EventLister
                 ChannelList.Add(chan)
             End If
         Next
+
+        ChannelList.Sort()
 
         '--- update Filter Lists
 
@@ -403,6 +413,5 @@ Public Class EventLister
         Next
         Return sb.ToString
     End Function
-
 
 End Class

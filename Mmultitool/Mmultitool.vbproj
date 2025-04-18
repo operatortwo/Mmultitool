@@ -131,6 +131,7 @@
     <Compile Include="Controls\TrackView\Panels\MeasureStrip.xaml.vb">
       <DependentUpon>MeasureStrip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TrackView\Panels\MeasureStripAdorner.vb" />
     <Compile Include="Controls\TrackView\Panels\NoteCanvas.xaml.vb">
       <DependentUpon>NoteCanvas.xaml</DependentUpon>
     </Compile>

@@ -35,7 +35,25 @@ KeyItem
 KeyPanel.Height = NumberOfNoteRows * PixelPerNoteRow * scaleY
 
 
- Public Function CreateTracklist(Mtracks As List(Of TrackChunk), TPQsource As Integer) As Tracklist
+Public Function CreateTracklist(Mtracks As List(Of TrackChunk), TPQsource As Integer) As Tracklist
+
+
+---
+
+Play Midifile
+Assuming: 
+	- each Track is using only 1 Midi Channel
+	- track Channel is set by Channel Messages on the Track (notify for UI, set at ScreenRefresh)
+	- Player uses channel (status-low) directly
+
+--> Editor has to set the right channel when inserting Notes (and other Channel related events)
+
+
+Alternatively for New Tracklist:
+	- Track-Channel is set from user
+	- Track-Channel overrides channel set in status-low of Notes and other Channel related events
+
+
 
 
 

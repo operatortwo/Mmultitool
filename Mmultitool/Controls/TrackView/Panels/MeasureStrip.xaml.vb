@@ -16,13 +16,14 @@ Public Class MeasureStrip
 
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         RenderOptions.SetEdgeMode(Me, EdgeMode.Aliased)            ' sharp edges
+        InitializePlayPositionAdorner()
     End Sub
 
     Protected Overrides Sub OnRender(dc As DrawingContext)
         MyBase.OnRender(dc)
 
         If TrackView Is Nothing Then Exit Sub
-        If TrackView.MeasureStrip Is Nothing Then Exit Sub
+        If TrackView.MeasureStrip1 Is Nothing Then Exit Sub
 
 
         Dim ScaleX As Double = Math.Round(TrackView.sldScaleX.Value, 1)
@@ -67,9 +68,9 @@ Public Class MeasureStrip
 
                 str = CurrentTick / tpq
                 glyphrun = CreateGlyphRun(str, GlyphTypeface, 12, New Point(posx + 5, ys + 25))
-                dc.DrawGlyphRun(Brushes.MediumBlue, glyphrun)
-            Else
-                dc.DrawLine(BeatPen, New Point(posx, ys), New Point(posx, ys + BeatMarkHeight))
+                    dc.DrawGlyphRun(Brushes.MediumBlue, glyphrun)
+                Else
+                    dc.DrawLine(BeatPen, New Point(posx, ys), New Point(posx, ys + BeatMarkHeight))
             End If
 
             CurrentTick += TickStep

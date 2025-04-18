@@ -35,7 +35,7 @@
             <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}"/>
 
             <Rectangle Grid.Column="1" Margin="0,0,0,1" Fill="#FFCDD2EC"/>
-            <local:MeasureStrip x:Name="MeasureStrip" Grid.Column="1"/>
+            <local:MeasureStrip x:Name="MeasureStrip1" Grid.Column="1"/>
             <duc:ToggleButton x:Name="btnCollapseExpandAll" Width="25" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,25,0,0" ClickMode="Press" TextChecked="" TextUnchecked="" ImageUnchecked="/Mmultitool;component/Resources/Images/ChevronUpGroup_24x.png" ImageChecked="/Mmultitool;component/Resources/Images/ChevronDownGroup_24x.png" BackgroundChecked="White" BackgroundUnchecked="#FFFFFEFE" ImageMargin="2,0,0,0" BorderBrush="{DynamicResource BorderBrush1}"/>
             <duc:ToggleButton x:Name="btnMuteUnMuteAll" Width="32" Height="20" Margin="45,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextChecked="M" TextUnchecked="M"  BackgroundChecked="#FF9CEDFF" ClickMode="Press" BorderBrush="#FF969697" />
             <Label Content="Length:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="112,9,0,0"/>

@@ -8,10 +8,6 @@ Imports DailyUserControls
 Public Class EventListWriter
     Inherits UserControl
 
-    Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
-
-    End Sub
-
     Public Sub New()
         ' required for the designer
         InitializeComponent()
@@ -36,22 +32,18 @@ Public Class EventListWriter
         bind = StatusCol.Binding
         bind.Converter = StatusConvert              ' set converter for Status Column
 
-
         CollectionView.Filter = AddressOf FilterFunction
 
-        ''--- test
-
-        'Dim trk As New NamedTrack With {.TrackNumber = 0, .TrackName = "0"}
-        'TrackList.Add(trk)
-        'ChannelList.Add(0)
-
-        'cbflistTrack.ItemListUpdate()
-        'cbflistChannel.ItemListUpdate()
-
-        'Dim trev As New TrackEventX With {.TypeX = EventTypeX.KeySignature, .Time = 400}
-        'TrackEvents.Add(trev)
-
     End Sub
+
+    Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
+        If Prefer_MBT_1_1_0 = False Then
+            cmbTimeFormat.SelectedIndex = 1
+        Else
+            cmbTimeFormat.SelectedIndex = 2
+        End If
+    End Sub
+
 
     '--- main data ---
     ''' <summary>
@@ -190,6 +182,8 @@ Public Class EventListWriter
                 ChannelList.Add(chan)
             End If
         Next
+
+        ChannelList.Sort()
 
         '--- update Filter Lists
 

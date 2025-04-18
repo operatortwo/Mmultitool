@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Controls.Primitives
+Imports Mmultitool.Player
 
 Public Class TrackView
 
@@ -15,7 +16,7 @@ Public Class TrackView
 
 
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
-        MeasureStrip.TrackView = Me
+        MeasureStrip1.TrackView = Me
     End Sub
 
     ''' <summary>
@@ -93,9 +94,9 @@ Public Class TrackView
                     End If
 
                     trk.ProgramChangeUpdate = False
-                    End If
+                End If
 
-                    If trk.ChannelVolumeUpdate = True Then
+                If trk.ChannelVolumeUpdate = True Then
                     panel.VoicePanel.ssldVolume.SetValueSilent(trk.ChannelVolumeValue)
                     trk.ChannelVolumeUpdate = False
                 End If
@@ -104,7 +105,6 @@ Public Class TrackView
                     panel.VoicePanel.ssldPan.SetValueSilent(trk.PanValue)
                     trk.PanUpdate = False
                 End If
-
 
                 '--- VU Meter
 
@@ -122,9 +122,25 @@ Public Class TrackView
                     End If
                 End If
 
-
-                End If
+            End If
         Next
+
+        '--- Refresh Play position ---
+
+
+        If Player.IsTrackPlayerRunning Then
+
+            If MeasureStrip1.MeasureStripAdornerLayer IsNot Nothing Then
+                MeasureStrip1.MeasureStripAdornerLayer.Update()
+            End If
+
+            'If Sequencer.IsRunning Then
+            '    TracksFooter.ScrollIntoView(Sequencer.SequencerTime)
+            'End If
+
+        End If
+
+
     End Sub
 
 
@@ -178,7 +194,7 @@ Public Class TrackView
 
     Private Sub sldScaleX_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles sldScaleX.ValueChanged
         If MasterHScroll IsNot Nothing Then SetHScrollValues()
-        MeasureStrip.InvalidateVisual()
+        MeasureStrip1.InvalidateVisual()
 
         For Each panel As TrackPanel In TrackPanelStack.Children
             panel.NotePanel.NoteCanvas.InvalidateVisual()
@@ -186,7 +202,7 @@ Public Class TrackView
     End Sub
 
     Private Sub MasterHScroll_Scroll(sender As Object, e As Primitives.ScrollEventArgs) Handles MasterHScroll.Scroll
-        MeasureStrip.InvalidateVisual()
+        MeasureStrip1.InvalidateVisual()
 
         For Each panel As TrackPanel In TrackPanelStack.Children
             panel.NotePanel.NoteCanvas.InvalidateVisual()
