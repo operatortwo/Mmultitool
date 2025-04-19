@@ -34,6 +34,11 @@
                 </MenuItem>
                 <MenuItem Header="Preferences">
                     <MenuItem x:Name="Mi_Prefer_MBT_1_1_0" Header="Start M:B:T at 1:1:0" ToolTip="Switch between Measure:Beat:Tick Start at 0:0:0 and 1:1:0" IsCheckable="True"/>
+                    <MenuItem Header="When Multichannel Track read">
+                        <RadioButton x:Name="rbPrefer_Multichan_Nothing" Content="Do Nothing" TabIndex="400" IsChecked="True"/>
+                        <RadioButton x:Name="rbPrefer_Multichan_Ask" Content="Ask User " TabIndex="401"/>
+                        <RadioButton x:Name="rbPrefer_Multichan_Convert" Content="Convert to Singlechannel" TabIndex="402"/>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Info">
                     <MenuItem x:Name="Mi_About" Header="_About">
@@ -64,7 +69,6 @@
                         <duc:ImageButton x:Name="btnEvListerPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" TabIndex="403" IsTabStop="True" TextPadding="0,1,0,1"/>
                         <duc:ToggleButton x:Name="tgbtnEvListerLoop" Margin="247,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="#FF707070" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" TabIndex="404" IsTabStop="True"/>
                         <duc:ImageButton x:Name="btnEvlStopSequencePlayer2" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="312,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
-                        <Button x:Name="btnTestMidiWrite" Content="Test MidiFile write" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="677,54,0,0" Height="32" Width="107" ToolTip="Tyr to write the entire File to TestMidi.mid" TabIndex="407"/>
                         <duc:SmallSlider x:Name="ssldEvlSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="655,7,0,0" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top"/>
                         <Label Content="BPM:" VerticalAlignment="Top" Margin="619,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
                         <Label x:Name="lblEvlSequencePlayerrPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="543,10,0,0"/>
@@ -77,20 +81,21 @@
                 <TabItem Header="EventList Writer">
                     <Grid>
                         <Mmultitool:EventListWriter x:Name="EventListWriter1"  Margin="10,89,10,10" DataGridRowBackground="#FFFFFDF4" Grid.ColumnSpan="2"/>
-                        <TextBox x:Name="tbEvListWriterFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
+                        <TextBox x:Name="tbEvListWriterFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="181" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
                         <TextBox x:Name="tbEvListWriterMessage" HorizontalAlignment="Left" Margin="606,6,0,0" TextWrapping="Wrap" Width="237" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
                         <duc:ImageButton x:Name="btnEvListWrSelectAll" Text="Select All" TextAlignment="Center" Margin="10,49,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/SelectAll_x32.png" Width="86" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF3F3F3" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
                         <duc:ImageButton x:Name="btnEvListWrPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" Grid.Column="1" TextPadding="0,1,0,1"/>
                         <duc:ToggleButton x:Name="tgbtnEvListWrLoop" Margin="247,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="{DynamicResource ButtonBorderBrush1}" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" Grid.Column="1"/>
-                        <duc:ImageButton x:Name="btnSaveAs" Height="26" Width="110" Margin="469,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save As ..." Image="/Resources/Images/SaveAs_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="0,1,0,1"/>
+                        <duc:ImageButton x:Name="btnSaveAll" Height="24" Width="120" Margin="471,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save All" Image="/Resources/Images/Save_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="10,1,0,1" TextAlignment="Left"/>
                         <duc:ImageButton x:Name="btnEvListWrOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
-                        <Label Content="BPM:" VerticalAlignment="Top" Margin="435,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
-                        <Label x:Name="lblEvlwrSequencePlayerrPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="364,26,0,0"/>
-                        <Label Content="Position:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="364,10,0,0" HorizontalAlignment="Left" Width="45" />
-                        <duc:SmallSlider x:Name="ssldEvlwrSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="471,6,0,0" HorizontalAlignment="Left" Width="120" Height="24" VerticalAlignment="Top"/>
+                        <Label Content="BPM" VerticalAlignment="Top" Margin="433,12,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" />
+                        <Label x:Name="lblEvlwrSequencePlayerrPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="520,7,0,0"/>
+                        <Label Content="Pos:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="485,7,0,0" HorizontalAlignment="Left" />
+                        <duc:SmallSlider x:Name="ssldEvlwrSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="308,7,0,0" HorizontalAlignment="Left" Width="120" Height="24" VerticalAlignment="Top"/>
                         <duc:ImageButton x:Name="btnEvlwrStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="#FF707070" Margin="386,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26"/>
                         <duc:ImageButton x:Name="btnEvlistWrStop" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="355,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
                         <duc:ImageButton x:Name="btnEvlwrRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="#FF707070" Margin="324,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" />
+                        <duc:ImageButton x:Name="btnSaveSelected" Height="24" Width="120" Margin="471,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save Selected" Image="/Resources/Images/SaveAs_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="10,1,0,1" TextAlignment="Left"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="TrackView">

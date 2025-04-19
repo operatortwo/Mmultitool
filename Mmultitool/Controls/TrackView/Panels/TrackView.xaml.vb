@@ -68,7 +68,7 @@ Public Class TrackView
     End Sub
 
     Public Sub ScreenRefresh()
-        If TrackPanelStack.CheckAccess = False Then Exit Sub   ' if the calling thread has no access to this object
+        'If TrackPanelStack.CheckAccess = False Then Exit Sub   ' if the calling thread has no access to this object
 
         Dim trk As Track
 
@@ -128,20 +128,33 @@ Public Class TrackView
         '--- Refresh Play position ---
 
 
-        If Player.IsTrackPlayerRunning Then
+        If LastPlayPosition <> Fix(TrackPlayerTime) Then
 
             If MeasureStrip1.MeasureStripAdornerLayer IsNot Nothing Then
                 MeasureStrip1.MeasureStripAdornerLayer.Update()
+
+                UpdateMeasureStripAdorner = False
             End If
 
             'If Sequencer.IsRunning Then
             '    TracksFooter.ScrollIntoView(Sequencer.SequencerTime)
             'End If
 
+            LastPlayPosition = Fix(TrackPlayerTime)
+
+        Else
+            If UpdateMeasureStripAdorner = True Then
+                If MeasureStrip1.MeasureStripAdornerLayer IsNot Nothing Then
+                    MeasureStrip1.MeasureStripAdornerLayer.Update()
+                    UpdateMeasureStripAdorner = False
+                End If
+            End If
         End If
 
-
     End Sub
+
+    Friend LastPlayPosition As Double
+    Friend UpdateMeasureStripAdorner As Boolean
 
 
     Public Sub UpdateVoiceColumnWidth(newwidth As Double)
@@ -199,6 +212,8 @@ Public Class TrackView
         For Each panel As TrackPanel In TrackPanelStack.Children
             panel.NotePanel.NoteCanvas.InvalidateVisual()
         Next
+
+        UpdateMeasureStripAdorner = True                ' Play Position
     End Sub
 
     Private Sub MasterHScroll_Scroll(sender As Object, e As Primitives.ScrollEventArgs) Handles MasterHScroll.Scroll
@@ -207,6 +222,8 @@ Public Class TrackView
         For Each panel As TrackPanel In TrackPanelStack.Children
             panel.NotePanel.NoteCanvas.InvalidateVisual()
         Next
+
+        UpdateMeasureStripAdorner = True                ' Play Position
     End Sub
 
     Private Sub TrackPanelStack_RequestBringIntoView(sender As Object, e As RequestBringIntoViewEventArgs) Handles TrackPanelStack.RequestBringIntoView

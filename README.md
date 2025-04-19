@@ -6,8 +6,8 @@ The library is currently written for .Net Framework and the preferred applicatio
 
 ## Content
 
-### Midifile Reader
-Reads midi files (.mid), based on the Midifile repository.
+### Midifile Reader and Midifile Writer
+Basic support for reading and writing SMF in format 0 and 1
 
 ### Event Lister
 Shows events in a DataGrid. The events can be filtered by track, channel and event type.  
@@ -16,15 +16,12 @@ The selected events can be copied to the Clipboard using **right-click**. From t
 
 ![EventLister](https://github.com/operatortwo/Mmultitool/assets/88147904/0fed225d-97e5-405e-abbd-e15e66b7ce6a)
 
+### EventList Writer
+Allows changing single events in the list. Contains some code parts for converting, displaying and changing MidiEvents and MetaEvents.
+
 ### Player
 The player is designed for monitoring one or more events in the list and also for other internal purposes.
 
-### Midifile Writer
-Just started. Mainly to write created or edited content to a standard MidiFile Type 1.  
-Further development work is still necessary, for example implementing Type 0 and an option dialog. 
-
-### EventList Writer
-Allows changing single events in the list. Contains some code parts for converting, displaying and changing MidiEvents and MetaEvents.
 
 ### TrackView
 The well-known piano roll view. **Currently only a view, no editing options yet**.  

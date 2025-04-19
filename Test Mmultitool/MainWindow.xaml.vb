@@ -1,5 +1,7 @@
-﻿Imports DailyUserControls
+﻿Imports System.Windows.Interop
+Imports DailyUserControls
 Imports Mmultitool
+Imports Test_Mmultitool.My
 
 Class MainWindow
 
@@ -10,7 +12,7 @@ Class MainWindow
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         If mifir.ReadMidiFile("Echoes1.mid") = True Then
             tbEvListerFilename.Text = mifir.MidiName
-            tbEvListerMessage.Text = GetMidiFileInfo()
+            tbEvListerMessage.Text = GetMidiFileInfo(False)
             Dim evlic As EventListContainer
             evlic = CreateEventListContainer(mifir.TrackList, mifir.TPQ)
             EventLister1.SetEventListContainer(evlic)
@@ -29,6 +31,16 @@ Class MainWindow
 
         Mi_Prefer_MBT_1_1_0.IsChecked = My.Settings.Prefer_MBT_1_1_0
         Prefer_MBT_1_1_0 = Mi_Prefer_MBT_1_1_0.IsChecked
+
+        Dim mcact As Byte = My.Settings.MultichannelConvertAction
+        If mcact = 0 Then
+            rbPrefer_Multichan_Nothing.IsChecked = True
+        ElseIf mcact = 1 Then
+            rbPrefer_Multichan_Ask.IsChecked = True
+        Else
+            rbPrefer_Multichan_Convert.IsChecked = True
+        End If
+
 
         OpenMidiOutPort()
 
@@ -75,6 +87,13 @@ Class MainWindow
         My.Settings.LastMidiOut = MidiOut_Selected
         My.Settings.LastTabIndex = TabControl1.SelectedIndex
         My.Settings.Prefer_MBT_1_1_0 = Mi_Prefer_MBT_1_1_0.IsChecked
+        If rbPrefer_Multichan_Nothing.IsChecked = True Then
+            My.Settings.MultichannelConvertAction = 0
+        ElseIf rbPrefer_Multichan_Ask.IsChecked = True Then
+            My.Settings.MultichannelConvertAction = 1
+        ElseIf rbPrefer_Multichan_Convert.IsChecked = True Then
+            My.Settings.MultichannelConvertAction = 2
+        End If
         My.Settings.Save()
 
 
@@ -145,7 +164,8 @@ Class MainWindow
             tbEvListerFilename.Text = ofd.SafeFileName
             tbEvListerMessage.Clear()
             If ret = True Then
-                tbEvListerMessage.Text = GetMidiFileInfo()
+                Dim converted As Boolean = ConditionalMultichannelConversion(mifir)
+                tbEvListerMessage.Text = GetMidiFileInfo(converted)
             Else
                 tbEvListerMessage.Text = "Errortext:" & mifir.ErrorText
             End If
@@ -170,11 +190,21 @@ Class MainWindow
         EvListerMessage("Tracks count: " & mifir.NumberOfTracks)
     End Sub
 
-    Private Function GetMidiFileInfo() As String
+    Private Function GetMidiFileInfo(converted As Boolean) As String
         Dim str As String
         str = "File loaded: " & mifir.MidiName & vbCrLf
         str = str & "Format: " & mifir.SmfFormat & " - " & "Time division: " & mifir.TPQ & vbCrLf
-        str = str & "Tracks count: " & mifir.NumberOfTracks & vbCrLf
+
+        If converted = False Then
+            If mifir.HasMultichannelTrack = False Then
+                str = str & "Tracks count: " & mifir.NumberOfTracks & vbCrLf
+            Else
+                str = str & "Tracks count: " & mifir.NumberOfTracks & "  { Multichannel }" & vbCrLf
+            End If
+        Else
+            str = str & "Tracks count: " & mifir.NumberOfTracks & "  { Converted }" & vbCrLf
+        End If
+
         Return str
     End Function
 
@@ -183,6 +213,39 @@ Class MainWindow
         tbEvListerMessage.AppendText(str & vbCrLf)
         tbEvListerMessage.ScrollToEnd()
     End Sub
+
+    ''' <summary>
+    ''' If the tracklist contains multichannel tracks, the MultichannelConvertAction settings are checked 
+    ''' and converted if desired.
+    ''' </summary>
+    ''' <param name="mifir"></param>
+    ''' <returns>True if a conversion has occurred and was successful.</returns>
+    Private Function ConditionalMultichannelConversion(mifir As MidifileRead) As Boolean
+        If mifir Is Nothing Then Return False
+        If mifir.HasMultichannelTrack = False Then Return False
+        If rbPrefer_Multichan_Nothing.IsChecked = True Then Return False
+
+        If rbPrefer_Multichan_Convert.IsChecked = True Then
+            Return mifir.ConvertMultichannelTracks()
+        End If
+
+        If rbPrefer_Multichan_Ask.IsChecked = True Then
+
+            Dim ret As QuestionWindowResult
+            ret = QuestionWindow.Show(Me, "Multichannel Tracks detected. Convert to Singlechannel Tracks ?",
+                                "Midifile", QuestionWindowButton.YesNoCancel)
+
+            If ret = QuestionWindowResult.Yes Then
+                Return mifir.ConvertMultichannelTracks()
+            Else
+                Return False
+            End If
+
+        End If
+
+        Return False
+    End Function
+
 
 #End Region
 
@@ -211,9 +274,9 @@ Class MainWindow
         ElseIf TrackView1.IsVisible Then
             Dim time As Long = Player.TrackPlayerTime
             lblTrackPlayerrPosition.Content = TimeTo_MBT(time, PlayerTPQ)
-            If TrackPlayer.BpmUpdate = True Then
+            If TrackPlayer.BPMUpdate = True Then
                 ssldTrackPlayerBPM.SetValueSilent(Math.Round(TrackPlayerBPM, 0))
-                TrackPlayer.BpmUpdate = False
+                TrackPlayer.BPMUpdate = False
             End If
         End If
 
@@ -297,17 +360,6 @@ Class MainWindow
         'Set_SequencerTime(0)
     End Sub
 
-    Private Sub btnTestMidiWrite_Click(sender As Object, e As RoutedEventArgs) Handles btnTestMidiWrite.Click
-        Dim evlic As EventListContainer
-        evlic = CreateEventListContainer(mifir.TrackList, mifir.TPQ)
-        Dim mifiw As New MidiFileWrite
-
-        If mifiw.CreateMidiFile(evlic, 120, "TestMidi.mid") = True Then
-            MessageBox.Show("The file 'TestMidi.mid' was written successfully", "Create MidiFile")
-        End If
-
-    End Sub
-
     Private Sub btnEvListWrSelectAll_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListWrSelectAll.Click
         EventListWriter1.SelectAll()
     End Sub
@@ -316,20 +368,42 @@ Class MainWindow
         EventListWriter1.PlaySelectedItems(tgbtnEvListWrLoop.IsChecked)
     End Sub
 
-
-
-    Private Sub btnSaveAs_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveAs.Click
+    Private Sub btnSaveAll_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveAll.Click
         Dim evlic As EventListContainer
         Dim tpq As Integer = EventListWriter1.EvliTPQ
         evlic = CreateEventListContainer(EventListWriter1.TrackEvents, tpq)
+        SaveToMidifile(evlic)
+    End Sub
+
+    Private Sub btnSaveSelected_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveSelected.Click
+        Dim evlic As EventListContainer
+        Dim tpq As Integer = EventListWriter1.EvliTPQ
+        evlic = CreateEventListContainer(EventListWriter1.GetSelectedItems, tpq)
+        SaveToMidifile(evlic)
+    End Sub
+
+    Private Sub SaveToMidifile(evlic As EventListContainer)
+
+        Dim dstTpq As Integer = 120
+        Dim dstFormat As Byte = 1
+
+        '--- Write Options (TPQ, Format) ---
+
+        Dim win As New DlgMidiFileWriteOptions
+        win.Owner = Me
+        win.SrcNumberOfEvents = evlic.EventList.Count
+        win.SrcNumberOfTracks = evlic.GetNumberOfTracks
+        win.ShowDialog()
+        If win.DialogResult = True Then
+            dstTpq = win.RetTPQ
+            dstFormat = win.RetFormat
+        Else
+            Exit Sub
+        End If
+
+        '--- SaveFileDialog ---
 
         Dim sfd As New Microsoft.Win32.SaveFileDialog
-        '--- Create folder if not exists
-        'If Not IO.Directory.Exists(CompositionsDirectory) Then
-        'IO.Directory.CreateDirectory(CompositionsDirectory)
-        'End If
-        '---
-
         'sfd.InitialDirectory = CompositionsDirectory
         sfd.Filter = "MIDI files|*.mid"
         sfd.DefaultExt = ".mid"
@@ -338,13 +412,20 @@ Class MainWindow
         ret = sfd.ShowDialog()
         If ret = False Then Exit Sub
 
+        '--- Write MidiFile ---
 
         Dim mifiw As New MidiFileWrite
-        If mifiw.CreateMidiFile(evlic, tpq, sfd.FileName) = True Then
-            MessageWindow.Show(Me, "The file" & vbCrLf & sfd.FileName & vbCrLf & "was written successfully",
-                               "Create MidiFile", MessageIcon.StatusOk, Brushes.AliceBlue)
+        If mifiw.WriteMidiFile(evlic, dstTpq, sfd.FileName, dstFormat) = True Then
+            Dim msg As String = mifiw.BytesWritten.ToString("N0") & " bytes written to:" & vbCrLf & sfd.FileName
+            Dim bg As New SolidColorBrush(Color.FromRgb(&HE0, &HEE, &HE0))
+            MessageWindow.Show(Me, msg, "Create MidiFile", MessageIcon.StatusOk, bg)
+        Else
+            ' show error
+            Dim errstr As String = mifiw.ErrorCode.ToString()
+            Dim bg As New SolidColorBrush(Color.FromRgb(&HFF, &HE5, &HE5))
+            MessageWindow.Show(Me, errstr & vbCrLf & mifiw.ErrorMessage,
+                               "MidiFile Write Error", MessageIcon.Error, bg)
         End If
-
 
     End Sub
 
@@ -360,7 +441,8 @@ Class MainWindow
             tbEvListWriterFilename.Text = ofd.SafeFileName
             tbEvListWriterMessage.Clear()
             If ret = True Then
-                tbEvListWriterMessage.Text = GetMidiFileInfo()
+                Dim converted As Boolean = ConditionalMultichannelConversion(mifir)
+                tbEvListWriterMessage.Text = GetMidiFileInfo(converted)
             Else
                 tbEvListWriterMessage.Text = "Errortext:" & mifir.ErrorText
             End If
@@ -376,6 +458,10 @@ Class MainWindow
 
     End Sub
 
+
+
+
+
     Private Sub btnTrackViewOpenFile_Click(sender As Object, e As RoutedEventArgs) Handles btnTrackViewOpenFile.Click
         Dim ofd As New Microsoft.Win32.OpenFileDialog
 
@@ -389,7 +475,8 @@ Class MainWindow
             tbTrackViewMessage.Clear()
             If ret = True Then
                 tbTrackViewFilename.Text = mifir.MidiName
-                tbTrackViewMessage.Text = GetMidiFileInfo()
+                Dim converted As Boolean = ConditionalMultichannelConversion(mifir)
+                tbTrackViewMessage.Text = GetMidiFileInfo(converted)
             Else
                 tbTrackViewMessage.Text = "Errortext:" & mifir.ErrorText
             End If

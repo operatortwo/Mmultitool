@@ -1,0 +1,47 @@
+﻿<Window x:Class="DlgMidiFileWriteOptions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mmultitool"
+        xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
+        mc:Ignorable="d"
+        Title="MidiFile Write Options" Height="343" Width="526" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+    <Grid>
+        <GroupBox Header="Source" Height="62" VerticalAlignment="Top" Margin="10,15,10,0" BorderBrush="LightGray">
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0">
+                <Label x:Name="lblNumberOfEvents" Content="xxx" HorizontalAlignment="Left" Margin="50,0,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                <Label Content="Events" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" Margin="5,0,0,0"/>
+                <Label Content="in" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+                <Label x:Name="lblNumberOfTracks" Content="xxx" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" Margin="5,0,0,0"/>
+                <Label x:Name="lblTrackText" Content="Tracks" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" Margin="5,0,0,0"/>
+            </StackPanel>
+
+
+        </GroupBox>
+
+        <GroupBox Margin="10,90,10,0" Height="137" VerticalAlignment="Top" Header="Destination" BorderBrush="LightGray">
+            <Grid>
+                <Label Content="TPQ (PPQN)" HorizontalAlignment="Left" Margin="29,8,0,0" VerticalAlignment="Top"/>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Ticks / Pulses&#xD;&#xA;per quarter note" Margin="29,63,0,0" Width="112"/>
+                <ComboBox x:Name="cmbTPQ" HorizontalAlignment="Left" Margin="29,36,0,0" VerticalAlignment="Top" Width="87" HorizontalContentAlignment="Center"/>
+                <GroupBox Header="SMF Format" Margin="170,0,9,0" Height="103" VerticalAlignment="Center" BorderBrush="LightGray">
+                    <Grid>
+                        <RadioButton x:Name="rbFormat_0" Content="0    Has only one Track" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,10,0,0"/>
+                        <RadioButton x:Name="rbFormat_1" Content="1    Has one or more Tracks   (most common)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,35,0,0" IsChecked="True"/>
+                        <RadioButton x:Name="rbFormat_2" Content="2    Has one or more Tracks as horizontally Sequence" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,60,0,0" IsEnabled="False" Foreground="Gray"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+
+        <Grid HorizontalAlignment="Center" Width="198" Margin="0,0,0,25" Height="24" VerticalAlignment="Bottom">
+            <duc:ImageButton x:Name="btnOk" Width="70" Text="Ok" Image="/Mmultitool;component/Resources/Images/Ok_g_x32.png" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" IsDefault="True"/>
+            <duc:ImageButton x:Name="btnCancel" Width="70" Text="Cancel" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalAlignment="Right" IsCancel="True" Height="24" VerticalAlignment="Top"/>
+        </Grid>
+
+
+    </Grid>
+</Window>

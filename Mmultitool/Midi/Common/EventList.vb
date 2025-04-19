@@ -101,6 +101,22 @@ Public Module EventList
             Return evlic2
         End Function
 
+        ''' <summary>
+        ''' Get number of tracks in EventList
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function GetNumberOfTracks() As Integer
+            Dim trklist As New List(Of Byte)
+
+            For Each ev In EventList
+                If Not trklist.Contains(ev.TrackNumber) Then
+                    trklist.Add(ev.TrackNumber)
+                End If
+            Next
+
+            Return trklist.Count
+        End Function
+
     End Class
 
     Public Function GetTrackName(TrackNumber As Byte, Eventlist As List(Of TrackEventX)) As String

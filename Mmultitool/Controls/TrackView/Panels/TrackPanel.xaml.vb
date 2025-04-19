@@ -19,7 +19,7 @@ Public Class TrackPanel
 #Region "Expand/Collapse Panel"
 
     Private ExpandedHeight As Double
-    Private Const DefaultExpandedHeight = 64
+    Private Const DefaultExpandedHeight = 170
 
     ''' <summary>
     ''' Set the initial height depending on the IsExpanded state.

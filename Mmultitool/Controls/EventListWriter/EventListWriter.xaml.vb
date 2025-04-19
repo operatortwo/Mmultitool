@@ -395,6 +395,11 @@ Public Class EventListWriter
         End If
     End Sub
 
+    Public Function GetSelectedItems() As IList
+        Return DataGrid1.SelectedItems
+    End Function
+
+
     Private Sub DataGrid1_ContextMenuOpening(sender As Object, e As ContextMenuEventArgs) Handles DataGrid1.ContextMenuOpening
         ' enable / disable ContextMenu Items
 

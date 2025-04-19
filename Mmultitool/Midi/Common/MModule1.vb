@@ -34,6 +34,10 @@ Public Module MModule1
         ''' Track Filter for Aux-Operations
         ''' </summary>
         Public XSelect As Boolean                                   ' Track Filter for Aux-Operations
+        ''' <summary>
+        ''' 0 or 1 for SingleChannelTrack, > 1 for MultichannelTracks   
+        ''' </summary>
+        Public NumberOfChannels As Byte             ' > 1 = Multichannel Tracks in SMF 0 or SMF 1 Format (SMF2 ?)
     End Class
 
     ''' <summary>

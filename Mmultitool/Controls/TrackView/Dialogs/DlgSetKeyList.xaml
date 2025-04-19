@@ -76,5 +76,6 @@
 
         <duc:ImageButton x:Name="btnOk" Width="70" Text="Ok" Margin="330,0,0,19" Image="/Mmultitool;component/Resources/Images/Ok_g_x32.png" HorizontalAlignment="Left" Height="24" VerticalAlignment="Bottom"/>
         <duc:ImageButton x:Name="btnCancel" Width="70" Text="Cancel" Margin="435,0,0,19" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalAlignment="Left" IsCancel="True" Height="24" VerticalAlignment="Bottom"/>
+   
     </Grid>
 </Window>

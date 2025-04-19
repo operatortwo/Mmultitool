@@ -2,7 +2,6 @@
 
 Public Class MidifileRead
 
-
     Public ReadOnly Property MidiFullname As String = ""
     Public ReadOnly Property MidiName As String
 
@@ -36,6 +35,7 @@ Public Class MidifileRead
 
     Public ReadOnly Property LastTick As UInteger       ' greatest event time of the last event of all tracks
 
+    Public ReadOnly Property HasMultichannelTrack As Boolean        ' 1 or more tracks uses more the 1 channel
     '---
 
     Public TrackList As New List(Of TrackChunk)                    ' only Tracks with "MTrk"-Sig.
@@ -69,6 +69,10 @@ Public Class MidifileRead
     '    ''' Track Filter for Aux-Operations
     '    ''' </summary>
     '    Public XSelect As Boolean                                   ' Track Filter for Aux-Operations
+    '   ''' <summary>
+    '   ''' 0 or 1 for SingleChannelTrack, > 1 for MultichannelTracks   
+    '   ''' </summary>
+    '    Public NumberOfChannels As Byte          ' > 1 = Multichannel Tracks in SMF 0 or SMF 1 Format (SMF2 ?)
     'End Class
 
 
@@ -115,6 +119,17 @@ Public Class MidifileRead
 
         CalculateDurations()                ' unsuccessful events: Duration = 0
 
+
+        '--- get numer of used channels on each track, we want to avoid Multichannel tracks
+
+        GetNumberOfUsedChannels()
+        For Each trk In TrackList
+            If trk.NumberOfChannels > 1 Then
+                _HasMultichannelTrack = True
+                Exit For
+            End If
+        Next
+
         '--- Reset Player-vars
 
         For i = 1 To TrackList.Count
@@ -155,7 +170,7 @@ Public Class MidifileRead
         _TimeSignature_Denom = 4
         _BPM = 120
         _LastTick = 0
-
+        _HasMultichannelTrack = False
     End Sub
 
     Private Sub DeltaTimeToAbs()
@@ -243,6 +258,31 @@ Public Class MidifileRead
         Return 0                                    ' not found
     End Function
 
+    Private Sub GetNumberOfUsedChannels()
+        Dim chlist As New List(Of Byte)(16)
+        Dim status_high As Byte
+        Dim channel As Byte
+
+        For Each trk In TrackList
+            chlist.Clear()
+
+            For Each ev In trk.EventList
+                If ev.Type = MModule1.EventType.MidiEvent Then
+                    status_high = ev.Status And &HF0
+                    channel = ev.Status And &HF
+                    If status_high >= &H80 AndAlso status_high < &HF0 Then
+                        If Not chlist.Contains(channel) Then
+                            chlist.Add(channel)
+                        End If
+                    End If
+                End If
+            Next
+            trk.NumberOfChannels = chlist.Count
+
+        Next
+
+    End Sub
+
     Private Sub createEventLists(fullname As String)
 
         Dim fi As New FileInfo(fullname)
@@ -277,7 +317,6 @@ Public Class MidifileRead
         reader.Close()                                  ' release unmanaged resources (or using) 
 
     End Sub
-
 
     Private Function ReadEvent(reader As BinaryReader, ByRef ev As TrackEvent) As Boolean
 
@@ -367,7 +406,6 @@ Public Class MidifileRead
 
         Return time
     End Function
-
 
     Private Function ReadVariableLength(reader As BinaryReader) As Integer
 
@@ -574,6 +612,94 @@ Public Class MidifileRead
         Return ret
     End Function
 
+#Region "Convert Multichannel Tracks"
+    ''' <summary>
+    ''' Convert Multichannel Tracks to Singlechannel Tracks. Replace current tracklist.
+    ''' </summary>
+    ''' <returns>True if if successfully converted. False if nothing to convert or failed to convert.</returns>
+    Public Function ConvertMultichannelTracks() As Boolean
+        If HasMultichannelTrack = False Then Return False
+        If TrackList.Count = 0 Then Return False
+
+        Dim tlist2 As New List(Of TrackChunk)
+
+        Try
+            For Each trk In TrackList
+
+                If trk.NumberOfChannels <= 1 Then
+                    tlist2.Add(trk)                                 ' copy unchanged
+                Else
+                    '--- split 
+                    Dim src As TrackChunk
+                    src = trk
+                    Dim dst As New List(Of TrackChunk)
+                    For di = 1 To 16                                ' all 16 midi channels
+                        dst.Add(New TrackChunk)
+                    Next
+
+                    Dim chn As Byte
+                    For Each srcev In src.EventList
+                        chn = GetChannelNumberOfEvent(srcev)
+                        dst(chn).EventList.Add(srcev)
+                    Next
+
+                    '- remove unused TracksChunks
+                    For t = 15 To 0 Step -1
+                        If dst(t).EventList.Count = 0 Then
+                            dst.RemoveAt(t)
+                        End If
+                    Next
+
+                    '- add each track to tl2
+                    For Each tc In dst
+                        tlist2.Add(tc)
+                    Next
+
+                End If
+
+            Next
+
+            '--- insert track number to each event ---
+
+            Dim newtrknum As Byte = 0
+
+            For Each trk In tlist2
+                For Each ev In trk.EventList
+                    ev.TrackNumber = newtrknum
+                Next
+
+                If newtrknum < 255 Then
+                    newtrknum += 1
+                End If
+            Next
+
+        Catch ex As Exception
+            Return False                ' tracklist is unchanged
+        End Try
+
+
+        TrackList = tlist2
+        _NumberOfTracks = TrackList.Count
+        _HasMultichannelTrack = False
+        Return True
+    End Function
+
+    Private Function GetChannelNumberOfEvent(trev As TrackEvent) As Byte
+        Dim stat As Byte
+        Dim channel As Byte
+
+        stat = trev.Status And &HF0
+        If stat >= &H80 And stat < &HF0 Then        ' exclude F0, F7    (choose channel 0)
+            channel = trev.Status And &HF
+        End If
+
+        Return channel
+    End Function
+
+#End Region
+
+
+#Region "Converter Constants and Enums"
 
     ''' <summary>
     ''' Conversion from Big-Endian to Little-Endian Format. 4 Bytes to UInteger
@@ -680,5 +806,7 @@ Public Class MidifileRead
         KeySignature = &H59
         SequencerSpecific = &H7F
     End Enum
+
+#End Region
 
 End Class

@@ -158,6 +158,9 @@
     <Compile Include="Midi\Common\NoteNames.vb" />
     <Compile Include="Midi\Common\TrackList.vb" />
     <Compile Include="Midi\File\Read\MidifileRead.vb" />
+    <Compile Include="Midi\File\Write\DlgMidiFileWriteOptions.xaml.vb">
+      <DependentUpon>DlgMidiFileWriteOptions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
     <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
     <Compile Include="Midi\Player\Common.vb" />
@@ -275,6 +278,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TrackView\Panels\VoicePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Midi\File\Write\DlgMidiFileWriteOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

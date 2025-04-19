@@ -199,6 +199,7 @@
     <Content Include="Most Events.mid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Images\Save_x32.png" />
     <Content Include="Resources\Library\Midi_IO.dll" />
     <Resource Include="Resources\Library\Midi_IO.xml" />
     <Resource Include="Resources\Images\Play_x22.png" />

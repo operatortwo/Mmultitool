@@ -125,6 +125,18 @@ Namespace My
                 Me("Prefer_MBT_1_1_0") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property MultichannelConvertAction() As Byte
+            Get
+                Return CType(Me("MultichannelConvertAction"),Byte)
+            End Get
+            Set
+                Me("MultichannelConvertAction") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

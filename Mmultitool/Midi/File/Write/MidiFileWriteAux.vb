@@ -317,6 +317,11 @@ Partial Public Class MidiFileWrite
         Return Nothing
     End Function
 
+    Public Enum ErrorNum
+        NoError = 0
+        PrepareException                ' exception thrown while Prepare
+        WriteException                  ' exception thrown while Write
+    End Enum
 
 End Class
 

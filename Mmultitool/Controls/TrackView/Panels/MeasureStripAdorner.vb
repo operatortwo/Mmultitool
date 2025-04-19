@@ -6,13 +6,25 @@
     Private Sub InitializePlayPositionAdorner()
 
         MeasureStripAdornerLayer = AdornerLayer.GetAdornerLayer(Me)
+        'MeasureStripAdornerLayer = AdornerLayer.GetAdornerLayer(TrackView.MeasureStrip1)
         If MeasureStripAdornerLayer IsNot Nothing Then
             If PlayPositionAdorner1 Is Nothing Then         ' avoid multiple add's (when returning from other tab)
                 PlayPositionAdorner1 = New PlayPositionAdorner(Me)
+                'PlayPositionAdorner1 = New PlayPositionAdorner(TrackView.MeasureStrip1)
                 MeasureStripAdornerLayer.Add(PlayPositionAdorner1)
                 PlayPositionAdorner1.TrackView = TrackView
+
+            Else
+                If PlayPositionAdorner1.Parent Is Nothing Then
+                    MeasureStripAdornerLayer.Remove(PlayPositionAdorner1)
+                    MeasureStripAdornerLayer.Add(PlayPositionAdorner1)
+                End If
+
+
             End If
         End If
+
+
 
     End Sub
 
@@ -25,6 +37,7 @@ Public Class PlayPositionAdorner
         MyBase.New(adornedElement)
         IsHitTestVisible = False            ' important to prevent flicker!        
         'IsClipEnabled = True               ' not recommended -> using soft clip
+        RenderOptions.SetEdgeMode(Me, EdgeMode.Aliased)            ' sharp edges
     End Sub
 
     Public TrackView As TrackView
@@ -37,7 +50,7 @@ Public Class PlayPositionAdorner
         Dim renderBrush As New SolidColorBrush(Colors.Green)
         renderBrush.Opacity = 0.2
 
-        Dim pen As New Pen(Brushes.Red, 1)
+        Dim pen As New Pen(Brushes.Red, 2)
 
         Dim rect As New Rect
         rect.Location = New Point(0, 0)
@@ -57,8 +70,8 @@ Public Class PlayPositionAdorner
 
         Dim posx As Integer = (TrackPlayerTime - StartTick) * ScaleX * TrackView.TicksToPixelFactor
 
-        If posx > 0 AndAlso posx <= TrackView.MeasureStrip1.ActualWidth Then        ' soft clip
-            dc.DrawLine(pen, New Point(posx, 0), New Point(posx, 18))
+        If posx > -1 AndAlso posx <= TrackView.MeasureStrip1.ActualWidth Then        ' soft clip
+            dc.DrawLine(pen, New Point(posx, 1), New Point(posx, 15))
         End If
 
     End Sub

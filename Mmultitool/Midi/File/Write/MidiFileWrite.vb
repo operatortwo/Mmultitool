@@ -3,6 +3,11 @@ Imports System.Text
 
 Public Class MidiFileWrite
 
+    '--- Information for caller ---
+    Public ReadOnly Property BytesWritten As Long
+    Public ReadOnly Property ErrorCode As ErrorNum                  ' NoError if ok, ErrorNumber if failed
+    Public ReadOnly Property ErrorMessage As String = ""            ' additional information about the error
+
     '--- Header ---
     Private HeaderChunkType As Byte() = Encoding.UTF8.GetBytes("MThd")
     '--- the following members need to be converted to big-endian before write
@@ -27,15 +32,205 @@ Public Class MidiFileWrite
     Private TrackNumberList As New List(Of Byte)
 
 
-    Public Function CreateMidiFile(evlic As EventListContainer, destinationTPQ As Integer, fullname As String) As Boolean
+    ''' <summary>
+    ''' Write Midifile Format 0 or 1
+    ''' </summary>
+    ''' <param name="evlic"></param>
+    ''' <param name="destinationTPQ"></param>
+    ''' <param name="fullname">path, filename and extension (.mid)</param>
+    ''' <param name="desired_SMF_Format">0 or 1, otherwise Format 1 is selected</param>
+    ''' <returns></returns>
+    Public Function WriteMidiFile(evlic As EventListContainer, destinationTPQ As Integer, fullname As String, desired_SMF_Format As Byte) As Boolean
+        If desired_SMF_Format = 0 Then
+            Return WriteMidiFile_F0(evlic, destinationTPQ, fullname)
+        Else
+            Return WriteMidiFile_F1(evlic, destinationTPQ, fullname)
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Write Midifile Format 1
+    ''' </summary>
+    ''' <param name="evlic"></param>
+    ''' <param name="destinationTPQ"></param>
+    ''' <param name="fullname">path, filename and extension (.mid)</param>
+    ''' <returns></returns>
+    Public Function WriteMidiFile(evlic As EventListContainer, destinationTPQ As Integer, fullname As String) As Boolean
+        Return WriteMidiFile_F1(evlic, destinationTPQ, fullname)
+    End Function
+
+
+#Region "Format 0"
+
+    ''' <summary>
+    ''' Format 0
+    ''' </summary>    
+    ''' <returns>True if ok, False if failed</returns>
+    Private Function WriteMidiFile_F0(evlic As EventListContainer, destinationTPQ As Integer, fullname As String) As Boolean
         If evlic Is Nothing Then Return False
         If fullname Is Nothing Then Return False
         If fullname = "" Then Return False
 
+        '--- reset return informations ---
+        _BytesWritten = 0
+        _ErrorCode = ErrorNum.NoError
+        _ErrorMessage = ""
+
+        '---
+
         Try
-            Prepare(evlic, destinationTPQ)
+            Prepare_F0(evlic, destinationTPQ)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "Prepare MidiFile")
+            _ErrorCode = ErrorNum.PrepareException
+            _ErrorMessage = ex.Message
+            Return False
+        End Try
+
+        '--- write to file ---
+        Try
+            WriteMidiFile(File.Create(fullname))
+        Catch ex As Exception
+            _ErrorCode = ErrorNum.WriteException
+            _ErrorMessage = ex.Message
+            Return False
+        End Try
+
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Format 0
+    ''' </summary>    
+    Private Sub Prepare_F0(evlic As EventListContainer, destinationTPQ As Integer)
+        ' assume evlic IsNot Nothing
+
+        '--- remove End of Track for induvidual Tracks in source ---
+
+        For i = evlic.EventList.Count - 1 To 0 Step -1
+            If evlic.EventList(i).TypeX = EventTypeX.EndOfTrack Then
+                evlic.EventList.RemoveAt(i)
+            End If
+        Next
+
+        '--- make sure all NoteOff events are present ---
+        CompleteNoteOffs(evlic.EventList)
+
+        '--- to desired TPQ ---
+
+        For Each ev In evlic.EventList
+            ev.Time = ConvertTime(ev.Time, evlic.TPQ, destinationTPQ)
+            ev.Duration = ConvertTime(ev.Duration, evlic.TPQ, destinationTPQ)
+        Next
+
+        '--- list of track numbers (don't have to be a list of continous numbers)
+        For Each ev In evlic.EventList
+            If TrackNumberList.Contains(ev.TrackNumber) = False Then
+                TrackNumberList.Add(ev.TrackNumber)
+            End If
+        Next
+
+        If TrackNumberList.Count = 0 Then Exit Sub
+
+        '--- create list of tracks ---
+        Dim TrackChunk As TrackChunk
+
+        'For Each trknum In TrackNumberList
+        TrackChunk = New TrackChunk
+        For Each ev In evlic.EventList
+            'If trknum = ev.TrackNumber Then
+            TrackChunk.EventList.Add(ConvertTrackEvent(ev))
+            If TrackChunk.EventList.Last.Type = EventType.Unkown Then
+                Dim i As Integer = ev.Type
+            End If
+            'End If
+        Next
+        TrackList.Add(TrackChunk)
+        'Next
+
+
+        Dim dbgunkcount As Integer
+
+        For Each trk In TrackList
+            For Each ev In trk.EventList
+                If ev.Type = EventType.Unkown Then
+                    dbgunkcount += 1
+                End If
+            Next
+        Next
+
+
+        '--- insert End of Track if necessary
+        Dim lastev As TrackEvent
+        Dim eot As TrackEvent
+
+        For Each trk In TrackList
+            If trk.EventList.Count > 0 Then
+                lastev = trk.EventList(trk.EventList.Count - 1)
+                If lastev.Type <> EventType.MetaEvent Then
+                    If lastev.Data1 <> &H2F Then
+                        eot = New TrackEvent With {.Status = &HFF, .Data1 = &H2F, .Data2 = 0, .Type = EventType.MetaEvent}
+                        eot.Time = trk.EventList(trk.EventList.Count - 1).Time
+                        trk.EventList.Add(eot)
+                    End If
+                End If
+            Else
+                eot = New TrackEvent With {.Status = &HFF, .Data1 = &H2F, .Data2 = 0, .Type = EventType.MetaEvent}
+                trk.EventList.Add(eot)
+            End If
+        Next
+
+        '--- absoulute time to delta time
+
+        Dim delta As UInteger
+        Dim lasttime As UInteger
+
+        Dim dbgTrkcount As Integer
+        Dim dbgEvcount As Integer
+
+        For Each trk In TrackList
+            lasttime = 0
+            dbgEvcount = 0
+            For Each ev In trk.EventList
+                delta = ev.Time - lasttime
+                lasttime = ev.Time
+                ev.Time = delta
+                dbgEvcount += 1
+            Next
+            dbgTrkcount += 1
+        Next
+
+        '--- set Header vars ---
+        SmfFormat = 0
+        SmfNumberOfTracks = TrackList.Count
+        SmfDivision = destinationTPQ
+
+    End Sub
+
+#End Region
+
+#Region "Format 1"
+
+    ''' <summary>
+    ''' Format 1
+    ''' </summary>    
+    ''' <returns>True if ok, False if failed</returns>
+    Private Function WriteMidiFile_F1(evlic As EventListContainer, destinationTPQ As Integer, fullname As String) As Boolean
+        If evlic Is Nothing Then Return False
+        If fullname Is Nothing Then Return False
+        If fullname = "" Then Return False
+
+        '--- reset return informations ---
+        _BytesWritten = 0
+        _ErrorCode = ErrorNum.NoError
+        _ErrorMessage = ""
+
+        '---
+
+        Try
+            Prepare_F1(evlic, destinationTPQ)
+        Catch ex As Exception
+            _ErrorCode = ErrorNum.PrepareException
+            _ErrorMessage = ex.Message
             Return False
         End Try
 
@@ -43,14 +238,18 @@ Public Class MidiFileWrite
         Try
             WriteMidiFile(File.Create(fullname))              ' TestMidi.mid
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "Write MidiFile")
+            _ErrorCode = ErrorNum.WriteException
+            _ErrorMessage = ex.Message
             Return False
         End Try
 
         Return True
     End Function
 
-    Private Sub Prepare(evlic As EventListContainer, destinationTPQ As Integer)
+    ''' <summary>
+    ''' Format 1
+    ''' </summary>    
+    Private Sub Prepare_F1(evlic As EventListContainer, destinationTPQ As Integer)
         ' assume evlic IsNot Nothing
         '--- make sure all NoteOff events as present ---
         CompleteNoteOffs(evlic.EventList)
@@ -145,6 +344,9 @@ Public Class MidiFileWrite
 
     End Sub
 
+#End Region
+
+#Region "Writer"
     ''' <summary>
     ''' Instance for writing Variable-Length data
     ''' </summary>
@@ -233,6 +435,7 @@ Public Class MidiFileWrite
                 writer.BaseStream.Position += trackChunkLength
             Next
 
+            _BytesWritten = writer.BaseStream.Length
 
         End Using
     End Sub
@@ -441,6 +644,8 @@ Public Class MidiFileWrite
             writer.Write(buffer(i - 1))
         Next
     End Sub
+
+#End Region
 
 End Class
 
