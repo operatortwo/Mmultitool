@@ -81,31 +81,39 @@ Partial Public Module Player
 
         Public BPMUpdate As Boolean
 
+
         ''' <summary>
-        ''' Play a TrackEventX with Mute option
+        ''' Play a TrackEventX without Mute and Transpose option
         ''' </summary>
         ''' <param name="CurrentTime">Player Time</param>
         ''' <param name="PlannedTime">calculated event time</param>
         ''' <param name="tev">TrackEvent data</param>
         Friend Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX)
-            PlayEvent(CurrentTime, PlannedTime, tev, False)
+            PlayEvent(CurrentTime, PlannedTime, tev, False, 0)
         End Sub
 
         ''' <summary>
-        ''' Play a TrackEventX
+        ''' Play a TrackEventX with Mute and Transpose
         ''' </summary>
         ''' <param name="CurrentTime">Player Time</param>
         ''' <param name="PlannedTime">calculated event time</param>
         ''' <param name="tev">TrackEvent data</param>
         ''' <param name="mute">mute NoteOn if set to TRUE</param>
-        Friend Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX, mute As Boolean)
+        Friend Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX, mute As Boolean, transpose As Short)
             Dim status As Byte = tev.Status And &HF0            ' status without channel
 
             If (status >= &H80) And (status < &HF0) Then        ' corresponds to MidiEvent
 
                 If (status = &H90) And (tev.Data2 > 0) Then     ' NoteOn                    
                     If mute = False Then
-                        PlayNote(CurrentTime, PlannedTime, tev.Channel, tev.Data1, tev.Data2, tev.Duration)       ' Note On + Duration
+                        If transpose = 0 Then
+                            PlayNote(CurrentTime, PlannedTime, tev.Channel, tev.Data1, tev.Data2, tev.Duration)       ' Note On + Duration
+                        Else
+                            Dim note As Short = tev.Data1 + transpose
+                            If note < 0 Then note = 0
+                            If note > 127 Then note = 127
+                            PlayNote(CurrentTime, PlannedTime, tev.Channel, note, tev.Data2, tev.Duration)       ' Note On + Duration
+                        End If
                     End If
                 Else
                     If status <> &H80 Then                                  ' --> ignore &h8x NoteOff

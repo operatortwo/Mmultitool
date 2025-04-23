@@ -32,9 +32,18 @@ Public Class TrackView
         Dim beatlen As Single = trklist.MaxLength / Tracklist.TPQ
         lblNumberOfBeats.Content = beatlen & "  " & TimeTo_MBT(trklist.MaxLength - 1, TPQ)
 
+        '--- Reset ScaleX and HScroll ---
+
+        sldScaleX.SetValueSilent(1)
         MasterHScroll.Value = 0
+        SetHScrollValues()
+
         Dim e As New ScrollEventArgs(ScrollEventType.First, 0)
         MasterHScroll_Scroll(Me, e)
+
+        '--- reset controllers and programs from previous file ---
+        ResetCtrlAndProg()
+        '---
 
         For Each track In TrackList.Tracks
             Dim trkp As New TrackPanel
@@ -78,21 +87,13 @@ Public Class TrackView
 
                 If trk.ChannelUpdate = True Then
                     panel.VoicePanel.nudMidiChannel.SetValueSilent(trk.ChannelValue)
+                    UpdateGmVoiceName(trk, panel)
                     trk.ChannelUpdate = False
                 End If
 
                 If trk.ProgramChangeUpdate = True Then
                     panel.VoicePanel.nudGmVoice.SetValueSilent(trk.ProgramChangeValue)
-
-                    If trk.ChannelValue <> 9 Then
-                        panel.VoicePanel.tbGmVoiceName.Text = Get_GM_VoiceName(trk.ProgramChangeValue)
-                    Else
-                        ' drum: maybe it's a known GS patch number
-                        Dim str As String = Get_GS_DrumPatchName(trk.ProgramChangeValue)
-                        If str = "" Then str = "Drum"
-                        panel.VoicePanel.tbGmVoiceName.Text = str
-                    End If
-
+                    UpdateGmVoiceName(trk, panel)
                     trk.ProgramChangeUpdate = False
                 End If
 
@@ -155,6 +156,18 @@ Public Class TrackView
 
     Friend LastPlayPosition As Double
     Friend UpdateMeasureStripAdorner As Boolean
+
+
+    Private Sub UpdateGmVoiceName(trk As Track, panel As TrackPanel)
+        If trk.ChannelValue <> 9 Then
+            panel.VoicePanel.tbGmVoiceName.Text = Get_GM_VoiceName(trk.ProgramChangeValue)
+        Else
+            ' drum: maybe it's a known GS patch number
+            Dim str As String = Get_GS_DrumPatchName(trk.ProgramChangeValue)
+            If str = "" Then str = "Drum"
+            panel.VoicePanel.tbGmVoiceName.Text = str
+        End If
+    End Sub
 
 
     Public Sub UpdateVoiceColumnWidth(newwidth As Double)
@@ -348,4 +361,30 @@ Public Class TrackView
             panel.VoicePanel.tgbtnMute.IsChecked = False
         Next
     End Sub
+
+
+    Private mtrev As New TrackEventX With {.Type = EventType.MidiEvent}         ' local trev for manual send
+
+    ''' <summary>
+    ''' Reset all controllers an all channels, set program on all channels to 0
+    ''' </summary>
+    Private Sub ResetCtrlAndProg()
+        '-- reset all controllers 121 (79h)
+        For i = 0 To &HF
+            mtrev.Status = &HB0 Or i
+            mtrev.Data1 = &H79
+            mtrev.Data2 = 0
+            Play_Manually(mtrev)                            ' Controller Reset (Bx, 79, 0)            
+        Next
+
+        '-- reset all voices ---
+        For i = 0 To &HF
+            mtrev.Status = &HC0 Or i
+            mtrev.Data1 = 0                                 ' program number 0
+            mtrev.Data2 = 0
+            Play_Manually(mtrev)                            ' Program change (Cx, pp)            
+        Next
+
+    End Sub
+
 End Class

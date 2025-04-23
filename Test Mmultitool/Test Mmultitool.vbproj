@@ -185,6 +185,7 @@
   <ItemGroup>
     <Resource Include="Development\Version History Mmultitool.txt" />
     <Resource Include="Development\Version History Test Mmultitool.txt" />
+    <Resource Include="Development\ToDo.txt" />
     <Content Include="Echoes1.mid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

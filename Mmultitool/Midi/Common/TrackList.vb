@@ -10,6 +10,7 @@
     Public Class Track
         Public Name As String = ""
         Public Mute As Boolean
+        Public Transpose As Short
         Public EventListPtr As Integer                      ' ptr to EventList, f.e. ptr to next event while playing
         Public EventList As New List(Of TrackEventX)
 

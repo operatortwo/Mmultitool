@@ -272,6 +272,14 @@ Public Class EventLister
         DataGrid1.SelectAll()               ' a fast way to select all events in the DataGrid
     End Sub
 
+    Public Function GetSelectedItems() As IList
+        Return DataGrid1.SelectedItems
+    End Function
+
+    Public Function GetListedItems() As ItemCollection
+        Return DataGrid1.Items
+    End Function
+
     Private Sub DataGrid1_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs) Handles DataGrid1.PreviewMouseDown
         ' handling MouseDown on SelectAll Button (top left rectangle)
         ' SelectAll works only when Datagrid is focused

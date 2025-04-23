@@ -62,4 +62,8 @@
     Private Sub tgbtnMute_Unchecked(sender As Object, e As RoutedEventArgs) Handles tgbtnMute.Unchecked
         TrackPanel.TrackData.Mute = False
     End Sub
+
+    Private Sub nudNTransp_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudNTransp.ValueChanged
+        TrackPanel.TrackData.Transpose = nudNTransp.Value
+    End Sub
 End Class

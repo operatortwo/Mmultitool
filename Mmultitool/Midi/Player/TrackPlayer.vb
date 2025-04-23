@@ -17,11 +17,12 @@
 
         Dim trev As TrackEventX
         Dim mute As Boolean = trk.Mute
+        Dim transp As Short = trk.Transpose
 
         trev = trk.EventList(trk.EventListPtr)
 
         While trev.Time <= CurrentTime
-            TrackPlayer.PlayEvent(CurrentTime, trev.Time, trev, mute)
+            TrackPlayer.PlayEvent(CurrentTime, trev.Time, trev, mute, transp)
             Set_Track_UI_Notifications(trev, trk)
             trk.EventListPtr += 1
             If trk.EventListPtr >= trk.EventList.Count Then Exit While

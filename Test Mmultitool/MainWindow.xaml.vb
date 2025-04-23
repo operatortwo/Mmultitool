@@ -1,7 +1,5 @@
-﻿Imports System.Windows.Interop
-Imports DailyUserControls
+﻿Imports DailyUserControls
 Imports Mmultitool
-Imports Test_Mmultitool.My
 
 Class MainWindow
 
@@ -127,19 +125,19 @@ Class MainWindow
         '-- all notes off 123 (7B)
         For i = 0 To &HF
             stat = CByte(i Or &HB0)
-            MidiOutShortMsg(stat, &H7B, 0)           ' All Notes Off (Bx, 7B, 0)            
+            MidiOutShortMsg(stat, &H7B, 0)           ' All Notes Off (Bx, 7B, 0)     
         Next
 
-        '-- all sound off 120 (78h)
+        '-- all sounds off 120 (78h)
         For i = 0 To &HF
             stat = CByte(i Or &HB0)
-            MidiOutShortMsg(stat, &H78, 0)           ' All Notes Off (Bx, 78, 0)            
+            MidiOutShortMsg(stat, &H78, 0)           ' All Sounds Off (Bx, 78, 0)     
         Next
 
         '-- reset all controllers 121 (79h)
         For i = 0 To &HF
             stat = CByte(i Or &HB0)
-            MidiOutShortMsg(stat, &H79, 0)           ' All Notes Off (Bx, 79, 0)            
+            MidiOutShortMsg(stat, &H79, 0)           ' Controller Reset (Bx, 79, 0)
         Next
     End Sub
 
@@ -352,6 +350,10 @@ Class MainWindow
     End Sub
 
     Private Sub btnEvListerPlaySelected_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListerPlaySelected.Click
+        If EventLister1.GetSelectedItems.Count = 0 Then
+            EventLister1.SelectAll()
+        End If
+
         EventLister1.PlaySelectedItems(tgbtnEvListerLoop.IsChecked)
     End Sub
 
@@ -365,13 +367,19 @@ Class MainWindow
     End Sub
 
     Private Sub btnEvListWrPlaySelected_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListWrPlaySelected.Click
+        If EventListWriter1.GetSelectedItems.Count = 0 Then
+            EventListWriter1.SelectAll()
+        End If
+
         EventListWriter1.PlaySelectedItems(tgbtnEvListWrLoop.IsChecked)
     End Sub
 
-    Private Sub btnSaveAll_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveAll.Click
+    Private Sub btnSaveAll_Click(sender As Object, e As RoutedEventArgs) Handles btnSaveListed.Click
         Dim evlic As EventListContainer
         Dim tpq As Integer = EventListWriter1.EvliTPQ
-        evlic = CreateEventListContainer(EventListWriter1.TrackEvents, tpq)
+        'evlic = CreateEventListContainer(EventListWriter1.TrackEvents, tpq)        ' All events
+        ' Events in DataGrid (All events filtered)
+        evlic = CreateEventListContainer(EventListWriter1.GetListedItems, EventListWriter1.EvliTPQ)
         SaveToMidifile(evlic)
     End Sub
 
@@ -457,9 +465,6 @@ Class MainWindow
         End If
 
     End Sub
-
-
-
 
 
     Private Sub btnTrackViewOpenFile_Click(sender As Object, e As RoutedEventArgs) Handles btnTrackViewOpenFile.Click
