@@ -253,8 +253,10 @@ Partial Public Module Player
         Public Sub AllRunningNotesOff()
             Dim noev As NoteOffEvent
             For Each list In NoteOffListCollection
-                For i = 1 To list.Items.Count
-                    noev = list.Items(i - 1)
+                For i = 0 To list.Items.Count - 1
+                    ' check again, sometime exception(index) maybe Do_TimedNoteOff has changed the list (?)
+                    If i >= list.Items.Count Then Exit For
+                    noev = list.Items(i)
                     RaiseEvent MidiOutShortMsg(noev.Status, noev.Data1, noev.Data2)     ' play Note Off
                 Next
                 list.Items.Clear()                  ' clears NoteOffList

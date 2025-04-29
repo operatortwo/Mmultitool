@@ -100,4 +100,16 @@ Public Class MeasureStrip
     End Function
 
 
+    Private Sub UserControl_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
+        Dim pt As Point = e.GetPosition(Me)
+        Dim ScaleX As Double = 1.0
+        ScaleX = Math.Round(TrackView.sldScaleX.Value, 1)
+
+        Dim scb = TrackView.MasterHScroll
+        Dim TickAtPtX As Integer = (scb.Value + pt.X) / ScaleX * TrackView.PixelToTicksFactor
+        Dim posx As String = TimeTo_MBT(TickAtPtX, TrackView.TPQ)
+
+        Player.Set_TrackPlayerTime(TickAtPtX)
+    End Sub
+
 End Class

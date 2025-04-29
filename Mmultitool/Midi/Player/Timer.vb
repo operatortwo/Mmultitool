@@ -236,37 +236,10 @@ Public Module Player
 
     Public Sub StopTrackPlayer()
         If IsTrackPlayerRunning = False Then Exit Sub
-        _IsTrackPlayerRunning = False
         TrackPlayer.AllRunningNotesOff()
+        _IsTrackPlayerRunning = False
     End Sub
 
-    Public Sub Set_TrackPlayerTime(newTime As Double)
-        If IsTrackPlayerRunning = True Then
-            If newTime < TrackPlayerTime Then
-                TrackPlayer.AllRunningNotesOff()
-            End If
-        End If
-        _TrackPlayerTime = newTime
-        Set_TracklistEventPointers(newTime)
-    End Sub
-
-    Private Sub Set_TracklistEventPointers(newtime As Double)
-        If Tracklist1 IsNot Nothing Then
-            For Each trk In Tracklist1.Tracks
-                trk.EventListPtr = 0
-            Next
-
-            For Each trk In Tracklist1.Tracks
-                For Each trev In trk.EventList
-                    If trev.Time >= newtime Then
-                        Exit For
-                    End If
-                    trk.EventListPtr += 1
-                Next
-            Next
-        End If
-
-    End Sub
 
 
 End Module

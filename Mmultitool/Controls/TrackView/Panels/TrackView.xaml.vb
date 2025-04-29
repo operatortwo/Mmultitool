@@ -30,7 +30,8 @@ Public Class TrackView
         If TrackList Is Nothing Then Exit Sub
 
         Dim beatlen As Single = trklist.MaxLength / Tracklist.TPQ
-        lblNumberOfBeats.Content = beatlen & "  " & TimeTo_MBT(trklist.MaxLength - 1, TPQ)
+        lblNumberOfBeats.Content = beatlen
+        lblLastTick.Content = TimeTo_MBT(trklist.MaxLength - 1, TPQ)
 
         '--- Reset ScaleX and HScroll ---
 
