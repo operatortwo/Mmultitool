@@ -128,6 +128,9 @@
     <Compile Include="Controls\TrackView\Panels\KeyPanel.xaml.vb">
       <DependentUpon>KeyPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TrackView\Panels\LoopStrip.xaml.vb">
+      <DependentUpon>LoopStrip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TrackView\Panels\MeasureStrip.xaml.vb">
       <DependentUpon>MeasureStrip.xaml</DependentUpon>
     </Compile>
@@ -250,6 +253,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TrackView\Panels\KeyPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackView\Panels\LoopStrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

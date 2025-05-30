@@ -127,8 +127,44 @@ Public Class TrackView
             End If
         Next
 
-        '--- Refresh Play position ---
+        '--- Scroll Play Position IntoView if necessary ---
 
+        If IsTrackPlayerRunning = True Then
+            If MasterHScroll.IsMouseOver = False Then                   ' skip while user is viewing
+
+                Dim ScaleX As Double = Math.Round(sldScaleX.Value, 1)
+                Dim tpq As Integer = TrackView.TPQ
+                Dim scb = MasterHScroll
+
+                Dim FirstTick As Integer
+                Dim NumberOfTicks As Integer
+                FirstTick = scb.Value / ScaleX * PixelToTicksFactor
+                NumberOfTicks = (scb.ViewportSize / ScaleX * PixelToTicksFactor)
+
+                If (TrackPlayerTime) < FirstTick Or TrackPlayerTime > (FirstTick + NumberOfTicks) Then
+
+
+
+                    Dim val As Double
+                    val = TrackPlayerTime * TicksToPixelFactor * ScaleX
+                    val -= MasterHScroll.ViewportSize / 4
+
+                    MasterHScroll.Value = val
+                    'SetHScrollValues()
+
+                    MeasureStrip1.InvalidateVisual()
+
+                    For Each panel As TrackPanel In TrackPanelStack.Children
+                        panel.NotePanel.NoteCanvas.InvalidateVisual()
+                    Next
+
+                    UpdateMeasureStripAdorner = True                ' Play Position
+
+                End If
+            End If
+        End If
+
+        '--- Refresh Play position ---
 
         If LastPlayPosition <> Fix(TrackPlayerTime) Then
 
@@ -220,7 +256,17 @@ Public Class TrackView
     End Sub
 
     Private Sub sldScaleX_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles sldScaleX.ValueChanged
-        If MasterHScroll IsNot Nothing Then SetHScrollValues()
+
+        If MasterHScroll IsNot Nothing Then
+            If MasterHScroll.Value <> 0 Then
+                ' try to keep position
+                MasterHScroll.Value = MasterHScroll.Value / e.OldValue * e.NewValue
+            End If
+            SetHScrollValues()
+        End If
+
+
+
         MeasureStrip1.InvalidateVisual()
 
         For Each panel As TrackPanel In TrackPanelStack.Children

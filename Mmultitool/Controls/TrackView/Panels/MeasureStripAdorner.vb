@@ -20,11 +20,8 @@
                     MeasureStripAdornerLayer.Add(PlayPositionAdorner1)
                 End If
 
-
             End If
         End If
-
-
 
     End Sub
 
@@ -71,7 +68,7 @@ Public Class PlayPositionAdorner
         Dim posx As Integer = (TrackPlayerTime - StartTick) * ScaleX * TrackView.TicksToPixelFactor
 
         If posx > -1 AndAlso posx <= TrackView.MeasureStrip1.ActualWidth Then        ' soft clip
-            dc.DrawLine(pen, New Point(posx, 1), New Point(posx, 15))
+            dc.DrawLine(pen, New Point(posx, 2), New Point(posx, 14))               ' position mark height (12)
         End If
 
     End Sub

@@ -518,6 +518,10 @@ Public Class EventListWriter
         End If
     End Sub
 
+    Private Sub ctxMi_CopyWithHeader_Click(sender As Object, e As RoutedEventArgs) Handles ctxMi_CopyWithHeader.Click
+        CopySelectedItemsToClipboard(True)
+    End Sub
+
     Private Sub CopySelectedItemsToClipboard(withHeader As Boolean)
         Dim sel = DataGrid1.SelectedItems
         If sel.Count > 0 Then

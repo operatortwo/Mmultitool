@@ -79,6 +79,11 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Copy" Command="{x:Static local:EventListWriter.DataGridCopyCommand}"/>
+                            <MenuItem x:Name="ctxMi_CopyWithHeader" Header="Copy with header">
+                                <MenuItem.Icon>
+                                    <Image Source="/Mmultitool;component/Resources/Images/EditCopy.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
                             <MenuItem x:Name="ctxMi_Paste" Header="Paste">
                                 <MenuItem x:Name="ctxMi_PasteInsert"  Header="Insert" Command="{x:Static local:EventListWriter.DataGridPasteInsertCommand}"/>
                                 <MenuItem x:Name="ctxMi_PasteOverwrite" Header="Overwrite"/>

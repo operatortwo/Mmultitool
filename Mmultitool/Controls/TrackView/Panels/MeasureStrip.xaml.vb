@@ -19,16 +19,18 @@ Public Class MeasureStrip
         InitializePlayPositionAdorner()
     End Sub
 
+    Private Const BeatMarkHeight = 5
+    Private Const BarMarkHeight = 10
+    Private Const GlyphOffsetY = 24         ' 25
+
     Protected Overrides Sub OnRender(dc As DrawingContext)
         MyBase.OnRender(dc)
 
         If TrackView Is Nothing Then Exit Sub
         If TrackView.MeasureStrip1 Is Nothing Then Exit Sub
 
-
         Dim ScaleX As Double = Math.Round(TrackView.sldScaleX.Value, 1)
         Dim tpq As Integer = TrackView.TPQ
-
 
         Dim str As String
         Dim glyphrun As GlyphRun
@@ -42,8 +44,6 @@ Public Class MeasureStrip
         psx = tpq * TicksToPixelFactor * ScaleX         ' at 2. beat
         len = tpq * TicksToPixelFactor * ScaleX          ' 1 beat long
 
-        'dc.DrawLine(Pen1, New Point(psx, 30), New Point(psx + len, 30))         ' sample quarter line
-
         '--- draw Measure ---
 
         Dim StartTick As Integer = scb.Value / ScaleX * PixelToTicksFactor
@@ -56,21 +56,28 @@ Public Class MeasureStrip
 
         Dim BeatPen As New Pen(Brushes.MediumBlue, 1.0)
         Dim BarPen As New Pen(Brushes.MediumBlue, 2.0)
-        Dim BeatMarkHeight = 10
-        Dim BarMarkHeight = 20
+
+        Dim tpq4 As Integer = tpq * 4
 
         For i = 0 To NumberOfMarks
 
             posx = (CurrentTick - StartTick) * TicksToPixelFactor * ScaleX
 
             If IsMeasure(CurrentTick) Then
+                'If i Mod 4 = 0 Then
+
                 dc.DrawLine(BarPen, New Point(posx, ys), New Point(posx, ys + BarMarkHeight))
 
-                str = CurrentTick / tpq
-                glyphrun = CreateGlyphRun(str, GlyphTypeface, 12, New Point(posx + 5, ys + 25))
-                    dc.DrawGlyphRun(Brushes.MediumBlue, glyphrun)
+                If ScaleX <= 0.2 AndAlso ((i Mod 8) = 0) Then
                 Else
-                    dc.DrawLine(BeatPen, New Point(posx, ys), New Point(posx, ys + BeatMarkHeight))
+                    str = CurrentTick \ tpq4
+                    glyphrun = CreateGlyphRun(str, GlyphTypeface, 12, New Point(posx + 2, ys + GlyphOffsetY))
+                    dc.DrawGlyphRun(Brushes.MediumBlue, glyphrun)
+                End If
+
+            Else
+                ' is not measure
+                dc.DrawLine(BeatPen, New Point(posx, ys), New Point(posx, ys + BeatMarkHeight))
             End If
 
             CurrentTick += TickStep

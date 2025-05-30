@@ -9,8 +9,6 @@ Public Class NoteCanvas
     Private Typeface As Typeface
     Private GlyphTypeface As GlyphTypeface
 
-
-
     Public Sub New()
         InitializeComponent()                       ' required for the designer
 
@@ -134,44 +132,54 @@ Public Class NoteCanvas
     End Sub
 
     Private Sub DrawGrid(dc As DrawingContext)
-        'First Tick
-        'NumberOfTicks
-        'LastTick
-
-        Dim stepvalue As Integer = RoundToStep(4 * 480 / ScaleX, 480)
-        'Dim stepvalue As Integer = RoundToStep(4 * 480 / ScaleX, 960)
-
+        Dim tpq As Integer = TrackView.TPQ
 
         Dim pts As New Point
         Dim pte As New Point
 
-        Dim first As Integer
-        first = RoundToNextStep(FirstTick, stepvalue)
+        FirstTick = scb.Value / ScaleX * TrackView.PixelToTicksFactor
+        Dim CurrentTick As Integer = RoundToNextStep(FirstTick, TrackView.TPQ)
+        Dim TickStep As Integer = tpq
 
-        pts.X = (first - FirstTick) * TrackView.TicksToPixelFactor * ScaleX
+        Dim NumberOfMarks As Integer = (scb.ViewportSize / ScaleX * TrackView.PixelToTicksFactor / tpq) + 1
+
+        Dim pxStep As Integer = tpq * ScaleX * TrackView.TicksToPixelFactor
+
+        pts.X = (CurrentTick - FirstTick) * TrackView.TicksToPixelFactor * ScaleX
         pts.Y = 0
         pte.X = pts.X
-        pte.Y = Me.ActualHeight
+        pte.Y = ActualHeight
 
-        Dim NumberOfSteps As Integer = 1
+        For i = 0 To NumberOfMarks
 
-        If stepvalue > 0 Then
-            NumberOfSteps = NumberOfTicks / stepvalue
-        End If
+            Select Case ScaleX
+                Case >= 4
+                    dc.DrawLine(Gridpen, pts, pte)
+                Case >= 2
+                    If CurrentTick Mod (2 * tpq) = 0 Then
+                        dc.DrawLine(Gridpen, pts, pte)
+                    End If
+                Case >= 0.8
+                    If CurrentTick Mod (4 * tpq) = 0 Then
+                        dc.DrawLine(Gridpen, pts, pte)
+                    End If
+                Case >= 0.3
+                    If CurrentTick Mod (8 * tpq) = 0 Then
+                        dc.DrawLine(Gridpen, pts, pte)
+                    End If
+                Case Else
+                    If CurrentTick Mod (16 * tpq) = 0 Then
+                        dc.DrawLine(Gridpen, pts, pte)
+                    End If
+            End Select
 
-        For i = 1 To NumberOfSteps
+            pts.X += pxStep
+            pte.X += pxStep
 
-            dc.DrawLine(Gridpen, pts, pte)
-
-            pts.X += stepvalue * TrackView.TicksToPixelFactor * ScaleX
-            pte.X += stepvalue * TrackView.TicksToPixelFactor * ScaleX
-
+            CurrentTick += TickStep
         Next
 
-
-
     End Sub
-
 
     Private Sub UserControl_MouseLeave(sender As Object, e As MouseEventArgs)
         TrackView.lbl_MousePosition.Content = "NC Leave"
