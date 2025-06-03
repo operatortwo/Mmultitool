@@ -291,9 +291,10 @@ Partial Public Module Player
         Public Sub SetValue(status As Byte, data1 As Byte, data2 As Byte)
             Dim channel As Byte
             channel = status And &HF
-            Dim tb As TwoBytes = PB_Value(channel)
+            Dim tb As TwoBytes
             tb.Byte1 = data1
             tb.Byte2 = data2
+            PB_Value(channel) = tb
             PB_Value_updated(channel) = True
         End Sub
 

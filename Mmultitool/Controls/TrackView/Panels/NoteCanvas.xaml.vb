@@ -182,7 +182,7 @@ Public Class NoteCanvas
     End Sub
 
     Private Sub UserControl_MouseLeave(sender As Object, e As MouseEventArgs)
-        TrackView.lbl_MousePosition.Content = "NC Leave"
+        TrackView.lbl_MousePosition_Note.Content = "NC Leave"
     End Sub
 
     Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)
@@ -195,13 +195,28 @@ Public Class NoteCanvas
         Dim kitem As KeyItem = TrackPanel.KeyPanel.GetKeyItem(CInt(pt.Y / ScaleY))
         If kitem IsNot Nothing Then
             If TrackPanel.KeyPanel.IsDrumView = False Then
-                TrackPanel.TrackView.lbl_MousePosition.Content = kitem.NoteName & "   " & posx
+                TrackPanel.TrackView.lbl_MousePosition_Note.Content = kitem.NoteName & "   " & posx
             Else
-                TrackPanel.TrackView.lbl_MousePosition.Content = kitem.DrumName & "   " & posx
+                TrackPanel.TrackView.lbl_MousePosition_Note.Content = kitem.DrumName & "   " & posx
             End If
         Else
-            TrackPanel.TrackView.lbl_MousePosition.Content = "Nothing"
+            TrackPanel.TrackView.lbl_MousePosition_Note.Content = "Nothing"
         End If
+
+
+        '--- try to track event ---
+        If kitem IsNot Nothing Then
+
+            ' time = TickAtPtX            
+            ' kitem.NoteNumber
+
+            Dim evl = TrackPanel.TrackData.EventList
+
+
+
+        End If
+
+
 
     End Sub
 End Class

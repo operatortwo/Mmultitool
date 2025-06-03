@@ -119,12 +119,12 @@ Public Class KeyCanvas
         Dim kitem As KeyItem = KeyPanel.GetKeyItem(CInt(pt.Y / ScaleY))
         If kitem IsNot Nothing Then
             If KeyPanel.IsDrumView = False Then
-                TrackPanel.TrackView.lbl_MousePosition_Note.Content = kitem.NoteName
+                TrackPanel.TrackView.lbl_MousePosition_Key.Content = kitem.NoteName
             Else
-                TrackPanel.TrackView.lbl_MousePosition_Note.Content = kitem.DrumName
+                TrackPanel.TrackView.lbl_MousePosition_Key.Content = kitem.DrumName
             End If
         Else
-                TrackPanel.TrackView.lbl_MousePosition_Note.Content = "Nothing"
+            TrackPanel.TrackView.lbl_MousePosition_Key.Content = "Nothing"
         End If
 
         '---
@@ -176,7 +176,7 @@ Public Class KeyCanvas
     End Sub
 
     Private Sub UserControl_MouseLeave(sender As Object, e As MouseEventArgs)
-        TrackPanel.TrackView.lbl_MousePosition_Note.Content = "KC Leave"
+        TrackPanel.TrackView.lbl_MousePosition_Key.Content = "KC Leave"
 
         If NoteNumberPlaying < 128 Then
             PlayTrev.Status = &H90 Or TrackPanel.VoicePanel.nudMidiChannel.Value

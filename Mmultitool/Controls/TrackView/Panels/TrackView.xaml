@@ -61,8 +61,8 @@
             <Rectangle Grid.Column="1" Fill="#FFCDD2EC" Margin="0,1,0,0"/>
             <Label Content="Scale X" Margin="37,13,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" />
             <duc:SmallSlider x:Name="sldScaleX" Margin="80,10,0,0" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1"/>
-            <Label x:Name="lbl_MousePosition" Content="KK : kk" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,24,0,0" Padding="0,0,5,0"/>
-            <Label x:Name="lbl_MousePosition_Note" Content="NN / nn" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,5,0" Margin="235,8,0,0"/>
+            <Label x:Name="lbl_MousePosition_Key" Content="KK / kk" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,5,0" Margin="235,8,0,0"/>
+            <Label x:Name="lbl_MousePosition_Note" Content="NN : nn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,24,0,0" Padding="0,0,5,0"/>
             <Grid Grid.Column="1"/>
 
 
