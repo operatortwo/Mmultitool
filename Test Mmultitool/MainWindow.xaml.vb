@@ -3,7 +3,7 @@ Imports Mmultitool
 
 Class MainWindow
 
-    Public Shared ScreenRefreshTimer As New Timers.Timer(50)       ' 80 ms Screen Timer (= 12.5 FPS)
+    Public Shared ScreenRefreshTimer As New Timers.Timer(50)       ' 50 ms Screen Timer (= 20 FPS)
 
     Private mifir As New MidifileRead
 

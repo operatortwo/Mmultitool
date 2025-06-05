@@ -60,6 +60,26 @@
             Return info
         End Function
 
+
+        Public Function FindNoteEvent(time As UInteger, NoteNumber As Byte) As TrackEventX
+            If NoteNumber > 127 Then Return Nothing
+            If EventList Is Nothing Then Return Nothing
+
+            For Each trev In EventList
+                If trev.TypeX = EventTypeX.NoteOnEvent Then
+                    If trev.Data1 = NoteNumber Then
+                        'If trev.Time > time + trev.Duration Then Return Nothing             ' early out
+                        If time >= trev.Time AndAlso time <= trev.Time + trev.Duration Then
+                            Return trev
+                        End If
+                    End If
+                    End If
+            Next
+
+            Return Nothing
+        End Function
+
+
     End Class
 
 

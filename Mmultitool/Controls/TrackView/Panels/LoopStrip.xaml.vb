@@ -17,7 +17,6 @@
 
         dc.DrawRectangle(renderBrush, Nothing, rect)
 
-
     End Sub
 
     Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)

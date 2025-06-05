@@ -72,6 +72,8 @@ Public Class TrackView
 
         Next
 
+        TgbtnTrackPlayPosition.IsChecked = True
+
     End Sub
 
     Private Sub SetTrackPanels(tracks As List(Of Track))
@@ -146,38 +148,38 @@ Public Class TrackView
 
         If IsTrackPlayerRunning = True Then
             If MasterHScroll.IsMouseOver = False Then                   ' skip while user is viewing
+                If TgbtnTrackPlayPosition.IsChecked = True Then
 
-                Dim ScaleX As Double = Math.Round(sldScaleX.Value, 1)
-                Dim tpq As Integer = TrackView.TPQ
-                Dim scb = MasterHScroll
+                    Dim ScaleX As Double = Math.Round(sldScaleX.Value, 1)
+                    Dim tpq As Integer = TrackView.TPQ
+                    Dim scb = MasterHScroll
 
-                Dim FirstTick As Integer
-                Dim NumberOfTicks As Integer
-                FirstTick = scb.Value / ScaleX * PixelToTicksFactor
-                NumberOfTicks = (scb.ViewportSize / ScaleX * PixelToTicksFactor)
+                    Dim FirstTick As Integer
+                    Dim NumberOfTicks As Integer
+                    FirstTick = scb.Value / ScaleX * PixelToTicksFactor
+                    NumberOfTicks = (scb.ViewportSize / ScaleX * PixelToTicksFactor)
 
-                If (TrackPlayerTime) < FirstTick Or TrackPlayerTime > (FirstTick + NumberOfTicks) Then
+                    If (TrackPlayerTime) < FirstTick Or TrackPlayerTime > (FirstTick + NumberOfTicks) Then
 
+                        Dim val As Double
+                        val = TrackPlayerTime * TicksToPixelFactor * ScaleX
+                        val -= MasterHScroll.ViewportSize / 4
 
+                        MasterHScroll.Value = val
+                        'SetHScrollValues()
 
-                    Dim val As Double
-                    val = TrackPlayerTime * TicksToPixelFactor * ScaleX
-                    val -= MasterHScroll.ViewportSize / 4
+                        MeasureStrip1.InvalidateVisual()
 
-                    MasterHScroll.Value = val
-                    'SetHScrollValues()
+                        For Each panel As TrackPanel In TrackPanelStack.Children
+                            panel.NotePanel.NoteCanvas.InvalidateVisual()
+                        Next
 
-                    MeasureStrip1.InvalidateVisual()
+                        UpdateMeasureStripAdorner = True                ' Play Position
 
-                    For Each panel As TrackPanel In TrackPanelStack.Children
-                        panel.NotePanel.NoteCanvas.InvalidateVisual()
-                    Next
-
-                    UpdateMeasureStripAdorner = True                ' Play Position
-
+                    End If
+                End If
                 End If
             End If
-        End If
 
         '--- Refresh Play position ---
 
@@ -189,10 +191,6 @@ Public Class TrackView
                 UpdateMeasureStripAdorner = False
             End If
 
-            'If Sequencer.IsRunning Then
-            '    TracksFooter.ScrollIntoView(Sequencer.SequencerTime)
-            'End If
-
             LastPlayPosition = Fix(TrackPlayerTime)
 
         Else
@@ -202,6 +200,11 @@ Public Class TrackView
                     UpdateMeasureStripAdorner = False
                 End If
             End If
+        End If
+
+
+        If TrackPlayerTime >= TrackList.MaxLength Then
+            StopTrackPlayer()
         End If
 
     End Sub

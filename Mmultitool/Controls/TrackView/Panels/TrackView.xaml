@@ -57,21 +57,26 @@
                 <ColumnDefinition x:Name="FooterNotesColumn" Width="400"/>
                 <ColumnDefinition x:Name="FooterRightColumn" Width="40"/>
             </Grid.ColumnDefinitions>
-            <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="0,1,0,0" />
-            <Rectangle Grid.Column="1" Fill="#FFCDD2EC" Margin="0,1,0,0"/>
-            <Label Content="Scale X" Margin="37,13,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" />
-            <duc:SmallSlider x:Name="sldScaleX" Margin="80,10,0,0" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1"/>
-            <Label x:Name="lbl_MousePosition_Key" Content="KK / kk" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,5,0" Margin="235,8,0,0"/>
-            <Label x:Name="lbl_MousePosition_Note" Content="NN : nn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,24,0,0" Padding="0,0,5,0"/>
-            <Grid Grid.Column="1"/>
-
-
-            <Border Grid.Column="1" VerticalAlignment="Top" BorderBrush="#FF756161" BorderThickness="1,1,1,1" Margin="0,10,0,0">
-                <ScrollBar x:Name="MasterHScroll" Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="1"/>
+            <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="0,1,0,0" >
             </Border>
+            <Rectangle Grid.Column="1" Fill="#FFCDD2EC" Margin="0,1,0,0"/>
+            <Label Content="Scale X" Margin="25,13,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" />
+            <duc:SmallSlider x:Name="sldScaleX" Margin="70,10,0,0" Width="120" DecimalPlaces="1" Value="1" StepValue="0.1" MinimumValue="0.1" MaximumValue="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" SliderBrush="#FF405DFD" BorderBrush="#FF8F8F90" BorderThickness="1,1,1,1"/>
+            <Label x:Name="lbl_MousePosition_Key" Content="KK / kk" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,5,0" Margin="210,8,0,0"/>
+            <Label x:Name="lbl_MousePosition_Note" Content="NN : nn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="281,8,0,0" Padding="0,0,5,0"/>
+            <Label x:Name="lbl_MousePosition_NoteInfo" Content="NoteInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,5,0" Margin="210,26,0,0"/>
 
-            <Border Grid.Column="2" Background="#FFCDD2EC" Margin="0,1,0,0"/>
+
+            <Border Grid.Column="1" VerticalAlignment="Top" BorderBrush="#FF756161" BorderThickness="1,1,1,1" Margin="0,3,0,0">
+                <ScrollBar x:Name="MasterHScroll" Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="1" Focusable="True"/>
+            </Border>
+            <Border Grid.Column="2" Background="#FFCDD2EC" Margin="0,1,0,0" BorderBrush="#FF733C3C"/>
+            <Grid Grid.Column="2">
+                <duc:ToggleButton x:Name="TgbtnTrackPlayPosition" ClickMode="Press" TextChecked="Track" TextUnchecked="Track" Height="22" Margin="4,25,0,0" ToolTip="Track Play Position" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" BorderBrush="Gray" Focusable="True"/>
+            </Grid>
         </Grid>
+        
+
 
     </Grid>
 </UserControl>

@@ -231,6 +231,9 @@ Public Module Player
     Public Sub StartTrackPlayer()
         If TimerID = 0 Then Start_Timer()
         If IsTrackPlayerRunning = True Then Exit Sub
+        If TrackPlayerTime >= Player.Tracklist1.MaxLength Then
+            Set_TrackPlayerTime(0)
+        End If
         _IsTrackPlayerRunning = True
     End Sub
 

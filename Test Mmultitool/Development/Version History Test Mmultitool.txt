@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2025 06 05		1.0.5.7		little improvements and fixes, Readme edited				
 2025 06 03		1.0.5.6		TrackView: fixed MovePosition PitchBend
 2026 06 02		1.0.5.5		TrackView: user can change track order
 2025 06 01		1.0.5.4		fixed sort order in DataGrid.SelectedItmes before copy to clipboard

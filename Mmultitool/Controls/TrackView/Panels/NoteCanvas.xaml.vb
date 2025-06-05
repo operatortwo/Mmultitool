@@ -188,6 +188,8 @@ Public Class NoteCanvas
     Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)
         Dim pt As Point = e.GetPosition(Me)
 
+
+        TrackView = TrackPanel.TrackView                                ' shortcut
         Dim scb = TrackView.MasterHScroll
         Dim TickAtPtX As Integer = (scb.Value + pt.X) / ScaleX * TrackView.PixelToTicksFactor
         Dim posx As String = TimeTo_MBT(TickAtPtX, TrackView.TPQ)
@@ -210,13 +212,18 @@ Public Class NoteCanvas
             ' time = TickAtPtX            
             ' kitem.NoteNumber
 
+            'TrackPanel.TrackView.lbl_MousePosition_NoteInfo.Content = TickAtPtX
+
             Dim evl = TrackPanel.TrackData.EventList
+            Dim trev As TrackEventX
 
-
-
+            trev = TrackPanel.TrackData.FindNoteEvent(TickAtPtX, kitem.NoteNumber)
+            If trev IsNot Nothing Then
+                TrackPanel.TrackView.lbl_MousePosition_NoteInfo.Content = trev.Time & " " & trev.Duration
+            Else
+                TrackPanel.TrackView.lbl_MousePosition_NoteInfo.Content = ""
+            End If
         End If
-
-
 
     End Sub
 End Class

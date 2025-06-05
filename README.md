@@ -1,6 +1,8 @@
 # Mmultitool
 **Midi Multi Tool** is intended to be a library that will provide various functions related to MIDI data. Instead of working on similar functions in several projects, parts of this work are brought together here.  
-The library is currently written for .Net Framework and the preferred application type is a WPF app (.Net Framework)
+The library is currently written for .Net Framework and the preferred application type is a WPF app  
+(.Net Framework)  
+Additional information on usage and internal details can be found in [Wiki](https://github.com/operatortwo/Mmultitool/wiki).
 
 
 
