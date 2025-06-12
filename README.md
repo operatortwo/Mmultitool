@@ -31,6 +31,8 @@ The **Sequence Player** is designed to play single event lists (patterns) and fr
 The well-known piano roll view. **Currently only a view, no editing options yet**.  
 Contains work related to displaying notes in a scalable and scrollable panel. These panels are then stacked vertically to display multiple tracks at once.
 
+![TrackView](https://github.com/user-attachments/assets/318c7eb0-84ec-4c18-be5e-33b63d5df47f)
+
 ---
 ### Using from WinForms
 The library can also be used by a WinForms application, although there may be restrictions when using the controls.  
