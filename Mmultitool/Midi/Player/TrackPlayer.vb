@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports MS.Internal
 
 Partial Public Module Player
 
@@ -11,6 +12,30 @@ Partial Public Module Player
         For Each trk In Tracklist1.Tracks
             PlayThisTrack(trk, CurrenTime)
         Next
+
+        '--- If LoopMode, check for loopEnd ---
+
+        If Tracklist1.LoopMode = True Then
+            If Tracklist1.LoopEnd > Tracklist1.LoopStart Then
+                If TrackPlayerTime >= Tracklist1.LoopEnd Then
+                    TrackPlayer.AllRunningNotesOff()
+                    Set_TrackPlayerTime(Tracklist1.LoopStart)   ' restart Loop
+                    Exit Sub                                    ' exit here, no check for end of TrackList needed
+                End If
+            End If
+        End If
+
+        '--- Check if TrackPlayer is at the end ---
+
+        If TrackPlayerTime >= Tracklist1.MaxLength Then
+            If Tracklist1.RestartAtEnd = False Then
+                StopTrackPlayer()
+            Else
+                TrackPlayer.AllRunningNotesOff()
+                Set_TrackPlayerTime(0)
+            End If
+
+        End If
     End Sub
 
     Private Sub PlayThisTrack(trk As Track, CurrentTime As Long)

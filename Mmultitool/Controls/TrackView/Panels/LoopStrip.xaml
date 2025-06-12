@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mmultitool"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="200" SnapsToDevicePixels="True" ClipToBounds="True" Loaded="UserControl_Loaded" MouseMove="UserControl_MouseMove" MouseLeave="UserControl_MouseLeave">
+             d:DesignHeight="30" d:DesignWidth="200" SnapsToDevicePixels="True" ClipToBounds="True" Loaded="UserControl_Loaded" MouseMove="UserControl_MouseMove" MouseLeave="UserControl_MouseLeave" MouseLeftButtonDown="UserControl_MouseLeftButtonDown" MouseRightButtonDown="UserControl_MouseRightButtonDown">
     <Grid Background="#00000000">
         <!-- Grid needs Background to detect MouseDown -->
     </Grid>

@@ -270,12 +270,7 @@ Class MainWindow
             End If
 
         ElseIf TrackView1.IsVisible Then
-            Dim time As Long = Player.TrackPlayerTime
-            lblTrackPlayerrPosition.Content = TimeTo_MBT(time, PlayerTPQ)
-            If TrackPlayer.BPMUpdate = True Then
-                ssldTrackPlayerBPM.SetValueSilent(Math.Round(TrackPlayerBPM, 0))
-                TrackPlayer.BPMUpdate = False
-            End If
+
         End If
 
 
@@ -317,24 +312,6 @@ Class MainWindow
 
 #End Region
 
-#Region "TrackPlayer"
-
-    Private Sub btnStartTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnStartTrackPlayer.Click
-        StartTrackPlayer()
-    End Sub
-
-    Private Sub btnStopTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnStopTrackPlayer.Click
-        StopTrackPlayer()
-    End Sub
-
-    Private Sub btnRestartTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnRestartTrackPlayer.Click
-        Set_TrackPlayerTime(0)
-    End Sub
-    Private Sub ssldTrackPlayerBPM_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldTrackPlayerBPM.ValueChanged
-        TrackPlayerBPM = ssldTrackPlayerBPM.Value
-    End Sub
-
-#End Region
     Private Sub MainVolumeSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles MainVolumeSlider.ValueChanged
         ' Master Volume for GM Instruments, Universal Real Time SysEx
         'F0 7F 7F 04 01 ll mm F7        ' ll = volume LSB, mm = volume MSB

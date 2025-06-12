@@ -18,6 +18,7 @@ Public Class TrackView
 
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         MeasureStrip1.TrackView = Me
+        LoopStrip1.TrackView = Me
     End Sub
 
     ''' <summary>
@@ -47,6 +48,12 @@ Public Class TrackView
 
         Dim e As New ScrollEventArgs(ScrollEventType.First, 0)
         MasterHScroll_Scroll(Me, e)
+
+        '--- 
+
+        tgbtnRestartAtEnd.IsChecked = trklist.RestartAtEnd
+        tgbtnLoopMode.IsChecked = trklist.LoopMode
+
 
         '--- reset controllers and programs from previous file ---
         ResetCtrlAndProg()
@@ -167,7 +174,7 @@ Public Class TrackView
 
                         MasterHScroll.Value = val
                         'SetHScrollValues()
-
+                        LoopStrip1.InvalidateVisual()
                         MeasureStrip1.InvalidateVisual()
 
                         For Each panel As TrackPanel In TrackPanelStack.Children
@@ -202,10 +209,16 @@ Public Class TrackView
             End If
         End If
 
+        '--
 
-        If TrackPlayerTime >= TrackList.MaxLength Then
-            StopTrackPlayer()
+        If TrackPlayer.BPMUpdate = True Then
+            ssldTrackPlayerBPM.SetValueSilent(Math.Round(TrackPlayerBPM, 0))
+            TrackPlayer.BPMUpdate = False
         End If
+
+        lblTrackPlayerrPosition.Content = TimeTo_MBT(TrackPlayerTime, PlayerTPQ)
+
+
 
     End Sub
 
@@ -283,8 +296,7 @@ Public Class TrackView
             SetHScrollValues()
         End If
 
-
-
+        LoopStrip1.InvalidateVisual()
         MeasureStrip1.InvalidateVisual()
 
         For Each panel As TrackPanel In TrackPanelStack.Children
@@ -295,6 +307,7 @@ Public Class TrackView
     End Sub
 
     Private Sub MasterHScroll_Scroll(sender As Object, e As Primitives.ScrollEventArgs) Handles MasterHScroll.Scroll
+        LoopStrip1.InvalidateVisual()
         MeasureStrip1.InvalidateVisual()
 
         For Each panel As TrackPanel In TrackPanelStack.Children
@@ -459,5 +472,47 @@ Public Class TrackView
         End If
 
 
+    End Sub
+
+    Private Sub ssldTrackPlayerBPM_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldTrackPlayerBPM.ValueChanged
+        TrackPlayerBPM = ssldTrackPlayerBPM.Value
+    End Sub
+
+    Private Sub btnStartTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnStartTrackPlayer.Click
+        StartTrackPlayer()
+    End Sub
+
+    Private Sub btnStopTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnStopTrackPlayer.Click
+        StopTrackPlayer()
+    End Sub
+
+    Private Sub btnRestartTrackPlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnRestartTrackPlayer.Click
+        Set_TrackPlayerTime(0)
+    End Sub
+
+    Private Sub tgbtnRestartAtEnd_Checked(sender As Object, e As RoutedEventArgs) Handles tgbtnRestartAtEnd.Checked
+        If TrackList IsNot Nothing Then
+            TrackList.RestartAtEnd = True
+        End If
+    End Sub
+
+    Private Sub tgbtnRestartAtEnd_Unchecked(sender As Object, e As RoutedEventArgs) Handles tgbtnRestartAtEnd.Unchecked
+        If TrackList IsNot Nothing Then
+            TrackList.RestartAtEnd = False
+        End If
+    End Sub
+
+    Private Sub tgbtnLoopMode_Checked(sender As Object, e As RoutedEventArgs) Handles tgbtnLoopMode.Checked
+        LoopStrip1.Visibility = Visibility.Visible
+        If TrackList IsNot Nothing Then
+            TrackList.LoopMode = True
+        End If
+    End Sub
+
+    Private Sub tgbtnLoopMode_Unchecked(sender As Object, e As RoutedEventArgs) Handles tgbtnLoopMode.Unchecked
+        LoopStrip1.Visibility = Visibility.Hidden
+        If TrackList IsNot Nothing Then
+            TrackList.LoopMode = False
+        End If
     End Sub
 End Class

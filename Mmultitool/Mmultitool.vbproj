@@ -331,6 +331,8 @@
     <Resource Include="Resources\Images\ChevronDownGroup_24x.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Images\Play_Loop_transp_x22.png" />
+    <Resource Include="Resources\Images\Play_Restart_transp_x22.png" />
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>

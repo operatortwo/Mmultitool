@@ -19,10 +19,12 @@ The selected events can be copied to the Clipboard using **right-click**. From t
 ![EventLister](https://github.com/operatortwo/Mmultitool/assets/88147904/0fed225d-97e5-405e-abbd-e15e66b7ce6a)
 
 ### EventList Writer
-Allows changing single events in the list. Contains some code parts for converting, displaying and changing MidiEvents and MetaEvents.
+Similar to EventLister. Allows changing single events in the list. Contains some code parts for converting, displaying and changing MidiEvents and MetaEvents.
 
 ### Player
-The player is designed for monitoring one or more events in the list and also for other internal purposes.
+Contains a **TrackPlayer** and a **SequencePlayer**.  
+The **TrackPlayer** allows the simultaneous playback of multiple tracks, for example the playback of a MIDI file in format 0 or 1.  
+The **Sequence Player** is designed to play single event lists (patterns) and fragments from tracks or event lists.
 
 
 ### TrackView

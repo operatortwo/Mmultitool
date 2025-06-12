@@ -120,17 +120,60 @@ Public Module EventList
     End Class
 
     Public Function GetTrackName(TrackNumber As Byte, Eventlist As List(Of TrackEventX)) As String
-        Dim retstr As String = TrackNumber
-        If Eventlist Is Nothing Then Return retstr
+        Dim retstr As String = Nothing
+        If Eventlist Is Nothing Then Return ""
 
         For Each ev In Eventlist
             If ev.TrackNumber = TrackNumber Then
                 If ev.TypeX = EventTypeX.SequenceOrTrackName Or ev.TypeX = EventTypeX.TextEvent Then
                     Dim ascii As Encoding = Encoding.ASCII
-                    retstr = retstr & "  " & ascii.GetChars(ev.DataX)
+                    retstr = TrackNumber & "  " & ascii.GetChars(ev.DataX)
+                    Exit For
                 End If
             End If
         Next
+
+        '--- If no SequenceOrTrackName or TextEvent try Program Change ---
+        Dim progstr As String
+
+        If retstr Is Nothing Then
+            For Each ev In Eventlist
+                If ev.TrackNumber = TrackNumber Then
+                    If ev.TypeX = EventTypeX.ProgramChange Then
+                        If ev.Channel <> 9 Then
+                            progstr = Get_GM_VoiceName(ev.Data1)         ' it's a voice name
+                            retstr = TrackNumber & "  " & progstr
+                            Exit For
+                        Else
+                            Dim str As String = Get_GS_DrumPatchName(ev.Data1)      ' drum: maybe it's a known GS patch number
+                            If str = "" Then str = "Drum"                                   ' else 'Drum' is used
+                            progstr = str
+                            retstr = TrackNumber & "  " & progstr
+                            Exit For
+                        End If
+                    End If
+                End If
+            Next
+        End If
+
+        '--- if still nothing found set 'Drum' for channel 9 ---
+
+        If retstr Is Nothing Then
+            For Each ev In Eventlist
+                If ev.TrackNumber = TrackNumber Then
+                    If ev.Channel = 9 Then
+                        retstr = TrackNumber & "  " & "Drum"
+                        Exit For
+                    End If
+                End If
+            Next
+        End If
+
+        '--- can be Track 0 ---
+        If retstr Is Nothing Then
+            retstr = TrackNumber
+        End If
+
 
         Return retstr
     End Function

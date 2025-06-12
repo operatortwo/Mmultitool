@@ -14,44 +14,59 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="HeaderRow" Height="50"/>
+            <RowDefinition x:Name="HeaderRow" Height="30"/>
+            <RowDefinition x:Name="TracksHeaderRow" Height="45"/>
             <RowDefinition x:Name="TracksRow" Height="*"/>
             <RowDefinition x:Name="FooterRow" Height="50"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer x:Name="TrackPanelStackScroll" Grid.Row="1" Focusable="False">
+        <Grid x:Name="HeaderGrid" Background="#FFCDD2EC">
+            <duc:SmallSlider x:Name="ssldTrackPlayerBPM" Margin="45,0,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" HorizontalAlignment="Left" Width="120" Height="22" VerticalAlignment="Center"/>
+            <Label Content="BPM:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <Label x:Name="lblTrackPlayerrPosition" Width="85" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Center" Content="xxx : x : xxx" Margin="180,0,0,0" Background="#FFEFEFEF" HorizontalContentAlignment="Center" Height="22" VerticalContentAlignment="Center"/>
+            <duc:ImageButton x:Name="btnRestartTrackPlayer" Text="" Image="/Test Mmultitool;component/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="292,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Height="28" />
+            <duc:ImageButton x:Name="btnStopTrackPlayer" Text="" Image="/Test Mmultitool;component/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="318,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Height="28"/>
+            <duc:ImageButton x:Name="btnStartTrackPlayer" Text="" Image="/Test Mmultitool;component/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="344,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Height="28"/>
+
+            <duc:ToggleButton x:Name="tgbtnLoopMode" Width="24" Height="24" HorizontalAlignment="Left" VerticalAlignment="Center" TextChecked="" TextUnchecked="" ClickMode="Press" ImageChecked="/Mmultitool;component/Resources/Images/Play_Loop_transp_x22.png" ImageUnchecked="/Mmultitool;component/Resources/Images/Play_Loop_transp_x22.png" BackgroundChecked="#FF75CE75" Margin="425,0,0,0" ToolTip="Loop Mode"/>
+            <duc:ToggleButton x:Name="tgbtnRestartAtEnd" Width="24" Height="24" HorizontalAlignment="Left" Margin="396,0,0,0" VerticalAlignment="Center" TextChecked="" TextUnchecked="" ClickMode="Press" ImageChecked="/Mmultitool;component/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Mmultitool;component/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF75CE75" ToolTip="Restart at end"/>
+        </Grid>
+
+
+        <Grid x:Name="TracksHeaderGrid"  Background="#FFE1E6FF" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="HeaderLeftColumn" Width="*"/>
+                <ColumnDefinition x:Name="HeaderNotesColumn" Width="400"/>
+                <ColumnDefinition x:Name="HeaderRightColumn" Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="0,1,0,1"/>
+            <Button x:Name="btnSortTracks" Content="Sort" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Margin="90,15,0,0"/>
+
+            <Rectangle Grid.Column="1" Margin="0,1,0,1" Fill="#FFCDD2EC"/>
+
+            <DockPanel Grid.Column="1">
+                <local:MeasureStrip x:Name="MeasureStrip1" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Height="30"/>
+                <local:LoopStrip x:Name="LoopStrip1" DockPanel.Dock="Bottom" Height="14" VerticalAlignment="Bottom"/>
+            </DockPanel>
+            <duc:ToggleButton x:Name="btnCollapseExpandAll" Width="25" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,15,0,0" ClickMode="Press" TextChecked="" TextUnchecked="" ImageUnchecked="/Mmultitool;component/Resources/Images/ChevronUpGroup_24x.png" ImageChecked="/Mmultitool;component/Resources/Images/ChevronDownGroup_24x.png" BackgroundChecked="White" BackgroundUnchecked="#FFFFFEFE" ImageMargin="2,0,0,0" BorderBrush="{DynamicResource BorderBrush1}"/>
+            <duc:ToggleButton x:Name="btnMuteUnMuteAll" Width="32" Height="20" Margin="45,15,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextChecked="M" TextUnchecked="M"  BackgroundChecked="#FF9CEDFF" ClickMode="Press" BorderBrush="#FF969697" />
+            <Label Content="Beats:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="348,17,0,0"/>
+            <Label x:Name="lblNumberOfBeats" Content="xxx" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="383,17,0,0"/>
+            <Label Content="Last Tick:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="223,17,0,0"/>
+            <Label x:Name="lblLastTick" Content="xxx : x : xxx" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="276,17,0,0"/>
+            <Button x:Name="btnPreload" Content="Preload" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="159,15,0,0" Width="56"/>
+
+        </Grid>
+
+
+        <ScrollViewer x:Name="TrackPanelStackScroll" Grid.Row="2" Focusable="False">
             <StackPanel x:Name="TrackPanelStack" Margin="0,0,5,0">
                 <local:TrackPanel/>
             </StackPanel>
         </ScrollViewer>
 
 
-        <Grid x:Name="HeaderGrid"  Background="#FFE1E6FF">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="HeaderLeftColumn" Width="*"/>
-                <ColumnDefinition x:Name="HeaderNotesColumn" Width="400"/>
-                <ColumnDefinition x:Name="HeaderRightColumn" Width="40"/>
-            </Grid.ColumnDefinitions>
-            <Border  Grid.ColumnSpan="3" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="0,0,0,1">
-                <Button x:Name="btnSortTracks" Content="Sort" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Margin="90,25,0,0"/>
-
-            </Border>
-
-            <Rectangle Grid.Column="1" Margin="0,0,0,1" Fill="#FFCDD2EC"/>
-            <DockPanel Grid.Column="1">
-                <local:MeasureStrip x:Name="MeasureStrip1" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Height="30"/>
-                <local:LoopStrip x:Name="LoopCanvas" DockPanel.Dock="Bottom" Height="14" VerticalAlignment="Bottom"/>
-            </DockPanel>
-            <duc:ToggleButton x:Name="btnCollapseExpandAll" Width="25" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,25,0,0" ClickMode="Press" TextChecked="" TextUnchecked="" ImageUnchecked="/Mmultitool;component/Resources/Images/ChevronUpGroup_24x.png" ImageChecked="/Mmultitool;component/Resources/Images/ChevronDownGroup_24x.png" BackgroundChecked="White" BackgroundUnchecked="#FFFFFEFE" ImageMargin="2,0,0,0" BorderBrush="{DynamicResource BorderBrush1}"/>
-            <duc:ToggleButton x:Name="btnMuteUnMuteAll" Width="32" Height="20" Margin="45,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextChecked="M" TextUnchecked="M"  BackgroundChecked="#FF9CEDFF" ClickMode="Press" BorderBrush="#FF969697" />
-            <Label Content="Beats:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="241,5,0,0"/>
-            <Label x:Name="lblNumberOfBeats" Content="xxx" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="277,5,0,0"/>
-            <Label Content="Last Tick:" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,5,0,0"/>
-            <Label x:Name="lblLastTick" Content="xxx : x : xxx" Padding="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="167,5,0,0"/>
-            <Button x:Name="btnPreload" Content="Preload" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="159,25,0,0" Width="56"/>
-
-        </Grid>
-        <Grid x:Name="FooterGrid"  Grid.Row="2" Background="#FFE1E6FF">
+        <Grid x:Name="FooterGrid"  Grid.Row="3" Background="#FFE1E6FF">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="FooterLeftColumn" Width="*"/>
                 <ColumnDefinition x:Name="FooterNotesColumn" Width="400"/>
@@ -75,7 +90,7 @@
                 <duc:ToggleButton x:Name="TgbtnTrackPlayPosition" ClickMode="Press" TextChecked="Track" TextUnchecked="Track" Height="22" Margin="4,25,0,0" ToolTip="Track Play Position" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" BorderBrush="Gray" Focusable="True"/>
             </Grid>
         </Grid>
-        
+
 
 
     </Grid>

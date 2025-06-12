@@ -36,7 +36,7 @@
             tbGmVoiceName.Text = Get_GM_VoiceName(nudGmVoice.Value)         ' it's a voice name
         Else
             Dim str As String = Get_GS_DrumPatchName(nudGmVoice.Value)      ' drum: maybe it's a known GS patch number
-            If str = "" Then str = "Drum"
+            If str = "" Then str = "Drum"                                   ' else 'Drum' is used
             tbGmVoiceName.Text = str
         End If
     End Sub

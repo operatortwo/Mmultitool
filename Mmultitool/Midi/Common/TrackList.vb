@@ -5,6 +5,11 @@
         Public Const TPQ = 480
 
         Public MaxLength As UInteger
+
+        Public RestartAtEnd As Boolean
+        Public LoopMode As Boolean
+        Public LoopStart As UInteger
+        Public LoopEnd As UInteger
     End Class
 
     Public Class Track

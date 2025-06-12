@@ -7,7 +7,7 @@
         xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls" 
         xmlns:Mmultitool="clr-namespace:Mmultitool;assembly=Mmultitool"        
         mc:Ignorable="d"
-        Title="Test Mmultitool" Height="660" Width="880" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Test Mmultitool" Height="700" Width="980" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <SolidColorBrush x:Key="ButtonBorderBrush1" Color="#FF707070"/>
     </Window.Resources>
@@ -102,16 +102,11 @@
                     <Grid>
                         <duc:ImageButton x:Name="btnTrackViewOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1"/>
                         <TextBox x:Name="tbTrackViewFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
-                        <TextBox x:Name="tbTrackViewMessage" HorizontalAlignment="Left" Margin="360,7,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
+                        <TextBox x:Name="tbTrackViewMessage" HorizontalAlignment="Left" Margin="360,7,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="51" VerticalAlignment="Top" TabIndex="405"/>
 
                         <Grid Margin="0,108,0,0" Background="#FFEDF5FF">
                             <Mmultitool:TrackView x:Name="TrackView1"/>
                         </Grid>
-                        <duc:SmallSlider x:Name="ssldTrackPlayerBPM" Margin="10,47,0,0" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top"/>
-                        <duc:ImageButton x:Name="btnRestartTrackPlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="220,58,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="28" />
-                        <duc:ImageButton x:Name="btnStopTrackPlayer" Text="" Image="/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="246,58,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="28"/>
-                        <duc:ImageButton x:Name="btnStartTrackPlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="272,58,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="28"/>
-                        <Label x:Name="lblTrackPlayerrPosition" Width="70" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="162,85,0,0"/>
                     </Grid>
                 </TabItem>
             </TabControl>
