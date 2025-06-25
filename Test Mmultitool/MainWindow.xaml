@@ -41,12 +41,18 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Info">
+                    <MenuItem x:Name="Mi_Help" Header="_Help">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Images/StatusHelp_16x.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem x:Name="Mi_About" Header="_About">
                         <MenuItem.Icon>
                             <Image Source="/Resources/Images/Information_x16.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
+
             </Menu>
             <ToolBarTray Height="29" VerticalAlignment="Top" DockPanel.Dock="Top" KeyboardNavigation.TabNavigation="Continue">
                 <ToolBar VerticalAlignment="Top" Height="29" KeyboardNavigation.TabNavigation="Continue" TabIndex="200">
@@ -103,7 +109,7 @@
                         <duc:ImageButton x:Name="btnTrackViewOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1"/>
                         <TextBox x:Name="tbTrackViewFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
                         <TextBox x:Name="tbTrackViewMessage" HorizontalAlignment="Left" Margin="360,7,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="51" VerticalAlignment="Top" TabIndex="405"/>
-
+                        <duc:ImageButton x:Name="BtnTrackviewHelp" Width="32" Height="32" Margin="0,7,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Image="/Resources/Images/StatusHelp_x32.png" Text="" Background="{x:Null}" ImageMargin="0,0,0,0" BorderBrush="#FFABADB3"/>
                         <Grid Margin="0,108,0,0" Background="#FFEDF5FF">
                             <Mmultitool:TrackView x:Name="TrackView1"/>
                         </Grid>

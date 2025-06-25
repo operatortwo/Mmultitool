@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2025 06 25		1.0.5.9		Started with Help for Test Mmultitool
 2025 06 12		1.0.5.8		TrackView: added LoopPlay and RestartAtEnd
 2025 06 05		1.0.5.7		little improvements and fixes, Readme edited
 2025 06 03		1.0.5.6		TrackView: fixed MovePosition PitchBend

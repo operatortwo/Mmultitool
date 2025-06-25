@@ -1,4 +1,6 @@
-﻿Imports DailyUserControls
+﻿
+Imports DailyUserControls
+Imports Microsoft.VisualBasic.Devices
 Imports Mmultitool
 
 Class MainWindow
@@ -6,6 +8,8 @@ Class MainWindow
     Public Shared ScreenRefreshTimer As New Timers.Timer(50)       ' 50 ms Screen Timer (= 20 FPS)
 
     Private mifir As New MidifileRead
+
+    Public Const HelpUrl As String = "Mmultitool Help.chm"
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         If mifir.ReadMidiFile("Echoes1.mid") = True Then
@@ -95,6 +99,7 @@ Class MainWindow
         My.Settings.Save()
 
 
+
         MIO._End()                          ' close all MIDI-Ports
     End Sub
 
@@ -139,6 +144,19 @@ Class MainWindow
             stat = CByte(i Or &HB0)
             MidiOutShortMsg(stat, &H79, 0)           ' Controller Reset (Bx, 79, 0)
         Next
+    End Sub
+
+    Private Sub Mi_Help_Click(sender As Object, e As RoutedEventArgs) Handles Mi_Help.Click
+        Forms.Help.ShowHelp(Nothing, HelpUrl)
+    End Sub
+
+    ''' <summary>
+    ''' allows calling help from SequencerUI
+    ''' </summary>
+    ''' <param name="keyword"></param>
+    Public Sub SubShowHelp(keyword As String)
+        Forms.Help.ShowHelp(Nothing, HelpUrl, Forms.HelpNavigator.KeywordIndex, "Trackview")
+        'Forms.Help.ShowHelp(Nothing, HelpUrl, keyword)
     End Sub
 
     Private Sub Mi_About_Click(sender As Object, e As RoutedEventArgs) Handles Mi_About.Click
@@ -480,6 +498,10 @@ Class MainWindow
             ' wait for: StartTrackPlayer()
 
         End If
+    End Sub
+
+    Private Sub BtnTrackviewHelp_Click(sender As Object, e As RoutedEventArgs) Handles BtnTrackviewHelp.Click
+        Forms.Help.ShowHelp(Nothing, HelpUrl, Forms.HelpNavigator.KeywordIndex, "Trackview")
     End Sub
 
     Private Sub Mi_Prefer_MBT_1_1_0_Click(sender As Object, e As RoutedEventArgs) Handles Mi_Prefer_MBT_1_1_0.Click
