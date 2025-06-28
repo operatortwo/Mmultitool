@@ -19,6 +19,11 @@ Public Class TrackView
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         MeasureStrip1.TrackView = Me
         LoopStrip1.TrackView = Me
+        If tgbtnLoopMode.IsChecked = True Then
+            tgbtnLoopMode_Checked(Me, New RoutedEventArgs)
+        Else
+            tgbtnLoopMode_Unchecked(Me, New RoutedEventArgs)
+        End If
     End Sub
 
     ''' <summary>

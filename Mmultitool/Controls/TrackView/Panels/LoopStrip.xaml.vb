@@ -10,7 +10,7 @@ Public Class LoopStrip
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         RenderOptions.SetEdgeMode(Me, EdgeMode.Aliased)     ' sharp edges
         InitializeLoopAdorner()
-        Visibility = Visibility.Hidden          ' default LoopMode is Off, for desigmode it is Visible until here
+        'Visibility = Visibility.Hidden          ' default LoopMode is Off, for desigmode it is Visible until here
     End Sub
 
     Private Sub UserControl_MouseMove(sender As Object, e As MouseEventArgs)
