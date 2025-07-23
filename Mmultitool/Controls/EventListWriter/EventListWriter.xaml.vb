@@ -384,15 +384,41 @@ Public Class EventListWriter
         End If
     End Sub
 
+    Private Sub DataGrid1_KeyDown(sender As Object, e As KeyEventArgs) Handles DataGrid1.KeyDown
+        If e.Key = Key.Space Then
+            If e.IsRepeat = False Then
+                PlaySelectedItem()
+            End If
+        End If
+    End Sub
+
+    Private Sub PlaySelectedItem()
+        Dim sel = DataGrid1.SelectedItem
+        If sel IsNot Nothing Then
+            Dim tev As TrackEventX = TryCast(sel, TrackEventX)
+            If tev IsNot Nothing Then
+                Player.PlaySingleEvent(tev, EvliTPQ)
+            End If
+        End If
+    End Sub
+
+    Private Sequence1 As Sequence
     Public Sub PlaySelectedItems(DoLoop As Boolean)
         If DataGrid1.SelectedItems.Count > 0 Then
             Dim evlic As EventListContainer
             evlic = CreateEventListContainer(DataGrid1.SelectedItems, EvliTPQ)
 
-            Dim seq As Sequence
-            seq = CreateSequence(DataGrid1.SelectedItems, EvliTPQ)
-            Player.PlaySequence(seq, DoLoop)
+            Player.RemoveSequence(Sequence1)
+            Sequence1 = CreateSequence(DataGrid1.SelectedItems, EvliTPQ)
+            Player.PlaySequence(Sequence1, DoLoop)
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Stop playing the current sequence and remove it fron the SequenceList
+    ''' </summary>
+    Public Sub StopCurrentSequence()
+        Player.RemoveSequence(Sequence1)
     End Sub
 
     Public Function GetSelectedItems() As IList

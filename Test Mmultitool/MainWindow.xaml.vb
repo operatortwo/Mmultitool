@@ -275,25 +275,28 @@ Class MainWindow
 
         If EventLister1.IsVisible Then
             Dim time As Long = Player.SequencePlayerTime
-            lblEvlSequencePlayerrPosition.Content = TimeTo_MBT(time, PlayerTPQ)
+            lblEvlSequencePlayerPosition.Content = TimeTo_MBT(time, PlayerTPQ)
             If SequencePlayerBPM <> ssldEvlSequencePlayerBPM.Value Then
                 ssldEvlSequencePlayerBPM.SetValueSilent(Math.Round(SequencePlayerBPM, 0))
             End If
 
         ElseIf EventListWriter1.IsVisible Then
             Dim time As Long = Player.SequencePlayerTime
-            lblEvlwrSequencePlayerrPosition.Content = TimeTo_MBT(time, PlayerTPQ)
+            lblEvlwrSequencePlayerPosition.Content = TimeTo_MBT(time, PlayerTPQ)
             If SequencePlayerBPM <> ssldEvlwrSequencePlayerBPM.Value Then
                 ssldEvlwrSequencePlayerBPM.SetValueSilent(Math.Round(SequencePlayerBPM, 0))
             End If
 
         ElseIf TrackView1.IsVisible Then
-
+            TrackView1.ScreenRefresh()
         End If
 
+        If DebugTab.IsVisible Then
+            DebugTab_ScreenRefresh()
+        End If
 
-        If TrackView1.IsVisible Then
-            TrackView1.ScreenRefresh()
+        If SequencePad1.IsVisible Then
+            SequencePad1.Screenrefresh()
         End If
 
     End Sub
@@ -306,7 +309,7 @@ Class MainWindow
         StopSequencePlayer()
     End Sub
     Private Sub btnEvlRestartSequencePlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlRestartSequencePlayer.Click
-        Set_SequencePlayerTime(0)
+        Restart_SequencePlayer()
     End Sub
 
     Private Sub btnEvlwrStartSequencePlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlwrStartSequencePlayer.Click
@@ -317,9 +320,11 @@ Class MainWindow
         'Set_SequencerTime(0)
     End Sub
     Private Sub btnEvlwrRestartSequencePlayer_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlwrRestartSequencePlayer.Click
-        Set_SequencePlayerTime(0)
+        Restart_SequencePlayer()
     End Sub
-
+    Private Sub btnEvlistWrStopSequence_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlistWrStopSequence.Click
+        EventListWriter1.StopCurrentSequence()
+    End Sub
     Private Sub EvlBpmSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles ssldEvlSequencePlayerBPM.ValueChanged
         SequencePlayerBPM = ssldEvlSequencePlayerBPM.Value
     End Sub
@@ -348,13 +353,12 @@ Class MainWindow
         If EventLister1.GetSelectedItems.Count = 0 Then
             EventLister1.SelectAll()
         End If
-
+        EventLister1.StopCurrentSequence()
         EventLister1.PlaySelectedItems(tgbtnEvListerLoop.IsChecked)
     End Sub
 
-    Private Sub btnEvlStopSequencePlayer2_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlStopSequencePlayer2.Click
-        StopSequencePlayer()
-        'Set_SequencerTime(0)
+    Private Sub btnEvlStopSequence_Click(sender As Object, e As RoutedEventArgs) Handles btnEvlStopSequence.Click
+        EventLister1.StopCurrentSequence()
     End Sub
 
     Private Sub btnEvListWrSelectAll_Click(sender As Object, e As RoutedEventArgs) Handles btnEvListWrSelectAll.Click
@@ -365,7 +369,7 @@ Class MainWindow
         If EventListWriter1.GetSelectedItems.Count = 0 Then
             EventListWriter1.SelectAll()
         End If
-
+        EventListWriter1.StopCurrentSequence()
         EventListWriter1.PlaySelectedItems(tgbtnEvListWrLoop.IsChecked)
     End Sub
 
@@ -513,6 +517,63 @@ Class MainWindow
 
 
     End Sub
+
+#Region "Debug"
+
+    Private Sub DebugTab_ScreenRefresh()
+        Dim time As Long = Player.SequencePlayerTime
+        Dim cont As String = TimeTo_MBT(time, PlayerTPQ)
+        If LblDbgSequencePlayerPosition.Content <> cont Then
+            LblDbgSequencePlayerPosition.Content = TimeTo_MBT(time, PlayerTPQ)
+        End If
+        If SequencePlayerBPM <> SsldDbgSequencePlayerBPM.Value Then
+            SsldDbgSequencePlayerBPM.SetValueSilent(Math.Round(SequencePlayerBPM, 0))
+        End If
+
+        LblDbgSeqListCount.Content = Player.SequenceList.Count
+
+
+    End Sub
+
+    Private Sub BtnShowClipboard_Click(sender As Object, e As RoutedEventArgs) Handles BtnShowClipboard.Click
+        Dim contevlic As Boolean
+        Dim tp As Type = GetType(EventListContainer)
+        contevlic = Clipboard.ContainsData(tp.FullName)
+
+        If contevlic = False Then
+            MessageWindow.Show("The Clipboard does not contain an EventList", "Show Clipboard")
+            Exit Sub
+        End If
+
+        Dim evlic As EventListContainer = Clipboard.GetData(tp.FullName)
+        Dim win As New DlgClipboardContent
+        win.Owner = Me
+        win.EventLister1.SetEventListContainer(evlic)
+        If Prefer_MBT_1_1_0 Then
+            win.EventLister1.DesiredTimeFormat = EventLister.TimeFormat.MBT_1_based
+        End If
+        win.ShowDialog()
+    End Sub
+
+    Private Sub BtnDbgStartSequencePlayer_Click(sender As Object, e As RoutedEventArgs) Handles BtnDbgStartSequencePlayer.Click
+        StartSequencePlayer()
+    End Sub
+
+    Private Sub BtnDbgStopSequencePlayer_Click(sender As Object, e As RoutedEventArgs) Handles BtnDbgStopSequencePlayer.Click
+        StopSequencePlayer()
+    End Sub
+
+    Private Sub BtnDbgRestartSequencePlayer_Click(sender As Object, e As RoutedEventArgs) Handles BtnDbgRestartSequencePlayer.Click
+        Restart_SequencePlayer()
+    End Sub
+
+    Private Sub SsldDbgSequencePlayerBPM_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles SsldDbgSequencePlayerBPM.ValueChanged
+        SequencePlayerBPM = SsldDbgSequencePlayerBPM.Value
+    End Sub
+
+
+
+#End Region
 
 
 End Class

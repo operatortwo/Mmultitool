@@ -361,15 +361,24 @@ Public Class EventLister
         End If
     End Sub
 
+    Private Sequence1 As Sequence
+
     Public Sub PlaySelectedItems(DoLoop As Boolean)
         If DataGrid1.SelectedItems.Count > 0 Then
             Dim evlic As EventListContainer
             evlic = CreateEventListContainer(DataGrid1.SelectedItems, EvliTPQ)
 
-            Dim seq As Sequence
-            seq = CreateSequence(DataGrid1.SelectedItems, EvliTPQ)
-            Player.PlaySequence(seq, DoLoop)
+            Player.RemoveSequence(Sequence1)
+            Sequence1 = CreateSequence(DataGrid1.SelectedItems, EvliTPQ)
+            Player.PlaySequence(Sequence1, DoLoop)
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Stop playing the current sequence and remove it fron the SequenceList
+    ''' </summary>
+    Public Sub StopCurrentSequence()
+        Player.RemoveSequence(Sequence1)
     End Sub
 
     Private Sub CopySelectedItemsToClipboard(withHeader As Boolean)

@@ -119,6 +119,16 @@ FilterListWindow
 InitializeComponent
 </summary>
 </member>
+<member name="T:DailyUserControls.ProgressRing">
+<summary>
+ProgressRing
+</summary>
+</member>
+<member name="M:DailyUserControls.ProgressRing.InitializeComponent">
+<summary>
+InitializeComponent
+</summary>
+</member>
 <member name="T:DailyUserControls.SidePanel">
 <summary>
 SidePanel

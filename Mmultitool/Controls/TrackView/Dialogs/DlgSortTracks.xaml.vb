@@ -7,7 +7,7 @@ Public Class DlgSortTracks
 
     'Private Trackview As TrackView
 
-    Public Property TrackCollection As New ObservableCollection(Of Track)       ' local
+    Private Property TrackCollection As New ObservableCollection(Of Track)       ' local
 
     Public Sub New(ByRef UI_Tracks As List(Of Track))
         ' required for the Designer

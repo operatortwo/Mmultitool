@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="SequenceBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mmultitool"
+             xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
+             mc:Ignorable="d" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,1" Height="120" Width="120" Background="#FFEFF7FF" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="LabelBorderBrush1" Color="#FF929292"/>
+        <SolidColorBrush x:Key="LabelBackground1" Color="#FFFAFFDE"/>
+    </UserControl.Resources>
+    <Grid>
+        <Label x:Name="LblName" Content="Sequence Name" VerticalAlignment="Top" Height="20" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="0,0,0,1" Focusable="True" >
+            <Label.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFF6FFA6" Offset="0"/>
+                    <GradientStop Color="#FFFFE366" Offset="1"/>
+                </LinearGradientBrush>
+            </Label.Background>
+            <Label.ContextMenu>
+                <ContextMenu HorizontalOffset="15">
+                    <MenuItem x:Name="CtxMi_ImportMidiPattern" Header="Import Midi-Pattern">
+                        <MenuItem.Icon>
+                            <Image Source="/Mmultitool;component/Resources/Images/Import_x22.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Label.ContextMenu>
+        </Label>
+        <duc:NumericUpDown x:Name="NudChannel" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,1" MaximumValue="15" UpDownColMinWidth="15" Background="{DynamicResource LabelBackground1}" HorizontalAlignment="Left" Width="42" Height="24" VerticalAlignment="Bottom" Margin="76,0,0,72" MouseWheelHandled="True"/>
+        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,0" Content="Chan." Margin="87,44,0,0"/>
+        <Label x:Name="LblTriggerIn" Background="{DynamicResource LabelBackground1}" Content="In" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="20" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="0,1,1,0" Margin="0,98,0,0" />
+        <Label x:Name="LblTriggerout" Background="{DynamicResource LabelBackground1}" Content="Out" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,0,1" Margin="88,65,0,0" Width="30" />
+        <duc:ProgressRing x:Name="ProgressRing1" Width="66" Height="66" ProgressValue="40" RingFill="#FF90C1EE" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="6,0,0,0"/>
+        <duc:ToggleButton x:Name="TgbtnPlay" Width="24" Height="24" Text="" Image="/Mmultitool;component/Resources/Images/Play_bw_x22.png" ImageUnchecked="/Mmultitool;component/Resources/Images/Play_bw_x22.png" TextChecked="" TextUnchecked="" ImageChecked="/Mmultitool;component/Resources/Images/Play_x22.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="27,0,0,0"/>
+        <duc:NumericUpDown x:Name="NudRepeatCount" Height="24" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,0" MaximumValue="32" UpDownColMinWidth="15" Value="1" Background="{DynamicResource LabelBackground1}" MinimumValue="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="42" Margin="75,0,0,0" MouseWheelHandled="True"/>
+        <duc:ToggleButton x:Name="TgbtnLoop" ClickMode="Press" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="{DynamicResource LabelBorderBrush1}" HorizontalAlignment="Left" BackgroundUnchecked="#FFF7F7F7" BackgroundChecked="#FFA4E892" Height="22" VerticalAlignment="Top" Margin="37,96,0,0" Width="35"/>
+    </Grid>
+</UserControl>

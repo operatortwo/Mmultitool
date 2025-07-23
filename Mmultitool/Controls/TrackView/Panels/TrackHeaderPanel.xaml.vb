@@ -8,7 +8,7 @@
         If TrackPanel IsNot Nothing Then
             tblkViewType.Text = TrackPanel.KeyPanel.SelectedView.ToString()
             If TrackPanel.TrackData IsNot Nothing Then
-                tblkTrackName.Text = GetTrackName(TrackPanel.TrackData.EventList)
+                tblkTrackName.Text = GetSequenceOrTrackName(TrackPanel.TrackData.EventList)
             End If
         End If
     End Sub

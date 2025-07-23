@@ -192,6 +192,10 @@ Public Module Player
 
             _SequencePlayerTime += DeltaSequencePlayerTicks
 
+
+
+
+
             ' catch exceptions, make sure the tick ends as quickly as possible
             Try
                 SequencePlayer.Do_TimedNoteOff(SequencePlayerTime)                     ' NoteOff processing for SequencePlayer
@@ -200,15 +204,34 @@ Public Module Player
                 _SequencePlayerErrors += 1
             End Try
 
+            '--- stop SequencePlayler if IdleTime > MaxIdleTime (ms) ---
+            IdleCheckCount += 1
+            If IdleCheckCount >= 100 Then
+                IdleCheckCount = 0
+                If SequenceList.Count = 0 Then
+                    If Stopwatch.ElapsedMilliseconds - IdleBaseTime > MaxIdleTime Then
+                        StopSequencePlayer()
+                        Set_SequencePlayerTime(0)
+                    End If
+                Else
+                    IdleBaseTime = Stopwatch.ElapsedMilliseconds
+                End If
+            End If
+
         End If
 
-
-
     End Sub
+
+    Private IdleCheckCount As Integer
+    Private IdleBaseTime As Long
+    Private Const MaxIdleTime = 30 * 1000           ' milliseconds
+
 
     Public Sub StartSequencePlayer()
         If TimerID = 0 Then Start_Timer()
         If IsSequencePlayerRunning = True Then Exit Sub
+        IdleCheckCount = 0
+        IdleBaseTime = Stopwatch.ElapsedMilliseconds
         _IsSequencePlayerRunning = True
     End Sub
 
@@ -226,6 +249,11 @@ Public Module Player
             End If
         End If
         _SequencePlayerTime = newTime
+    End Sub
+
+    Public Sub Restart_SequencePlayer()
+        Set_SequencePlayerTime(0)
+        SequenceList.Clear()
     End Sub
 
     Public Sub StartTrackPlayer()

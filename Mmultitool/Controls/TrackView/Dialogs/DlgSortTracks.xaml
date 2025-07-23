@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Mmultitool"
         xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
         mc:Ignorable="d"
-        Title="DlgSortTracks" Height="450" Width="378" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+        Title="DlgSortTracks" Height="450" Width="378" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" Loaded="Window_Loaded">
     <Grid>
         <duc:ImageButton x:Name="btnOk" Width="70" Text="Ok" Margin="92,0,0,38" Image="/Mmultitool;component/Resources/Images/Ok_g_x32.png" HorizontalAlignment="Left" Height="24" VerticalAlignment="Bottom"/>
         <duc:ImageButton x:Name="btnCancel" Width="70" Text="Cancel" Margin="197,0,0,38" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalAlignment="Left" IsCancel="True" Height="24" VerticalAlignment="Bottom"/>

@@ -632,7 +632,7 @@ Public Module MModule1
         Return Time * DestinationTPQ / SourceTPQ
     End Function
     ''' <summary>
-    ''' Convert time or duration into sequencer time, which has a fixed TPQ of 960
+    ''' Convert time or duration into sequencer time, which has a fixed TPQ of 480
     ''' </summary>
     ''' <param name="Time">Time or duration in ticks</param>
     ''' <param name="SourceTPQ"></param>

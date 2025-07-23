@@ -98,12 +98,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Debugging\Windows\DlgClipboardContent.xaml.vb">
+      <DependentUpon>DlgClipboardContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AboutWin.xaml.vb">
       <DependentUpon>AboutWin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\DlgMidiPorts.xaml.vb">
       <DependentUpon>DlgMidiPorts.xaml</DependentUpon>
     </Compile>
+    <Page Include="Debugging\Windows\DlgClipboardContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -226,5 +233,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

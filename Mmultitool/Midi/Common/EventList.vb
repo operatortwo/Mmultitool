@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports Mmultitool.TracklistModule
 
 Public Module EventList
 
@@ -117,6 +118,28 @@ Public Module EventList
             Return trklist.Count
         End Function
 
+        ''' <summary>
+        ''' Change Time and Duration of entire EventList to new TPQ
+        ''' </summary>
+        ''' <param name="newTpq">must be between 1 and 1920</param>
+        Public Sub ChangeTpq(newTpq As Integer)
+            '--- convert time and duration to new TPQ
+
+            If newTpq = TPQ Then Exit Sub                       ' nothing to do
+            If newTpq < 1 Then Exit Sub
+            If newTpq > 1920 Then Exit Sub                      ' limit TPQ to 1920
+
+            If newTpq <> TPQ Then
+                For Each trev In EventList
+                    'Newtime = Time * DestinationTPQ / SourceTPQ                    
+                    trev.Time = trev.Time * newTpq / TPQ
+                    If trev.Duration > 0 Then
+                        trev.Duration = trev.Duration * newTpq / TPQ        ' scale up duration
+                    End If
+                Next
+            End If
+        End Sub
+
     End Class
 
     Public Function GetTrackName(TrackNumber As Byte, Eventlist As List(Of TrackEventX)) As String
@@ -179,20 +202,73 @@ Public Module EventList
     End Function
 
     ''' <summary>
-    ''' For Single Track EventList
+    ''' Return first SequenceOrTrackName or TextEvent
     ''' </summary>    
-    Public Function GetTrackName(Eventlist As List(Of TrackEventX)) As String
+    Public Function GetSequenceOrTrackName(Eventlist As List(Of TrackEventX)) As String
         Dim retstr As String = ""
         If Eventlist Is Nothing Then Return retstr
 
         For Each ev In Eventlist
             If ev.TypeX = EventTypeX.SequenceOrTrackName Or ev.TypeX = EventTypeX.TextEvent Then
                 Dim ascii As Encoding = Encoding.ASCII
-                retstr = retstr & "  " & ascii.GetChars(ev.DataX)
+                retstr = ascii.GetChars(ev.DataX)
             End If
         Next
 
         Return retstr
     End Function
+
+    ''' <summary>
+    ''' Get first InstrumentName
+    ''' </summary>    
+    Public Function GetInstrumentName(Eventlist As List(Of TrackEventX)) As String
+        Dim retstr As String = ""
+        If Eventlist Is Nothing Then Return retstr
+
+        For Each ev In Eventlist
+            If ev.TypeX = EventTypeX.InstrumentName Then
+                Dim ascii As Encoding = Encoding.ASCII
+                retstr = ascii.GetChars(ev.DataX)
+            End If
+        Next
+
+        Return retstr
+    End Function
+
+    Public Function GetFirstProgramChange(eventlist As List(Of TrackEventX)) As Byte
+        If eventlist Is Nothing Then Return 0
+        For Each trev In eventlist
+            If trev.TypeX = EventTypeX.ProgramChange Then
+                Return trev.Data1
+            End If
+        Next
+        Return 0                                        ' nothing found
+    End Function
+
+    Public Function GetChannelOfFirstMidiEvent(eventlist As List(Of TrackEventX)) As Byte
+        If eventlist Is Nothing Then Return 0
+        For Each trev In eventlist
+            If trev.Type = EventType.MidiEvent Then
+                Return trev.Channel
+                Exit For
+            End If
+        Next
+        Return 0                    ' nothing found
+    End Function
+
+    Public Function GetFirstTempo(eventlist As List(Of TrackEventX)) As Integer
+        If eventlist Is Nothing Then Return 0
+        For Each trev In eventlist
+            If trev.TypeX = EventTypeX.SetTempo Then
+                If trev.DataX.Count >= 3 Then
+                    Dim barr As Byte() = trev.DataX
+                    Return Math.Round(TempoDataToBPM(barr(0), barr(1), barr(2)), 0)
+                End If
+            End If
+        Next
+        Return 120                  ' return default
+    End Function
+
+
 
 End Module

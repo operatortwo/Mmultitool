@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test_Mmultitool"
         xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls" 
-        xmlns:Mmultitool="clr-namespace:Mmultitool;assembly=Mmultitool"        
+        xmlns:mmt="clr-namespace:Mmultitool;assembly=Mmultitool"        
         mc:Ignorable="d"
         Title="Test Mmultitool" Height="700" Width="980" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
@@ -63,45 +63,46 @@
             </ToolBarTray>
 
             <!-- TabControl SelectedIndex is set for editing/developing-->
-            <TabControl x:Name="TabControl1" IsTabStop="True" TabIndex="300" SelectedIndex="2">
+            <TabControl x:Name="TabControl1" IsTabStop="True" TabIndex="300" SelectedIndex="3">
                 <TabItem Header="EventLister">
                     <Grid>
-                        <Mmultitool:EventLister x:Name="EventLister1"  Margin="10,100,10,10" DataGridRowBackground="#FFFFFDF4" IsTabStop="True" TabIndex="500"/>
-                        <TextBox x:Name="tbEvListerFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="230" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
-                        <duc:ImageButton x:Name="btnEvListerOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1"/>
-                        <TextBox x:Name="tbEvListerMessage" HorizontalAlignment="Left" Margin="360,33,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="58" VerticalAlignment="Top" TabIndex="405"/>
-                        <Button x:Name="btnTbEvListerMessageClear" Content="clear" HorizontalAlignment="Left" Margin="639,60,0,0" VerticalAlignment="Top" Width="32" TabIndex="406"/>
+                        <mmt:EventLister x:Name="EventLister1"  Margin="10,100,10,10" DataGridRowBackground="#FFFFFDF4" IsTabStop="True" TabIndex="500" Grid.ColumnSpan="2"/>
+                        <TextBox x:Name="tbEvListerFilename" HorizontalAlignment="Left" Margin="123,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="193" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
+                        <duc:ImageButton x:Name="btnEvListerOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
+                        <TextBox x:Name="tbEvListerMessage" HorizontalAlignment="Left" Margin="501,35,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="58" VerticalAlignment="Top" TabIndex="405"/>
+                        <Button x:Name="btnTbEvListerMessageClear" Content="clear" HorizontalAlignment="Left" Margin="739,9,0,0" VerticalAlignment="Top" Width="32" TabIndex="406" Grid.Column="1"/>
                         <duc:ImageButton x:Name="btnEvListerSelectAll" Text="Select All" TextAlignment="Center" Margin="10,49,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/SelectAll_x32.png" Width="86" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF3F3F3" TabIndex="402" IsTabStop="True" TextPadding="0,1,0,1"/>
-                        <duc:ImageButton x:Name="btnEvListerPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" TabIndex="403" IsTabStop="True" TextPadding="0,1,0,1"/>
-                        <duc:ToggleButton x:Name="tgbtnEvListerLoop" Margin="247,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="#FF707070" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" TabIndex="404" IsTabStop="True"/>
-                        <duc:ImageButton x:Name="btnEvlStopSequencePlayer2" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="312,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
-                        <duc:SmallSlider x:Name="ssldEvlSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="655,7,0,0" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top"/>
-                        <Label Content="BPM:" VerticalAlignment="Top" Margin="619,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
-                        <Label x:Name="lblEvlSequencePlayerrPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="543,10,0,0"/>
-                        <Label Content="Position:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="488,10,0,0" HorizontalAlignment="Left" Width="45" />
-                        <duc:ImageButton x:Name="btnEvlRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="379,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27" />
-                        <duc:ImageButton x:Name="btnEvlStopSequencePlayer" Text="" Image="/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="405,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
-                        <duc:ImageButton x:Name="btnEvlStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="431,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
+                        <duc:ImageButton x:Name="btnEvListerPlaySelected" Margin="123,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" TabIndex="403" IsTabStop="True" TextPadding="0,1,0,1"/>
+                        <duc:ToggleButton x:Name="tgbtnEvListerLoop" Margin="243,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="#FF707070" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" TabIndex="404" IsTabStop="True"/>
+                        <duc:ImageButton x:Name="btnEvlStopSequence" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="302,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Grid.Column="1"/>
+                        <duc:SmallSlider x:Name="ssldEvlSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="321,7,0,0" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top" Grid.Column="1"/>
+                        <Label Content="BPM:" VerticalAlignment="Top" Margin="446,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
+                        <Label x:Name="lblEvlSequencePlayerPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="551,11,0,0"/>
+                        <Label Content="Position:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="501,10,0,0" HorizontalAlignment="Left" Width="45" Grid.Column="1" />
+                        <duc:ImageButton x:Name="btnEvlRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="364,35,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27" />
+                        <duc:ImageButton x:Name="btnEvlStopSequencePlayer" Text="" Image="/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="390,35,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
+                        <duc:ImageButton x:Name="btnEvlStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="416,35,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="EventList Writer">
                     <Grid>
-                        <Mmultitool:EventListWriter x:Name="EventListWriter1"  Margin="10,89,10,10" DataGridRowBackground="#FFFFFDF4" Grid.ColumnSpan="2"/>
-                        <TextBox x:Name="tbEvListWriterFilename" HorizontalAlignment="Left" Margin="120,7,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="181" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
-                        <TextBox x:Name="tbEvListWriterMessage" HorizontalAlignment="Left" Margin="606,6,0,0" TextWrapping="Wrap" Width="237" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
+                        <mmt:EventListWriter x:Name="EventListWriter1"  Margin="10,89,10,10" DataGridRowBackground="#FFFFFDF4" Grid.ColumnSpan="2"/>
+                        <TextBox x:Name="tbEvListWriterFilename" HorizontalAlignment="Left" Margin="123,6,0,0" TextWrapping="Wrap" Text="xxx" VerticalAlignment="Top" Width="181" IsReadOnly="True" Background="#FFF3F3F3" Height="35" VerticalScrollBarVisibility="Visible"/>
+                        <TextBox x:Name="tbEvListWriterMessage" HorizontalAlignment="Left" Margin="631,7,0,0" TextWrapping="Wrap" Width="237" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="75" VerticalAlignment="Top" TabIndex="405"/>
                         <duc:ImageButton x:Name="btnEvListWrSelectAll" Text="Select All" TextAlignment="Center" Margin="10,49,0,0" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/SelectAll_x32.png" Width="86" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF3F3F3" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
-                        <duc:ImageButton x:Name="btnEvListWrPlaySelected" Margin="120,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" Grid.Column="1" TextPadding="0,1,0,1"/>
-                        <duc:ToggleButton x:Name="tgbtnEvListWrLoop" Margin="247,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="{DynamicResource ButtonBorderBrush1}" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3" Grid.Column="1"/>
-                        <duc:ImageButton x:Name="btnSaveListed" Height="24" Width="120" Margin="471,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save Listed" Image="/Resources/Images/Save_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="10,1,0,1" TextAlignment="Left"/>
+                        <duc:ImageButton x:Name="btnEvListWrPlaySelected" Margin="123,49,0,0" Text="Play selected" Width="115" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" TextAlignment="Center" Image="/Resources/Images/Play_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Background="#FFF3F3F3" TextPadding="0,1,0,1"/>
+                        <duc:ToggleButton x:Name="tgbtnEvListWrLoop" Margin="243,49,0,0" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" TextChecked="Loop" TextUnchecked="Loop" BorderBrush="{DynamicResource ButtonBorderBrush1}" ImageChecked="/Resources/Images/Play_Restart_transp_x22.png" ImageUnchecked="/Resources/Images/Play_Restart_transp_x22.png" BackgroundChecked="#FF99E892" ImageMargin="0,2,0,2" BackgroundUnchecked="#FFF3F3F3"/>
+                        <duc:ImageButton x:Name="btnSaveListed" Height="24" Width="120" Margin="487,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save Listed" Image="/Resources/Images/Save_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="10,1,0,1" TextAlignment="Left"/>
                         <duc:ImageButton x:Name="btnEvListWrOpenFile" Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Text="Open File" Background="#FFF3F3F3" BorderBrush="#FF707070" BorderThickness="1,1,1,1" Image="/Resources/Images/OpenFile_x32.png" Height="26" TabIndex="401" IsTabStop="True" TextPadding="0,1,0,1" Grid.ColumnSpan="2"/>
-                        <Label Content="BPM" VerticalAlignment="Top" Margin="433,12,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" />
-                        <Label x:Name="lblEvlwrSequencePlayerrPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="520,7,0,0"/>
-                        <Label Content="Pos:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="485,7,0,0" HorizontalAlignment="Left" />
-                        <duc:SmallSlider x:Name="ssldEvlwrSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="308,7,0,0" HorizontalAlignment="Left" Width="120" Height="24" VerticalAlignment="Top"/>
-                        <duc:ImageButton x:Name="btnEvlwrStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="#FF707070" Margin="386,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26"/>
-                        <duc:ImageButton x:Name="btnEvlistWrStop" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="355,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
-                        <duc:ImageButton x:Name="btnEvlwrRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="#FF707070" Margin="324,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" />
-                        <duc:ImageButton x:Name="btnSaveSelected" Height="24" Width="120" Margin="471,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save Selected" Image="/Resources/Images/SaveAs_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="10,1,0,1" TextAlignment="Left"/>
+                        <Label Content="BPM" VerticalAlignment="Top" Margin="446,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" />
+                        <Label x:Name="lblEvlwrSequencePlayerPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="536,6,0,0"/>
+                        <Label Content="Pos:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="501,6,0,0" HorizontalAlignment="Left" />
+                        <duc:SmallSlider x:Name="ssldEvlwrSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="321,5,0,0" HorizontalAlignment="Left" Width="120" Height="24" VerticalAlignment="Top"/>
+                        <duc:ImageButton x:Name="btnEvlwrStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="#FF707070" Margin="415,34,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26"/>
+                        <duc:ImageButton x:Name="btnEvlistWrStop" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="384,34,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
+                        <duc:ImageButton x:Name="btnEvlwrRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="#FF707070" Margin="353,34,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" />
+                        <duc:ImageButton x:Name="btnSaveSelected" Height="24" Width="120" Margin="487,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Save Selected" Image="/Resources/Images/SaveAs_x32.png" BorderBrush="{DynamicResource ButtonBorderBrush1}" BorderThickness="1,1,1,1" ImageMargin="4,0,0,0" TextPadding="10,1,0,1" TextAlignment="Left"/>
+                        <duc:ImageButton x:Name="btnEvlistWrStopSequence" Height="26" Width="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="302,49,0,0" Text="" Image="/Resources/Images/Stop_x22.png" BorderBrush="#FF707070" BorderThickness="1,1,1,1"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="TrackView">
@@ -111,10 +112,41 @@
                         <TextBox x:Name="tbTrackViewMessage" HorizontalAlignment="Left" Margin="360,7,0,0" TextWrapping="Wrap" Width="274" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#FFF3F3F3" IsReadOnlyCaretVisible="True" Height="51" VerticalAlignment="Top" TabIndex="405"/>
                         <duc:ImageButton x:Name="BtnTrackviewHelp" Width="32" Height="32" Margin="0,7,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Image="/Resources/Images/StatusHelp_x32.png" Text="" Background="{x:Null}" ImageMargin="0,0,0,0" BorderBrush="#FFABADB3"/>
                         <Grid Margin="0,108,0,0" Background="#FFEDF5FF">
-                            <Mmultitool:TrackView x:Name="TrackView1"/>
+                            <mmt:TrackView x:Name="TrackView1"/>
                         </Grid>
                     </Grid>
                 </TabItem>
+                <TabItem x:Name="DebugTab" Header="Debug">
+                    <Grid>
+                        <Label Content="Tab for debugging and developing" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,12,0,0" FontSize="14" BorderBrush="Gray" BorderThickness="0,0,0,1"/>
+
+                        <TabControl Margin="0,80,0,0" SelectedIndex="1">
+                            <TabItem Header="Tab1">
+                                <Grid>
+                                    <Button x:Name="BtnShowClipboard" Content="ShowClipboard" HorizontalAlignment="Left" Margin="86,79,0,0" VerticalAlignment="Top" Width="100"/>
+                                    <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="69,158,0,0" Height="130" Width="190" Background="#FFF3EBEB" Focusable="True"/>
+                                    <mmt:SequenceBox HorizontalAlignment="Center" Width="120" Height="119" VerticalAlignment="Center" Focusable="True"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Sequence Pad">
+                                <Grid>
+                                    <mmt:SequencePad x:Name="SequencePad1"/>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                        <duc:SmallSlider x:Name="SsldDbgSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="655,7,0,0" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top"/>
+                        <Label Content="BPM:" VerticalAlignment="Top" Margin="619,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
+                        <Label x:Name="LblDbgSequencePlayerPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="543,10,0,0"/>
+                        <Label Content="Position:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="488,10,0,0" HorizontalAlignment="Left" Width="45" />
+                        <duc:ImageButton x:Name="BtnDbgRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="379,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27" />
+                        <duc:ImageButton x:Name="BtnDbgStopSequencePlayer" Text="" Image="/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="405,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
+                        <duc:ImageButton x:Name="BtnDbgStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="431,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
+                        <Label Content="SeqList.Count:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="488,37,0,0" HorizontalAlignment="Left" Width="76" />
+                        <Label x:Name="LblDbgSeqListCount" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx" Margin="579,37,0,0"/>
+                    </Grid>
+                </TabItem>
+
+
             </TabControl>
         </DockPanel>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Threading
 
 Partial Public Module Player
 
@@ -80,6 +81,54 @@ Partial Public Module Player
         Public Event SetTempo(BPM As Single)
 
         Public BPMUpdate As Boolean
+
+        ''' <summary>
+        ''' Play a TrackEventX to the specified channel (Ignores Channel in Status and TrackEventX). 
+        ''' Used in SequencePlayer when ForceToChannel is True
+        ''' </summary>
+        ''' <param name="CurrentTime">Player Time</param>
+        ''' <param name="PlannedTime">calculated event time</param>
+        ''' <param name="tev">TrackEvent data</param>
+        ''' <param name="Channel">send MidiEvents to this Channel</param>
+        Friend Sub PlayEvent(CurrentTime As UInteger, PlannedTime As UInteger, tev As TrackEventX, Channel As Byte)
+            Dim stat As Byte = tev.Status And &HF0            ' status without channel
+
+            If (stat >= &H80) And (stat < &HF0) Then        ' corresponds to MidiEvent
+
+                If (stat = &H90) And (tev.Data2 > 0) Then     ' NoteOn                    
+
+                    PlayNote(CurrentTime, PlannedTime, Channel, tev.Data1, tev.Data2, tev.Duration)       ' Note On + Duration
+
+                Else
+                    If stat <> &H80 Then                                  ' --> ignore &h8x NoteOff
+                        ' &hA0, &hB0, &hC0, &hD0, &hE0,     PolyKeyPress, CtrlChg, ProgChg, ChPress, PitchBend
+                        RaiseEvent MidiOutShortMsg(stat Or Channel, tev.Data1, tev.Data2)
+                    End If
+                End If
+
+                'ElseIf tev.Status
+
+            ElseIf tev.TypeX = EventTypeX.SetTempo Then
+                If tev.DataX IsNot Nothing Then                 ' check for invalid SetTempo
+                    If tev.DataX.Count >= 3 Then
+                        Dim micros As Integer
+                        micros = tev.DataX(0) * 65536 + tev.DataX(1) * 256 + tev.DataX(2)
+                        'SequencePlayerBPM = CSng(Math.Round(60 * 1000 * 1000 / micros, 2))       ' 2 Decimal places
+                        RaiseEvent SetTempo(CSng(Math.Round(60 * 1000 * 1000 / micros, 2)))     ' 2 Decimal places                        
+                    End If
+                End If
+
+            ElseIf (tev.Status = &HF0) Or (tev.Status = &HF7) Then
+                If tev.DataX.Count > 0 Then
+                    Dim sysex(tev.DataX.Count) As Byte
+                    sysex(0) = tev.Status
+                    tev.DataX.CopyTo(sysex, 1)
+                    RaiseEvent MidiOutLongMsg(sysex)
+                End If
+
+            End If
+
+        End Sub
 
 
         ''' <summary>
