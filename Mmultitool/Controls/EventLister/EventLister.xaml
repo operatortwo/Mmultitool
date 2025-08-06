@@ -29,7 +29,7 @@
                             <Label Content="Status:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
                             <ComboBox x:Name="cmbStatusFormat" HorizontalAlignment="Left" Margin="55,49,0,0" VerticalAlignment="Top" Width="55"/>
                             <Label Content="Format" HorizontalAlignment="Left" Margin="131,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
-                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="174,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="174,5,0,5" />
                             <!-- Filter -->
                             <duc:CheckboxFilterList x:Name="cbflistTrack" Margin="187,15,0,0" Text="Track" ImageLocation="Right" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="67" Height="26" ListWindowWidth="180"/>
                             <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="272,15,0,0" Text="Channel" ImageLocation="Right" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108"/>

@@ -24,7 +24,7 @@ Public Class DlgImportMidiPattern
 
     Private Sub btnImport_Click(sender As Object, e As RoutedEventArgs) Handles btnImport.Click
         CreateEventlist2()
-        RetSequence = CreateSequence(evlic2.EventList, evlic2.TPQ)
+        RetSequence = CreateSequence(evlic2.EventList, evlic2.TPQ, NudNumberOfBeats.Value)
         RetSequence.Name = Path.GetFileNameWithoutExtension(mifir.MidiName)
         DialogResult = True
         Close()
@@ -187,11 +187,15 @@ Public Class DlgImportMidiPattern
 
 
     Private Sub SsldSequencePlayerBPM_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles SsldSequencePlayerBPM1.ValueChanged
-        SequencePlayerBPM = SsldSequencePlayerBPM1.Value
+        If IsLoaded = True Then
+            SequencePlayerBPM = SsldSequencePlayerBPM1.Value
+        End If
     End Sub
 
     Private Sub SsldSequencePlayerBPM2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles SsldSequencePlayerBPM2.ValueChanged
-        SequencePlayerBPM = SsldSequencePlayerBPM2.Value
+        If IsLoaded = True Then
+            SequencePlayerBPM = SsldSequencePlayerBPM2.Value
+        End If
     End Sub
 
 
@@ -230,22 +234,6 @@ Public Class DlgImportMidiPattern
     Private Sub CreateEventlist2()
         If evlic1 Is Nothing Then Exit Sub
         evlic2 = evlic1.Copy
-
-        '--- if the sequence will be shortened ---
-
-        If NudNumberOfBeats.Value < NudNumberOfBeats.MaximumValue Then
-
-            Dim ndx As Integer
-            Dim maxtime As UInteger = NudNumberOfBeats.Value * evlic2.TPQ
-
-            For Each trev In evlic2.EventList
-                If trev.Time >= maxtime Then Exit For
-                ndx += 1
-            Next
-
-            evlic2.EventList.RemoveRange(ndx, evlic2.EventList.Count - ndx)
-
-        End If
 
         '---
 
@@ -356,6 +344,37 @@ Public Class DlgImportMidiPattern
                 End If
             Next
         End If
+
+        '--- if the sequence will be shortened ---
+
+        If NudNumberOfBeats.Value < NudNumberOfBeats.MaximumValue Then
+
+            Dim firsttime As UInteger
+            Dim alignedFirst As UInteger
+
+            If evlic2.EventList.Count > 0 Then
+                firsttime = evlic2.EventList(0).Time
+            End If
+
+            alignedFirst = Player.GetTimeOfPreviousBeat(firsttime)
+
+            '---
+
+            Dim ndx As Integer
+            Dim maxtime As UInteger = NudNumberOfBeats.Value * evlic2.TPQ
+            maxtime += alignedFirst                     ' offset if empty beat(s) at the beginning
+
+            For Each trev In evlic2.EventList
+                If trev.Time >= maxtime Then Exit For
+                ndx += 1
+            Next
+
+            evlic2.EventList.RemoveRange(ndx, evlic2.EventList.Count - ndx)
+
+        End If
+
+
+        '---
 
         LblNumberOfEvents2.Content = "NumEvents: " & evlic2.EventList.Count
 

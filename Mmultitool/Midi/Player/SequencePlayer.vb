@@ -98,6 +98,7 @@
         '--- insert seq to sequence list
         'SequenceList.Clear()                                    ' remove old sequences
         seq.StartTime = GetTimeOfNextBeat(SequencePlayerTime)
+        'seq.StartTime = GetTimeOfNextMeasure(SequencePlayerTime)
         seq.StartOffset = 0
         seq.DoLoop = DoLoop
         SequenceList.Add(seq)
@@ -112,10 +113,28 @@
         SequencePlayer.PlayEvent(SequencePlayerTime, SequencePlayerTime, tev2)
     End Sub
 
+
+    ''' <summary>
+    ''' Create a Sequence from a list of TrackEventX. Duration is time of last event, rounded up to next beat.
+    ''' </summary>
+    ''' <param name="items">Source Eventlist</param>
+    ''' <param name="TPQsource">Source Eventlist</param>
+    ''' <returns>Sequence with events related to PlayerTPQ</returns>
     Public Function CreateSequence(items As IList, TPQsource As Integer) As Sequence
+        Return CreateSequence(items, TPQsource, 0)
+    End Function
+    ''' <summary>
+    ''' Create a Sequence from a list of TrackEventX
+    ''' </summary>
+    ''' <param name="items">Source Eventlist</param>
+    ''' <param name="TPQsource">Source Eventlist</param>
+    ''' <param name="NumBeats">Desired length in beats (quaters). If Zero, duration is time of last event
+    '''  rounded up to time of next beat. If the desired length is shorter than the event list, it will be ignored</param>
+    ''' <returns>Sequence with events related to PlayerTPQ</returns>
+    Public Function CreateSequence(items As IList, TPQsource As Integer, NumBeats As UShort) As Sequence
         Dim seq As New Sequence
         If items Is Nothing Then Return seq             ' no data
-        If items.Count = 0 Then Return seq              ' no data
+        'If items.Count = 0 Then Return seq              ' no data
 
         '--- copy the events and adjust time and duration to sequencerTPQ (480)
         Dim selx As New List(Of TrackEventX)
@@ -142,9 +161,31 @@
             For Each tev In seq.EventList
                 tev.Time -= TimeOffset
             Next
+        End If
 
-            ' time of last event, round up to next beat (beat aligned sequence)
-            seq.Length = GetTimeOfNextBeat(seq.EventList.Last.Time)
+        '--- set length an duration
+
+        If NumBeats = 0 Then
+            If seq.EventList.Count > 0 Then
+                ' time of last event, round up to next beat (beat aligned sequence)
+                seq.Length = GetTimeOfNextBeat(seq.EventList.Last.Time)
+                seq.Duration = seq.Length
+            Else
+                ' if no events in list -> Length and Duration are 1 beat
+                seq.Length = PlayerTPQ
+                seq.Duration = seq.Length
+            End If
+
+        Else
+            Dim len As UInteger
+            If seq.EventList.Count > 0 Then
+                len = GetTimeOfNextBeat(seq.EventList.Last.Time)
+            End If
+            ' desired length can be longer but not shorter than Eventlist
+            If NumBeats * PlayerTPQ > len Then
+                len = NumBeats * PlayerTPQ
+            End If
+            seq.Length = len
             seq.Duration = seq.Length
         End If
 
@@ -216,6 +257,19 @@
 
         ElapsedTicks = Time Mod TicksPerUnit
         Newtime = Time - ElapsedTicks                       ' round down to start of this unit
+
+        Return Newtime
+    End Function
+
+    Public Function GetTimeOfNextMeasure(Time As UInteger) As UInteger
+        Dim Newtime As UInteger
+        Dim TicksPerUnit As Integer = 4 * PlayerTPQ          ' here a unit is a measure = 4 * quaterNote Length
+        Dim ElapsedTicks As UInteger                        ' in this unit
+        Dim RemainingTicks As UInteger                      ' in this unit     
+
+        ElapsedTicks = CUInt(Time Mod TicksPerUnit)
+        RemainingTicks = CUInt(TicksPerUnit - ElapsedTicks)
+        Newtime = Time + RemainingTicks                     ' round up to end of this unit
 
         Return Newtime
     End Function

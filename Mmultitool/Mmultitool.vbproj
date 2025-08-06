@@ -131,6 +131,9 @@
     <Compile Include="Controls\SequencePad\SequenceVoicePanel.xaml.vb">
       <DependentUpon>SequenceVoicePanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SequencePad\WiringGrid.xaml.vb">
+      <DependentUpon>WiringGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TrackView\Dialogs\DlgSetKeyList.xaml.vb">
       <DependentUpon>DlgSetKeyList.xaml</DependentUpon>
     </Compile>
@@ -275,6 +278,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SequencePad\WiringGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TrackView\Dialogs\DlgSetKeyList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -370,6 +377,9 @@
     <Resource Include="Controls\SequencePad\Dialogs\Notes.txt" />
     <Resource Include="Resources\Images\OpenfileDialog_x22.png" />
     <Resource Include="Resources\Images\OpenfileDialog_x32.png" />
+    <Resource Include="Resources\Images\Stop_x22.png" />
+    <Resource Include="Resources\Images\Play_x22_yellow.png" />
+    <Resource Include="Resources\Images\Stop_x22_yellow.png" />
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>

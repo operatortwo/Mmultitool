@@ -124,8 +124,6 @@
                             <TabItem Header="Tab1">
                                 <Grid>
                                     <Button x:Name="BtnShowClipboard" Content="ShowClipboard" HorizontalAlignment="Left" Margin="86,79,0,0" VerticalAlignment="Top" Width="100"/>
-                                    <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="69,158,0,0" Height="130" Width="190" Background="#FFF3EBEB" Focusable="True"/>
-                                    <mmt:SequenceBox HorizontalAlignment="Center" Width="120" Height="119" VerticalAlignment="Center" Focusable="True"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Sequence Pad">

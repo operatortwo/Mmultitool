@@ -10,30 +10,42 @@
     <UserControl.Resources>
         <SolidColorBrush x:Key="LabelBorderBrush1" Color="#FFA2A2A2"/>
     </UserControl.Resources>
-    <Grid>
-        <Label x:Name="LblVoicename" Content="Voice Name" VerticalAlignment="Top" Height="20" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource LabelBorderBrush1}" Focusable="True" >
+    <DockPanel x:Name="MainPanel">
+        <Label x:Name="LblVoicename" DockPanel.Dock="Top" Content="Voice Name" VerticalAlignment="Top" Height="20" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource LabelBorderBrush1}" Focusable="True" >
             <Label.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFBEC9F3" Offset="1"/>
                     <GradientStop Color="#FFF4F9FF" Offset="0"/>
                 </LinearGradientBrush>
             </Label.Background>
+            <Label.ContextMenu>
+                <ContextMenu HorizontalOffset="15">
+                    <MenuItem x:Name="CtxMi_RemoveMe" Header="Remove Me">
+                        <MenuItem.Icon>
+                            <Image Source="/Mmultitool;component/Resources/Images/BlueMinus_x24.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Label.ContextMenu>
         </Label>
 
-        <duc:ToggleButton x:Name="tgbtnMute" Width="32"  Height="20" Margin="122,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Mute" BorderBrush="#FF969697" BackgroundChecked="#FF9CEDFF" ClickMode="Press" TextChecked="Mute" TextUnchecked="Mute" IsEnabled="False" />
-        <duc:VU_Bar x:Name="VU_Meter" Width="10" HorizontalAlignment="Left" Margin="168,25,0,0" BorderBrush="#FF969697" BorderThickness="1,1,1,1" Height="20" VerticalAlignment="Top" MaximumValue="127"/>
-        <Label Content="Ch." HorizontalAlignment="Left" Margin="5,77,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <duc:NumericUpDown x:Name="nudMidiChannel" MaximumValue="15" Margin="35,73,0,0" Height="23" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" MouseWheelHandled="True"/>
-        <Label Content="GVc." HorizontalAlignment="Left" Margin="5,102,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <duc:NumericUpDown x:Name="nudGmVoice" MaximumValue="127" Margin="35,98,0,0" Height="23" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" MouseWheelHandled="True"/>
-        <Label Content="Trsp" HorizontalAlignment="Left" Margin="127,77,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <duc:NumericUpDown x:Name="nudNTransp" MaximumValue="60" Margin="110,98,0,0" Height="23" Width="56" MinimumValue="-60"  HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" MouseWheelHandled="True"/>
-        <duc:SmallSlider x:Name="ssldVolume" Margin="35,25,0,0" Width="74" MaximumValue="127" Value="100" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Background="#FFFFFAE7" MouseWheelHandled="True"/>
-        <duc:SmallSlider x:Name="ssldPan" Margin="35,48,0,0" Width="74" MaximumValue="127" Value="64" DisplayedValueOffset="-64" SliderBrush="#FF4085FD" HorizontalAlignment="Left" VerticalAlignment="Top" LeftRightLook="True" Height="20" Background="#FFFFFAE7" MouseWheelHandled="True"/>
-        <Label Content="Vol." HorizontalAlignment="Left" Margin="5,27,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <Label Content="Pan" HorizontalAlignment="Left" Margin="5,52,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <Button x:Name="btnTap" Content="Tap" HorizontalAlignment="Left" Margin="122,48,0,0" VerticalAlignment="Top" BorderBrush="{x:Null}"/>
+        <!-- define transparent Background to receive MouseRightButton to prevent ContextMenu of SequencePad -->
+        <!-- ContextMenuOpening set e.Handled to True except Controls with own ContextMenus -->
+        <Grid x:Name="MainGrid" Background="#00000000">
+        <duc:ToggleButton x:Name="tgbtnMute" Width="32"  Height="20" Margin="122,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Mute" BorderBrush="#FF969697" BackgroundChecked="#FF9CEDFF" ClickMode="Press" TextChecked="Mute" TextUnchecked="Mute" IsEnabled="False" />
+        <duc:VU_Bar x:Name="VU_Meter" Width="10" HorizontalAlignment="Left" Margin="168,5,0,0" BorderBrush="#FF969697" BorderThickness="1,1,1,1" Height="20" VerticalAlignment="Top" MaximumValue="127"/>
+        <Label Content="Ch." HorizontalAlignment="Left" Margin="5,57,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <duc:NumericUpDown x:Name="nudMidiChannel" MaximumValue="15" Margin="35,53,0,0" Height="23" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" MouseWheelHandled="True"/>
+        <Label Content="GVc." HorizontalAlignment="Left" Margin="5,82,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <duc:NumericUpDown x:Name="nudGmVoice" MaximumValue="127" Margin="35,78,0,0" Height="23" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" MouseWheelHandled="True"/>
+        <Label Content="Trsp" HorizontalAlignment="Left" Margin="127,57,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <duc:NumericUpDown x:Name="nudNTransp" MaximumValue="60" Margin="110,78,0,0" Height="23" Width="56" MinimumValue="-60"  HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" MouseWheelHandled="True"/>
+        <duc:SmallSlider x:Name="ssldVolume" Margin="35,5,0,0" Width="74" MaximumValue="127" Value="100" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Background="#FFFFFAE7" MouseWheelHandled="True"/>
+        <duc:SmallSlider x:Name="ssldPan" Margin="35,28,0,0" Width="74" MaximumValue="127" Value="64" DisplayedValueOffset="-64" SliderBrush="#FF4085FD" HorizontalAlignment="Left" VerticalAlignment="Top" LeftRightLook="True" Height="20" Background="#FFFFFAE7" MouseWheelHandled="True"/>
+        <Label Content="Vol." HorizontalAlignment="Left" Margin="5,7,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Label Content="Pan" HorizontalAlignment="Left" Margin="5,32,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
+        <Button x:Name="btnTap" Content="Tap" HorizontalAlignment="Left" Margin="122,28,0,0" VerticalAlignment="Top" BorderBrush="{x:Null}"/>
 
-
-    </Grid>
+        </Grid>
+    </DockPanel>
 </UserControl>

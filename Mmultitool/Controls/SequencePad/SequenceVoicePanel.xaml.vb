@@ -1,5 +1,13 @@
 ﻿Public Class SequenceVoicePanel
 
+    Private Sub CtxMi_RemoveMe_Click(sender As Object, e As RoutedEventArgs) Handles CtxMi_RemoveMe.Click
+        Dim par As Panel = Me.Parent
+        If par IsNot Nothing Then
+            Dim coll As UIElementCollection = par.Children
+            par.Children.Remove(Me)
+        End If
+    End Sub
+
     Private mtrev As New TrackEventX With {.Type = EventType.MidiEvent}         ' local trev for manual send
 
     Private Sub btnTap_PreviewMouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles btnTap.PreviewMouseLeftButtonDown
@@ -14,6 +22,7 @@
         mtrev.Data1 = &H40                              ' note number
         mtrev.Data2 = 0                                 ' 0 = note off
         Play_Manually(mtrev)
+
     End Sub
 
     Private Sub nudMidiChannel_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles nudMidiChannel.ValueChanged
@@ -113,6 +122,16 @@
         Cursor = Cursors.Arrow
         IsMoveMode = False
     End Sub
+
+    Private Sub MainGrid_ContextMenuOpening(sender As Object, e As ContextMenuEventArgs) Handles MainGrid.ContextMenuOpening
+        '--- Controls with ContextMenu are allowed ---
+        'If e.Source Is nudGmVoice Then Exit Sub
+
+        '--- prevent from opening the ContextMenu from parent
+        e.Handled = True
+    End Sub
+
+
 
 #End Region
 
