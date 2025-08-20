@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Mmultitool"
              xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="130" d:DesignWidth="190" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,1" Background="#FFF4F7FF">
+             d:DesignHeight="130" d:DesignWidth="190" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,1" Background="#FFF4F7FF" Width="190" Height="130" HorizontalAlignment="Left" VerticalAlignment="Top">
     <UserControl.Resources>
         <SolidColorBrush x:Key="LabelBorderBrush1" Color="#FFA2A2A2"/>
     </UserControl.Resources>

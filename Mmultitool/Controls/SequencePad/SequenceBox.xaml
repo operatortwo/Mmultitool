@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mmultitool"
              xmlns:duc="clr-namespace:DailyUserControls;assembly=DailyUserControls"
-             mc:Ignorable="d"  Height="120" Width="145"  BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,1" Background="#FFEFF7FF" Loaded="UserControl_Loaded" >
+             mc:Ignorable="d"  Height="120" Width="145"  BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,1" Background="#FFEFF7FF" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" >
     <UserControl.Resources>
         <SolidColorBrush x:Key="LabelBorderBrush1" Color="#FF929292"/>
         <SolidColorBrush x:Key="LabelBackground1" Color="#FFFAFFDE"/>
@@ -44,7 +44,7 @@
             <duc:ProgressRing x:Name="ProgressRing1" Width="66" Height="66" ProgressValue="40" RingFill="#FF90C1EE" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="26,5,0,0"/>
             <duc:ToggleButton x:Name="TgbtnPlay" Width="24" Height="24" Text="" Image="/Mmultitool;component/Resources/Images/Play_bw_x22.png" ImageUnchecked="/Mmultitool;component/Resources/Images/Play_bw_x22.png" TextChecked="" TextUnchecked="" ImageChecked="/Mmultitool;component/Resources/Images/Play_x22.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="47,26,0,0"/>
             <duc:ToggleButton x:Name="TgbtnLoop" ClickMode="Press" TextChecked="Loop" TextUnchecked="Loop" HorizontalAlignment="Left" BackgroundUnchecked="#FFF7F7F7" BackgroundChecked="#FFA4E892" Height="22" VerticalAlignment="Top" Margin="30,76,0,0" Width="40" BorderBrush="{DynamicResource LabelBorderBrush1}"/>
-            <duc:NumericUpDown x:Name="NudDuration" Height="24" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,0" MaximumValue="32" UpDownColMinWidth="15" Value="1" Background="{DynamicResource LabelBackground1}" MinimumValue="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="42" Margin="75,0,0,0" MouseWheelHandled="True"/>
+            <duc:NumericUpDown x:Name="NudLoopCount" Height="24" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="1,1,1,0" MaximumValue="32" UpDownColMinWidth="15" Value="1" Background="{DynamicResource LabelBackground1}" MinimumValue="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="42" Margin="75,0,0,0" MouseWheelHandled="True"/>
             <Label x:Name="LblTriggerIn" Background="{DynamicResource LabelBackground1}" Content="In" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="20" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{DynamicResource LabelBorderBrush1}" BorderThickness="0,1,1,0" Margin="0,78,0,0" AllowDrop="True">
                 <Label.ContextMenu>
                     <ContextMenu>

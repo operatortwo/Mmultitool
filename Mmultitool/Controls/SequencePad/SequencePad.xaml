@@ -22,6 +22,12 @@
             </Border>
             <Border VerticalAlignment="Top" DockPanel.Dock="Top" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="1,1,1,0">
                 <Grid x:Name="ToolStrip" VerticalAlignment="Top" Height="22" DockPanel.Dock="Top" Background="#FFEFFCFF">
+                    <Menu HorizontalAlignment="Left" Width="100">
+                        <MenuItem Header="File" Margin="10,0,0,0">
+                            <MenuItem x:Name="Mi_File_Load" Header="Load"/>
+                            <MenuItem x:Name="Mi_File_SaveAs" Header="Save As.."/>
+                        </MenuItem>
+                    </Menu>
                     <duc:ImageButton x:Name="BtnStopAll" HorizontalAlignment="Left" VerticalAlignment="Center" Image="/Mmultitool;component/Resources/Images/Stop_x22.png" ImageMargin="0,0,0,0" ImageLocation="Right" Margin="334,0,0,0" Text="" BorderBrush="{x:Null}" Background="{x:Null}"/>
                     <Rectangle HorizontalAlignment="Left" Stroke="{DynamicResource BorderBrush1}" Margin="361,1,0,1"/>
                     <Label Content="Sync:" Padding="4,1,4,0" HorizontalAlignment="Left" Margin="361,0,0,0" Background="{x:Null}" Width="36" VerticalAlignment="Center" Height="20" />
@@ -34,29 +40,32 @@
             </Border>
             <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource BorderBrush1}" BorderThickness="1,1,1,1">
                 <ScrollViewer x:Name="MainPadScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="False">
-                    <Grid x:Name="MainPad" Margin="5,5,5,5" Background="#FFEDEFC4">
-                        <Grid.ContextMenu>
-                            <ContextMenu HorizontalOffset="15">
-                                <MenuItem x:Name="CtxMi_AddSequenceBox" Header="Add SequenceBox">
-                                    <MenuItem.Icon>
-                                        <Image Source="/Mmultitool;component/Resources/Images/GreenPlus_x24.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem x:Name="CtxMi_AddSequenceVoicePanel" Header="Add SequenceVoicePanel">
-                                    <MenuItem.Icon>
-                                        <Image Source="/Mmultitool;component/Resources/Images/GreenPlus_x24.png"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Grid.ContextMenu>
+                    <Grid Background="#FFEDEFC4" Margin="5,5,5,5">
                         <!-- Wires for TriggerOut to TriggerIn -->
                         <local:WiringGrid x:Name="WiringGrid1"/>
-                        <!-- floating boxes -->
-                        <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,142,0,0"/>
-                        <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,10,0,0"/>
-                        <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,270,0,0"/>
-                        <mmt:SequenceBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,13,0,0"/>
-                        <mmt:SequenceBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,165,0,0"/>
+                        <!-- need (transparent) Background to receive Mouse right click -->
+                        <Grid x:Name="MainPad" Background="#00000000">
+                            <Grid.ContextMenu>
+                                <ContextMenu HorizontalOffset="15">
+                                    <MenuItem x:Name="CtxMi_AddSequenceBox" Header="Add SequenceBox">
+                                        <MenuItem.Icon>
+                                            <Image Source="/Mmultitool;component/Resources/Images/GreenPlus_x24.png"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem x:Name="CtxMi_AddSequenceVoicePanel" Header="Add SequenceVoicePanel">
+                                        <MenuItem.Icon>
+                                            <Image Source="/Mmultitool;component/Resources/Images/GreenPlus_x24.png"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            <!-- floating boxes -->
+                            <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,142,0,0"/>
+                            <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,10,0,0"/>
+                            <mmt:SequenceVoicePanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,270,0,0"/>
+                            <mmt:SequenceBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,13,0,0"/>
+                            <mmt:SequenceBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,165,0,0"/>
+                        </Grid>
                     </Grid>
                 </ScrollViewer>
             </Border>

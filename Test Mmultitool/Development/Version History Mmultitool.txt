@@ -3,8 +3,9 @@
 
 Date			Version		Changes
 ------------------------------------------------	
-2025 08 06		1.0.6.1		V 1.0.6.1 SequencePad continued
-2025 07 23		1.0.6.0		V 1.0.6.0 started with SequencePad
+2025 08 20		1.0.6.2		SequencePad: added load/save
+2025 08 06		1.0.6.1		SequencePad continued
+2025 07 23		1.0.6.0		started with SequencePad
 2025 06 28		1.0.5.10	V 1.0.5.10 Release
 2025 06 25		1.0.5.9		Started with Help for Test Mmultitool
 2025 06 12		1.0.5.8		TrackView: added LoopPlay and RestartAtEnd

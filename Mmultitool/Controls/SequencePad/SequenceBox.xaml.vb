@@ -9,8 +9,17 @@ Public Class SequenceBox
 
     Private Const MaxTrigOutWires = 5                       ' maximum of wires at Trigger Out
     Friend NextSequenceBox As New List(Of SequenceBox)      ' for Trigger Out
-    Friend PreviousSequenceBox As SequenceBox               ' for backtracking  (Trigger In can have only 1 wire)
 
+    Private Const MaxTrigInWires = 5                        ' maximum of wires at Trigger Out
+    Friend PreviousSequenceBox As New List(Of SequenceBox)  ' for Trigger IN (backtracking)
+
+    '--- for Load and Save ---
+    Friend ID As Integer                                    ' unique number for each SequenceBox
+    Friend ID_Next As New List(Of Integer)                  ' instead of object reference
+    Friend ID_Previous As New List(Of Integer)              ' instead of object reference
+
+
+    '---
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         ' in DesignMode ProgressValue is > 0 to see example of RingFill Brush
         If DesignerProperties.GetIsInDesignMode(Me) = False Then
@@ -150,16 +159,16 @@ Public Class SequenceBox
         Dim redraw As Boolean
 
         For i = NextSequenceBox.Count - 1 To 0 Step -1
-            NextSequenceBox(i).PreviousSequenceBox = Nothing
+            NextSequenceBox(i).PreviousSequenceBox.Remove(Me)
             NextSequenceBox.RemoveAt(i)
             redraw = True
         Next
 
-        If PreviousSequenceBox IsNot Nothing Then
-            PreviousSequenceBox.NextSequenceBox.Remove(Me)
-            PreviousSequenceBox = Nothing
+        For i = PreviousSequenceBox.Count - 1 To 0 Step -1
+            PreviousSequenceBox(i).NextSequenceBox.Remove(Me)
+            PreviousSequenceBox.RemoveAt(i)
             redraw = True
-        End If
+        Next
 
         If redraw = True Then
             SequencePad.WiringGrid1.InvalidateVisual()
@@ -199,14 +208,14 @@ Public Class SequenceBox
 #End Region
 
     Private Sub TgbtnLoop_Checked(sender As Object, e As RoutedEventArgs) Handles TgbtnLoop.Checked
-        NudDuration.IsEnabled = False
+        NudLoopCount.IsEnabled = False
         If Sequence1 IsNot Nothing Then
             Sequence1.DoLoop = True
         End If
     End Sub
 
     Private Sub TgbtnLoop_Unchecked(sender As Object, e As RoutedEventArgs) Handles TgbtnLoop.Unchecked
-        NudDuration.IsEnabled = True
+        NudLoopCount.IsEnabled = True
         If Sequence1 IsNot Nothing Then
             Sequence1.DoLoop = False
         End If
@@ -217,8 +226,8 @@ Public Class SequenceBox
             If Sequence1.ID = 0 Then
                 Sequence1.ForceToChannel = CbForceToChannel.IsChecked
                 Sequence1.DestinationChannel = NudChannel.Value
-                If NudDuration.IsEnabled = True Then
-                    Sequence1.Duration = Sequence1.Length * NudDuration.Value
+                If NudLoopCount.IsEnabled = True Then
+                    Sequence1.Duration = Sequence1.Length * NudLoopCount.Value
                 End If
                 PlaySequence(Sequence1, TgbtnLoop.IsChecked)
             End If
@@ -258,9 +267,9 @@ Public Class SequenceBox
         End If
     End Sub
 
-    Private Sub NudDuration_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles NudDuration.ValueChanged
+    Private Sub NudDuration_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles NudLoopCount.ValueChanged
         If Sequence1 IsNot Nothing Then
-            Sequence1.Duration = Sequence1.Length * NudDuration.Value
+            Sequence1.Duration = Sequence1.Length * NudLoopCount.Value
         End If
     End Sub
 
@@ -277,14 +286,14 @@ Public Class SequenceBox
 #Region "Wire TriggerOut"
 
     Private Sub LblTriggerout_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles LblTriggerOut.MouseLeftButtonDown
-        If NextSequenceBox.Count > 5 Then
-            MessageWindow.Show("Trigger Out is limited to a maximum of 5 wires")
+        If NextSequenceBox.Count > MaxTrigOutWires Then
+            MessageWindow.Show("Trigger Out is limited to a maximum of " & MaxTrigOutWires & " wires.")
         End If
     End Sub
 
     Private Sub LblTriggerout_MouseMove(sender As Object, e As MouseEventArgs) Handles LblTriggerout.MouseMove
         If e.LeftButton = MouseButtonState.Pressed Then
-            If NextSequenceBox.Count <= 5 Then
+            If NextSequenceBox.Count < MaxTrigOutWires Then
                 Dim dataObject As New DataObject
                 dataObject.SetData(GetType(SequenceBox), Me)     ' format as type
                 DragDrop.DoDragDrop(Me, dataObject, DragDropEffects.Copy)
@@ -296,7 +305,7 @@ Public Class SequenceBox
         If e.Data.GetDataPresent(GetType(SequenceBox)) Then
             Dim seqbox As SequenceBox = e.Data.GetData(GetType(SequenceBox))
             If Not seqbox.Equals(Me) Then           ' is traget a different seqbox (do not connect to itself)
-                If PreviousSequenceBox Is Nothing Then
+                If PreviousSequenceBox.Count < MaxTrigInWires Then
                     e.Effects = DragDropEffects.Copy
                 Else
                     e.Effects = DragDropEffects.None                ' if input is already wired
@@ -312,14 +321,16 @@ Public Class SequenceBox
             Dim seqbox As SequenceBox = e.Data.GetData(GetType(SequenceBox))    ' Source
             ' me to source.Nextobject
             seqbox.NextSequenceBox.Add(Me)
-            Me.PreviousSequenceBox = seqbox
+            Me.PreviousSequenceBox.Add(seqbox)
             SequencePad.WiringGrid1.InvalidateVisual()
         End If
     End Sub
 
     Private Sub MiLblTrigIn_RemoveWire_Click(sender As Object, e As RoutedEventArgs) Handles MiLblTrigIn_RemoveWire.Click
-        PreviousSequenceBox.NextSequenceBox.Remove(Me)
-        PreviousSequenceBox = Nothing
+        For i = PreviousSequenceBox.Count - 1 To 0 Step -1
+            PreviousSequenceBox(i).NextSequenceBox.Remove(Me)
+            PreviousSequenceBox.RemoveAt(i)
+        Next
         SequencePad.WiringGrid1.InvalidateVisual()
     End Sub
 
@@ -331,7 +342,7 @@ Public Class SequenceBox
 
     Private Sub MiLblTrigOut_RemoveWire_Click(sender As Object, e As RoutedEventArgs) Handles MiLblTrigOut_RemoveWire.Click
         For i = NextSequenceBox.Count - 1 To 0 Step -1
-            NextSequenceBox(i).PreviousSequenceBox = Nothing
+            NextSequenceBox(i).PreviousSequenceBox.Remove(Me)
             NextSequenceBox.RemoveAt(i)
         Next
         SequencePad.WiringGrid1.InvalidateVisual()

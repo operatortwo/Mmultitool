@@ -1,4 +1,13 @@
-﻿Public Class SequencePad
+﻿Imports System.Data
+Imports System.IO
+Imports System.Windows.Markup
+Imports DailyUserControls
+
+Public Class SequencePad
+
+    Friend ReadOnly BaseDirectory As String = AppDomain.CurrentDomain.BaseDirectory
+    Friend ReadOnly SequencePadDataDirectory As String = BaseDirectory & "Data\SequencePad\"
+
 
     Private Sub UserControl_Loaded(sender As Object, e As RoutedEventArgs)
         WiringGrid1.SequencePad = Me
@@ -44,6 +53,10 @@
     End Sub
 
     Private Sub BtnStopAll_Click(sender As Object, e As RoutedEventArgs) Handles BtnStopAll.Click
+        StopPlayingAll()
+    End Sub
+
+    Private Sub StopPlayingAll()
         Dim sqb As SequenceBox
         For Each elem In MainPad.Children
             sqb = TryCast(elem, SequenceBox)
@@ -77,5 +90,22 @@
         Next
     End Sub
 
+#Region "Load Save"
+
+    Private Sub Mi_File_Load_Click(sender As Object, e As RoutedEventArgs) Handles Mi_File_Load.Click
+        StopPlayingAll()
+        LoadSeqPad()
+    End Sub
+
+    Private Sub Mi_File_SaveAs_Click(sender As Object, e As RoutedEventArgs) Handles Mi_File_SaveAs.Click
+        StopPlayingAll()
+        SaveSeqPad()
+    End Sub
+
+
+
+
+
+#End Region
 
 End Class

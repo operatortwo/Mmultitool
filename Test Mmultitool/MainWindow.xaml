@@ -116,6 +116,26 @@
                         </Grid>
                     </Grid>
                 </TabItem>
+
+                <TabItem x:Name="SequencePadTab" Header="Sequence Pad">
+                    <Grid>
+                        <duc:SmallSlider x:Name="SsldDbgSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="655,7,0,0" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top"/>
+                        <Label Content="BPM:" VerticalAlignment="Top" Margin="619,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
+                        <Label x:Name="LblDbgSequencePlayerPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="543,10,0,0"/>
+                        <Label Content="Position:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="488,10,0,0" HorizontalAlignment="Left" Width="45" />
+                        <duc:ImageButton x:Name="BtnDbgRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="379,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27" />
+                        <duc:ImageButton x:Name="BtnDbgStopSequencePlayer" Text="" Image="/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="405,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
+                        <duc:ImageButton x:Name="BtnDbgStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="431,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
+                        <Label Content="SeqList.Count:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="142,11,0,0" HorizontalAlignment="Left" Width="76" />
+                        <Label x:Name="LblDbgSeqListCount" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx" Margin="233,11,0,0"/>
+                        <duc:ImageButton x:Name="BtnSequencePadHelp" Width="32" Height="32" Margin="0,7,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Image="/Resources/Images/StatusHelp_x32.png" Text="" Background="{x:Null}" ImageMargin="0,0,0,0" BorderBrush="#FFABADB3"/>
+
+                        <Grid Margin="0,45,0,0">
+                            <mmt:SequencePad x:Name="SequencePad1"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
                 <TabItem x:Name="DebugTab" Header="Debug">
                     <Grid>
                         <Label Content="Tab for debugging and developing" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,12,0,0" FontSize="14" BorderBrush="Gray" BorderThickness="0,0,0,1"/>
@@ -126,25 +146,10 @@
                                     <Button x:Name="BtnShowClipboard" Content="ShowClipboard" HorizontalAlignment="Left" Margin="86,79,0,0" VerticalAlignment="Top" Width="100"/>
                                 </Grid>
                             </TabItem>
-                            <TabItem Header="Sequence Pad">
-                                <Grid>
-                                    <mmt:SequencePad x:Name="SequencePad1"/>
-                                </Grid>
-                            </TabItem>
                         </TabControl>
-                        <duc:SmallSlider x:Name="SsldDbgSequencePlayerBPM" MinimumValue="10" MaximumValue="300" Value="120" SliderBrush="#FF00B400" TabIndex="80" Margin="655,7,0,0" HorizontalAlignment="Left" Width="120" Height="23" VerticalAlignment="Top"/>
-                        <Label Content="BPM:" VerticalAlignment="Top" Margin="619,10,0,0" Padding="0,0,0,0" HorizontalAlignment="Left" Width="31" />
-                        <Label x:Name="LblDbgSequencePlayerPosition" Width="71" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx : x : xxx" Margin="543,10,0,0"/>
-                        <Label Content="Position:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="488,10,0,0" HorizontalAlignment="Left" Width="45" />
-                        <duc:ImageButton x:Name="BtnDbgRestartSequencePlayer" Text="" Image="/Resources/Images/PreviousTrack_x22.png" TabIndex="11" IsTabStop="True" BorderBrush="{x:Null}" Margin="379,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27" />
-                        <duc:ImageButton x:Name="BtnDbgStopSequencePlayer" Text="" Image="/Resources/Images/Stop_x22.png" TabIndex="21" IsTabStop="True" BorderBrush="{x:Null}" Margin="405,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
-                        <duc:ImageButton x:Name="BtnDbgStartSequencePlayer" Text="" Image="/Resources/Images/Play_x22.png" TabIndex="31" Focusable="True" IsTabStop="True" BorderBrush="{x:Null}" Margin="431,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="25" Height="27"/>
-                        <Label Content="SeqList.Count:" VerticalAlignment="Top" Padding="0,0,0,0" Margin="488,37,0,0" HorizontalAlignment="Left" Width="76" />
-                        <Label x:Name="LblDbgSeqListCount" TabIndex="50" HorizontalAlignment="Left" Padding="0,0,0,0" VerticalAlignment="Top" Content="xxx" Margin="579,37,0,0"/>
+
                     </Grid>
                 </TabItem>
-
-
             </TabControl>
         </DockPanel>
     </Grid>

@@ -571,6 +571,10 @@ Class MainWindow
         SequencePlayerBPM = SsldDbgSequencePlayerBPM.Value
     End Sub
 
+    Private Sub BtnSequencePadHelp_Click(sender As Object, e As RoutedEventArgs) Handles BtnSequencePadHelp.Click
+        Forms.Help.ShowHelp(Nothing, HelpUrl, Forms.HelpNavigator.KeywordIndex, "SequencePad")
+    End Sub
+
 
 
 #End Region

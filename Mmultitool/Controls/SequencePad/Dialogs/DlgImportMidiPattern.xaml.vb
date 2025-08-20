@@ -81,7 +81,7 @@ Public Class DlgImportMidiPattern
         ClearInfoValues()
 
         Dim ofd As New Microsoft.Win32.OpenFileDialog
-
+        ofd.InitialDirectory = My.Settings.LastMidiPatternDirectory
         ofd.Filter = "Midi files|*.mid"
         If ofd.ShowDialog() = False Then Exit Sub
         Dim ret As Boolean
@@ -110,8 +110,11 @@ Public Class DlgImportMidiPattern
             CreateEventlist2()
 
             btnImport.IsEnabled = True
-        End If
 
+            '---
+            My.Settings.LastMidiPatternDirectory = Path.GetDirectoryName(ofd.FileName)
+            My.Settings.Save()
+        End If
 
     End Sub
 

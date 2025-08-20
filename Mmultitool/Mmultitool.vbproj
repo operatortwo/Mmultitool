@@ -51,6 +51,7 @@
       <HintPath>Resources\Library\DailyUserControls.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System" />
@@ -122,6 +123,7 @@
     <Compile Include="Controls\SequencePad\Dialogs\DlgImportMidiPattern.xaml.vb">
       <DependentUpon>DlgImportMidiPattern.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SequencePad\LoadSave.vb" />
     <Compile Include="Controls\SequencePad\SequenceBox.xaml.vb">
       <DependentUpon>SequenceBox.xaml</DependentUpon>
     </Compile>
