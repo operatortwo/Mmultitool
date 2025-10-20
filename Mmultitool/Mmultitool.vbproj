@@ -382,6 +382,8 @@
     <Resource Include="Resources\Images\Stop_x22.png" />
     <Resource Include="Resources\Images\Play_x22_yellow.png" />
     <Resource Include="Resources\Images\Stop_x22_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Resources\Library\DailyUserControls.dll" />
     <Resource Include="Resources\Library\DailyUserControls.xml" />
   </ItemGroup>

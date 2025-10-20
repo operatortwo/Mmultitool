@@ -29,7 +29,7 @@ DailyUserControls
 </member>
 <member name="P:DailyUserControls.TabControlExpander.HelpButtonVisibility">
  <summary>
- Background brush when checked
+ Visibility of the Help button on the right side of the header panel
  </summary>    
 </member>
 <member name="T:DailyUserControls.CheckboxFilterList">
@@ -317,6 +317,16 @@ ImageButton
 <member name="P:DailyUserControls.ImageButton.ButtonPressedBorder">
  <summary>
  Border color when the button is pressed
+ </summary>
+</member>
+<member name="P:DailyUserControls.ImageButton.MouseOverBackground">
+ <summary>
+ Color when the Button is pressed
+ </summary>
+</member>
+<member name="P:DailyUserControls.ImageButton.MouseOverBorder">
+ <summary>
+ Color when the Button is pressed
  </summary>
 </member>
 <member name="P:DailyUserControls.ImageButton.IsCancel">
@@ -721,36 +731,6 @@ VU_Bar
 <member name="M:DailyUserControls.VU_Bar.InitializeComponent">
 <summary>
 InitializeComponent
-</summary>
-</member>
-<member name="T:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper">
-<summary>
-GeneratedInternalTypeHelper
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
-<summary>
-CreateInstance
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
-<summary>
-GetPropertyValue
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
-<summary>
-SetPropertyValue
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
-<summary>
-CreateDelegate
-</summary>
-</member>
-<member name="M:DailyUserControls.XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
-<summary>
-AddEventHandler
 </summary>
 </member>
 </members>
