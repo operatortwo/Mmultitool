@@ -1,6 +1,5 @@
 ﻿
 Imports DailyUserControls
-Imports Microsoft.VisualBasic.Devices
 Imports Mmultitool
 
 Class MainWindow

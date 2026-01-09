@@ -338,7 +338,7 @@
 
         </TabControl>
 
-        <duc:ImageButton x:Name="btnInsertEvent" Width="187" Margin="515,0,0,25" Image="/Mmultitool;component/Resources/Images/GreenPlus_x24.png" HorizontalAlignment="Left" Background="#FFD3E2FF" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Text="Insert new Event" Height="28" VerticalAlignment="Bottom" ImageMargin="10,0,10,0" TextAlignment="Left" TextPadding="5,1,0,1"/>
+        <duc:ImageButton x:Name="btnInsertEvent" Width="187" Margin="515,0,0,25" Image="/Mmultitool;component/Resources/Images/GreenPlus_x24.png" HorizontalAlignment="Left" Background="#FFD3E2FF" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Text="Insert new Event" Height="28" VerticalAlignment="Bottom" ImageMargin="10,0,10,0" HorizontalTextAlignment="Left" TextPadding="5,1,0,1"/>
 
 
         <StackPanel Orientation="Horizontal" Margin="542,0,0,82" HorizontalAlignment="Left" Background="#FFFFF2E2" Height="28" VerticalAlignment="Bottom">
@@ -346,7 +346,7 @@
             <Label Content="new Events inserted" BorderThickness="0,1,1,1" BorderBrush="{DynamicResource GridBorderBrush1}"/>
         </StackPanel>
         <Label Content="EventTypeX" HorizontalAlignment="Left" Margin="30,91,0,0" VerticalAlignment="Top" Padding="0,0,0,0"/>
-        <duc:ImageButton x:Name="btnClose" Margin="332,0,0,25" Text="Close" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="102" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" TextAlignment="Left" TextPadding="5,1,0,1" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True"/>
+        <duc:ImageButton x:Name="btnClose" Margin="332,0,0,25" Text="Close" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="102" BorderBrush="{DynamicResource GridBorderBrush1}" BorderThickness="1,1,1,1" Image="/Mmultitool;component/Resources/Images/Cancel_x32.png" HorizontalTextAlignment="Left" TextPadding="5,1,0,1" Background="#FFD3E2FF" ImageMargin="10,0,5,0" IsCancel="True"/>
         <GroupBox Width="76" Height="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,331,0,0" Header="Track" BorderBrush="{DynamicResource GroupBoxBorderBrush}">
             <Grid Background="{DynamicResource GroupBoxBackground}">
                 <duc:NumericUpDown x:Name="nudTrack" Height="28" Width="60" MaximumValue="1"/>
