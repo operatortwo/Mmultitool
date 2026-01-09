@@ -15,7 +15,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("Testing the Mmultitool library")>
 <Assembly: AssemblyCompany("SQ Programming")>
 <Assembly: AssemblyProduct("Test_Mmultitool")>
-<Assembly: AssemblyCopyright("Copyright ©  2024 - 2025  operatortwo")>
+<Assembly: AssemblyCopyright("Copyright ©  2024 - 2026  operatortwo")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 
@@ -55,5 +55,5 @@ Imports System.Windows
 ' indem Sie "*" wie unten gezeigt eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.6.3")>
-<Assembly: AssemblyFileVersion("1.0.6.3")>
+<Assembly: AssemblyVersion("1.0.7.0")>
+<Assembly: AssemblyFileVersion("1.0.7.0")>
