@@ -7,10 +7,11 @@
     <RootNamespace>Mmultitool</RootNamespace>
     <AssemblyName>Mmultitool</AssemblyName>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <Deterministic>true</Deterministic>
     <ProjectGuid>{733AC466-709A-482A-8C62-0B0C3B773FC6}</ProjectGuid>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
