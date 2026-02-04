@@ -31,11 +31,18 @@
                             <Label Content="Format" HorizontalAlignment="Left" Margin="131,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
                             <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="174,5,0,5" />
                             <!-- Filter -->
-                            <duc:CheckboxFilterList x:Name="cbflistTrack" Margin="187,15,0,0" Text="Track" ImageLocation="Right" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="67" Height="26" ListWindowWidth="180"/>
-                            <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="272,15,0,0" Text="Channel" ImageLocation="Right" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108"/>
-                            <duc:CheckboxFilterList x:Name="cbflistEventType" Margin="402,15,0,0" Text="Event Type" ImageLocation="Right" ListWindowWidth="180" ListWindowHeight="275" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="97"/>
-                            <Label Content="Filter" HorizontalAlignment="Left" Margin="473,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
-                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="509,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <duc:CheckboxFilterList x:Name="cbflistTrack" Margin="187,10,0,0" Text="Track" ImageLocation="Right" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="67" Height="26" ListWindowWidth="180"/>
+                            <duc:CheckboxFilterList x:Name="cbflistChannel" Margin="187,44,0,0" Text="Channel" ImageLocation="Right" ListWindowWidth="80" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108"/>
+                            <duc:CheckboxFilterList x:Name="cbflistEventType" Margin="268,10,0,0" Text="Event Type" ImageLocation="Right" ListWindowWidth="180" ListWindowHeight="275" Background="#FFE6E6E6" BorderBrush="#FF777777" BorderThickness="1,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="97"/>
+                            <Label Content="Filter" HorizontalAlignment="Left" Margin="334,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="376,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <!-- Select -->
+
+                            <local:MBT_Editor x:Name="MBTselectFirst" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Margin="390,10,0,0" UpDownColMinWidth="20" Width="148"/>
+                            <Label Content="Select" HorizontalAlignment="Left" Margin="678,58,0,0" VerticalAlignment="Top" Padding="0.2,0,5,0" Foreground="#FF7F7F7F"/>
+                            <Rectangle Stroke="#FF688CAF" HorizontalAlignment="Left" Width="1" Margin="720,5,0,5" RenderTransformOrigin="0.5,0.5"/>
+                            <local:MBT_Editor x:Name="MBTselectLast" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Margin="554,10,0,0" UpDownColMinWidth="20" Width="148"/>
+                            <Button x:Name="BtnSelectMBTrange" Content="Select" HorizontalAlignment="Left" Margin="414,49,0,0" VerticalAlignment="Top" Width="50" Background="#FFBDE1FD"/>
                             <!-- Empty -->
                         </Grid>
                     </TabItem>
@@ -48,11 +55,16 @@
                 <Grid x:Name="InfoStrip" VerticalAlignment="Top" Height="22" DockPanel.Dock="Top" Background="#FFEFFCFF">
                     <Label Content="TPQ:" Margin="0,0,59,0" VerticalAlignment="Center" Padding="0,0,0,0" HorizontalAlignment="Right"/>
                     <Label x:Name="lblTpq" VerticalAlignment="Center" Padding="5,0,5,0" Height="18" Width="39" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-                    <StackPanel Orientation="Horizontal" Width="160" HorizontalAlignment="Right" Margin="0,0,100,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,90,0">
+                        <Label Content="Listed" Padding="0,0,5,0" Margin="0,3,0,3"/>
                         <Label x:Name="lblEventCountFiltered" Content="{Binding CollectionView.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventLister}, Mode=FindAncestor}}" Padding="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" HorizontalContentAlignment="Right" Margin="0,2,0,2" HorizontalAlignment="Left"/>
                         <Label Content=" of " Padding="0,0,0,0" Margin="0,3,0,3" HorizontalAlignment="Left"/>
                         <Label x:Name="lblEventCountAll" Content="{Binding TrackEvents.Count, RelativeSource={RelativeSource AncestorType={x:Type local:EventLister}, Mode=FindAncestor}}" Padding="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="#FFC5D6FF" Margin="0,2,0,2" HorizontalAlignment="Left"/>
                         <Label Content=" Events " Padding="0,0,0,0" Margin="0,3,0,3" HorizontalAlignment="Right"/>
+                        <Rectangle Width="1" Margin="2,2,0,2" Stroke="Gray"/>
+                        <Label x:Name="LblDgSelectedItems" Content="" Padding="10,0,5,0" VerticalAlignment="Center"/>
+                        <Label Content="selected " Padding="0,0,0,0" VerticalAlignment="Center"/>
+                        <Rectangle Width="1" Margin="2,2,0,2" Stroke="Gray"/>
                     </StackPanel>
                 </Grid>
             </Border>

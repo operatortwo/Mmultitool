@@ -64,7 +64,7 @@
             </ToolBarTray>
 
             <!-- TabControl SelectedIndex is set for editing/developing-->
-            <TabControl x:Name="TabControl1" IsTabStop="True" TabIndex="300" SelectedIndex="3">
+            <TabControl x:Name="TabControl1" IsTabStop="True" TabIndex="300" SelectedIndex="0">
                 <TabItem Header="EventLister">
                     <Grid>
                         <mmt:EventLister x:Name="EventLister1"  Margin="10,100,10,10" DataGridRowBackground="#FFFFFDF4" IsTabStop="True" TabIndex="500" Grid.ColumnSpan="2"/>
@@ -145,6 +145,8 @@
                             <TabItem Header="Tab1">
                                 <Grid>
                                     <Button x:Name="BtnShowClipboard" Content="ShowClipboard" HorizontalAlignment="Left" Margin="86,79,0,0" VerticalAlignment="Top" Width="100"/>
+                                    <Button x:Name="DbgPlayNote" Content="Play Note" HorizontalAlignment="Left" Margin="314,132,0,0" VerticalAlignment="Top"/>
+                                    <Button x:Name="BtnSeqBuild1" Content="Seq Build" HorizontalAlignment="Left" Margin="504,190,0,0" VerticalAlignment="Top"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>

@@ -531,7 +531,6 @@ Class MainWindow
 
         LblDbgSeqListCount.Content = Player.SequenceList.Count
 
-
     End Sub
 
     Private Sub BtnShowClipboard_Click(sender As Object, e As RoutedEventArgs) Handles BtnShowClipboard.Click
@@ -572,6 +571,33 @@ Class MainWindow
 
     Private Sub BtnSequencePadHelp_Click(sender As Object, e As RoutedEventArgs) Handles BtnSequencePadHelp.Click
         Forms.Help.ShowHelp(Nothing, HelpUrl, Forms.HelpNavigator.KeywordIndex, "SequencePad")
+    End Sub
+
+    Private Sub DbgPlayNote_Click(sender As Object, e As RoutedEventArgs) Handles DbgPlayNote.Click
+        Dim tev As New TrackEventX
+        tev.Channel = 0
+        tev.Status = &H90
+        tev.Data1 = 64
+        tev.Data2 = 100
+        tev.Duration = NoteDuration.Quarter
+        PlaySingleEvent(tev)
+
+    End Sub
+
+    Private Sub BtnSeqBuild1_Click(sender As Object, e As RoutedEventArgs) Handles BtnSeqBuild1.Click
+
+        Dim seq = SequenceBuilder(4, NoteDuration.Sixteenth)
+
+        seq.DestinationChannel = 9
+        seq.ForceToChannel = True
+        seq.Length = PlayerTPQ                  ' 480
+        seq.Duration = PlayerTPQ * 2
+
+        PlaySequence(seq, False)
+
+        ' C  Major		C E G	 0 +4 +3    0,4,7
+        ' C  Minor		C D# G	 0 +3 +4    0,3,7
+
     End Sub
 
 

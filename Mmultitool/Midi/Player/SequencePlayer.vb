@@ -106,11 +106,25 @@
         Return seq.ID
     End Function
 
+    ''' <summary>
+    ''' Play a SingleTrackEventX immediately with SequencePlayer, base for Duration can be TPQ other than 480
+    ''' </summary>
+    ''' <param name="tev">TrackEventX with Channel, Status, Data1, Data2, Duration</param>
+    ''' <param name="SourceTPQ">Duration need adjustment if SourceTPQ is other than 480</param>
     Public Sub PlaySingleEvent(tev As TrackEventX, SourceTPQ As Integer)
         If IsSequencePlayerRunning = False Then StartSequencePlayer()
         Dim tev2 As TrackEventX = tev.Copy(False)
         tev2.Duration = ToSeqTime(tev.Duration, SourceTPQ)
         SequencePlayer.PlayEvent(SequencePlayerTime, SequencePlayerTime, tev2)
+    End Sub
+
+    ''' <summary>
+    ''' Play a SingleTrackEventX immediately with SequencePlayer, assumnig base for Duration is TPQ 480
+    ''' </summary>
+    ''' <param name="tev">TrackEventX with Channel, Status, Data1, Data2, Duration</param>
+    Public Sub PlaySingleEvent(tev As TrackEventX)
+        If IsSequencePlayerRunning = False Then StartSequencePlayer()
+        SequencePlayer.PlayEvent(SequencePlayerTime, SequencePlayerTime, tev)
     End Sub
 
 
@@ -208,6 +222,38 @@
 
         seq.ID = 0
     End Sub
+
+#End Region
+
+
+#Region "Sequence Builder"
+
+    Public Function SequenceBuilder(count As Byte, dur As NoteDuration) As Sequence
+        Dim seq As New Sequence
+
+
+        Dim time As UInteger
+
+        For i = 1 To count
+            Dim tev As New TrackEventX
+            tev.Time = time
+            tev.Status = &H90
+            tev.Data1 = 41                  ' note number
+            tev.Data2 = 100                 ' velocity
+            tev.Duration = dur
+            seq.EventList.Add(tev)
+
+            time += dur
+        Next
+
+
+        'seq.EventList
+
+
+        Return seq
+    End Function
+
+
 
 #End Region
 

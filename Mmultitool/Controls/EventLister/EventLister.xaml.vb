@@ -1,6 +1,10 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
+Imports System.Reflection
 Imports System.Text
+Imports System.Timers
+Imports System.Windows.Controls.Primitives
+Imports DailyUserControls
 Imports Mmultitool.EventListWriter
 
 Public Class EventLister
@@ -45,6 +49,7 @@ Public Class EventLister
     ''' </summary>        
     Public Property TrackEvents As New ObservableCollection(Of TrackEventX)         ' sorted by Time
     Public Property CollectionView As New ListCollectionView(TrackEvents)           ' Filtered View
+    ' filtering in "FilterFunction"
 
     '--- auxiliary lists ---
     Private TrackList As New List(Of NamedTrack)
@@ -87,7 +92,10 @@ Public Class EventLister
 
 #Region "Time and Status format"
 
-    Public Shared ReadOnly DesiredTimeFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredTimeFormat", GetType(TimeFormat), GetType(EventLister), New PropertyMetadata(TimeFormat.MBT_0_based))
+    Public Shared ReadOnly DesiredTimeFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredTimeFormat",
+                GetType(TimeFormat), GetType(EventLister),
+                New PropertyMetadata(TimeFormat.MBT_0_based,
+                New PropertyChangedCallback(AddressOf OnDesiredTimeFormatChanged)))
     <Description("Format of the Time column"), Category("Event Lister")>
     Public Property DesiredTimeFormat As TimeFormat
         Get
@@ -103,6 +111,17 @@ Public Class EventLister
         MBT_0_based
         MBT_1_based
     End Enum
+
+    Private Shared Sub OnDesiredTimeFormatChanged(ByVal d As DependencyObject, ByVal args As DependencyPropertyChangedEventArgs)
+        Dim control As EventLister = CType(d, EventLister)
+        If control.DesiredTimeFormat = TimeFormat.MBT_1_based Then
+            control.MBTselectFirst.IsMBT_Base1 = True
+            control.MBTselectLast.IsMBT_Base1 = True
+        Else
+            control.MBTselectFirst.IsMBT_Base1 = False
+            control.MBTselectLast.IsMBT_Base1 = False
+        End If
+    End Sub
 
     Public Shared ReadOnly DesiredStatusFormatProperty As DependencyProperty = DependencyProperty.Register("DesiredStatusFormat", GetType(HexOrDec), GetType(EventLister), New PropertyMetadata(HexOrDec.Hex))
     <Description("Format of the Status column"), Category("Event Lister")>
@@ -150,6 +169,8 @@ Public Class EventLister
 
     Private Shared Sub OnEvliTPQChanged(ByVal d As DependencyObject, ByVal args As DependencyPropertyChangedEventArgs)
         Dim control As EventLister = CType(d, EventLister)
+        control.MBTselectFirst.TPQ = control.EvliTPQ
+        control.MBTselectLast.TPQ = control.EvliTPQ
     End Sub
 
 #End Region
@@ -160,6 +181,9 @@ Public Class EventLister
         CollectionView.Filter = Nothing                     ' reset filter if any (= show all items)
 
         TrackEvents.Clear()
+
+        MBTselectFirst.OriginalValue = 0
+        MBTselectLast.OriginalValue = 0
 
         If evlic Is Nothing Then Exit Sub
         If evlic.EventList Is Nothing Then Exit Sub
@@ -442,5 +466,90 @@ Public Class EventLister
         Next
         Return sb.ToString
     End Function
+
+#Region "Select"
+
+    Private Sub DataGrid1_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles DataGrid1.SelectionChanged
+        LblDgSelectedItems.Content = DataGrid1.SelectedItems.Count
+        If DataGrid1.SelectedItems.Count > 0 Then
+            MBTselectUpdateTimer.Start()
+        End If
+    End Sub
+
+    Private WithEvents MBTselectUpdateTimer As New Timer(500)
+
+    Private Sub MBTselect_DelayedUpdate(ByVal sender As Object, ByVal e As EventArgs) Handles MBTselectUpdateTimer.Elapsed
+        Dispatcher.BeginInvoke(New MBTselectUpdate_Delegate(AddressOf MBTselectUpdate))
+    End Sub
+
+    Public Delegate Sub MBTselectUpdate_Delegate()
+
+    Private Sub MBTselectUpdate()
+        Dim sel = DataGrid1.SelectedItems
+        Dim sel2 As List(Of TrackEventX)
+
+        If sel.Count > 0 Then
+            sel2 = New List(Of TrackEventX)
+            For Each item In sel
+                If item.GetType = GetType(TrackEventX) Then
+                    sel2.Add(item)
+                End If
+            Next
+            Dim sc As New TrackEventX
+            sel2.Sort(sc)                                   ' full sorting (not only by Time)
+
+            MBTselectFirst.OriginalValue = sel2.First.Time
+            MBTselectLast.OriginalValue = sel2.Last.Time
+        End If
+    End Sub
+
+    Private Sub BtnSelectMBTrange_Click(sender As Object, e As RoutedEventArgs) Handles BtnSelectMBTrange.Click
+
+        MBTselectFirst.OriginalValue = MBTselectFirst.NewValue
+        MBTselectLast.OriginalValue = MBTselectLast.NewValue
+        If MBTselectLast.OriginalValue < MBTselectFirst.OriginalValue Then
+            MBTselectLast.OriginalValue = MBTselectFirst.OriginalValue
+        End If
+
+        Dim time1 As UInteger = MBTselectFirst.OriginalValue
+        Dim time2 As UInteger = MBTselectLast.OriginalValue
+
+        DataGrid1.SelectedItems.Clear()
+
+        ' updating SelectedItems can be very slow if selection count is high
+        ' Begin/End UpdateSelectedItems helps, but by default the Methods are protected
+
+        Try
+
+            Dim _piIsUpdatingSelectedItems As PropertyInfo
+            Dim _miBeginUpdateSelectedItems As MethodInfo
+            Dim _miEndUpdateSelectedItems As MethodInfo
+
+            _piIsUpdatingSelectedItems = GetType(MultiSelector).GetProperty("IsUpdatingSelectedItems", BindingFlags.NonPublic Or BindingFlags.Instance)
+            _miBeginUpdateSelectedItems = GetType(MultiSelector).GetMethod("BeginUpdateSelectedItems", BindingFlags.NonPublic Or BindingFlags.Instance)
+            _miEndUpdateSelectedItems = GetType(MultiSelector).GetMethod("EndUpdateSelectedItems", BindingFlags.NonPublic Or BindingFlags.Instance)
+
+            If _piIsUpdatingSelectedItems.GetValue(DataGrid1) = False Then
+                _miBeginUpdateSelectedItems.Invoke(DataGrid1, Nothing)
+            End If
+
+            For Each item In DataGrid1.Items
+                If item.Time >= time1 Then
+                    If item.time > time2 Then Exit For
+                    DataGrid1.SelectedItems.Add(item)
+                End If
+            Next
+
+            If _piIsUpdatingSelectedItems.GetValue(DataGrid1) = True Then
+                _miEndUpdateSelectedItems.Invoke(DataGrid1, Nothing)
+            End If
+
+        Catch
+        End Try
+
+    End Sub
+
+
+#End Region
 
 End Class

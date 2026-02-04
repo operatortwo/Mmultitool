@@ -111,7 +111,7 @@ Public Module MModule1
         Public Property DataX As Byte()
 
         ''' <summary>
-        ''' [Ticks] for Note-On Events. Calculated from Time until Note-off. 0 if no Note-Off.
+        ''' [Ticks] for Note-On Events. Calculated from Time until Note-off. 0 if Note-Off or unused.
         ''' </summary>
         ''' <returns></returns>
         Public Property Duration As UInteger
