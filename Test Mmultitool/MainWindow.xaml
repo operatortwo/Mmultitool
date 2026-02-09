@@ -146,7 +146,10 @@
                                 <Grid>
                                     <Button x:Name="BtnShowClipboard" Content="ShowClipboard" HorizontalAlignment="Left" Margin="86,79,0,0" VerticalAlignment="Top" Width="100"/>
                                     <Button x:Name="DbgPlayNote" Content="Play Note" HorizontalAlignment="Left" Margin="314,132,0,0" VerticalAlignment="Top"/>
-                                    <Button x:Name="BtnSeqBuild1" Content="Seq Build" HorizontalAlignment="Left" Margin="504,190,0,0" VerticalAlignment="Top"/>
+                                    <Button x:Name="BtnPatBuild1" Content="Seq Build" HorizontalAlignment="Left" Margin="504,190,0,0" VerticalAlignment="Top"/>
+                                    <CheckBox x:Name="CbLogMidiOut" Content="Log MidiOut" HorizontalAlignment="Left" Margin="86,150,0,0" VerticalAlignment="Top"/>
+                                    <Button x:Name="BtnClearMidiOutLog" Content="Clear MidiOutLog" HorizontalAlignment="Left" Margin="87,185,0,0" VerticalAlignment="Top"/>
+                                    <Button x:Name="BtnShowMidiOutLog" Content="Show MidiOutLog" HorizontalAlignment="Left" Margin="86,249,0,0" VerticalAlignment="Top"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>

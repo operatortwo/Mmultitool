@@ -5,7 +5,7 @@ Public Class SequenceBox
 
     Friend SequencePad As SequencePad                       ' Parent set at _Loaded
 
-    Friend Sequence1 As Sequence
+    Friend Sequence1 As Pattern
 
     Private Const MaxTrigOutWires = 5                       ' maximum of wires at Trigger Out
     Friend NextSequenceBox As New List(Of SequenceBox)      ' for Trigger Out
@@ -31,14 +31,14 @@ Public Class SequenceBox
 
     Friend Sub ScreeRefresh()
         If Sequence1 IsNot Nothing Then
-            Dim reltime As Integer = (SequencePlayerTime - Sequence1.StartTime) Mod Sequence1.Length
+            Dim reltime As Integer = (PatternPlayerTime - Sequence1.StartTime) Mod Sequence1.Length
             If Sequence1.ID <> 0 Then
                 ProgressRing1.ProgressValue = reltime
             Else
                 If TgbtnPlay.IsChecked = True Then
                     If Sequence1.Ended = True Then
                         'wait until entire time is elapsed
-                        If SequencePlayerTime > (Sequence1.StartTime + Sequence1.Duration) Then
+                        If PatternPlayerTime > (Sequence1.StartTime + Sequence1.Duration) Then
                             TgbtnPlay.IsChecked = False
                             If ProgressRing1.ProgressValue <> 0 Then
                                 ProgressRing1.ProgressValue = 0
@@ -56,7 +56,7 @@ Public Class SequenceBox
 
     Private Sub CheckTriggerNext()
         If NextSequenceBox.Count > 0 Then
-            If SequencePlayerTime > (Sequence1.StartTime + Sequence1.Duration - PlayerTPQ) Then
+            If PatternPlayerTime > (Sequence1.StartTime + Sequence1.Duration - PlayerTPQ) Then
                 For Each nextsqb In NextSequenceBox
                     nextsqb.TgbtnPlay.IsChecked = True
                 Next
@@ -229,7 +229,7 @@ Public Class SequenceBox
                 If NudLoopCount.IsEnabled = True Then
                     Sequence1.Duration = Sequence1.Length * NudLoopCount.Value
                 End If
-                PlaySequence(Sequence1, TgbtnLoop.IsChecked)
+                PlayPattern(Sequence1, TgbtnLoop.IsChecked)
             End If
         Else
             TgbtnPlay.IsChecked = False
@@ -239,7 +239,7 @@ Public Class SequenceBox
     Private Sub TgbtnPlay_Unchecked(sender As Object, e As RoutedEventArgs) Handles TgbtnPlay.Unchecked
         If Sequence1 IsNot Nothing Then
             If Sequence1.ID <> 0 Then
-                RemoveSequence(Sequence1)
+                RemovePattern(Sequence1)
                 If ProgressRing1.ProgressValue <> 0 Then
                     ProgressRing1.ProgressValue = 0
                 End If

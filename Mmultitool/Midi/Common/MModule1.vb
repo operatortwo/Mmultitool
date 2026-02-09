@@ -505,6 +505,38 @@ Public Module MModule1
         Return EventTypeX.Unkown
     End Function
 
+
+    Public Function CreateTrackEventX(status As Byte, data1 As Byte, data2 As Byte) As TrackEventX
+        Dim trev As New TrackEventX
+        trev.Status = status
+        trev.Data1 = data1
+        trev.Data2 = data2
+        trev.Channel = status And &HF
+
+        Dim stat As Byte
+        stat = status And &HF0
+
+        If (stat = &H90 And data2 = 0) OrElse (stat = &H80) Then
+            trev.TypeX = EventTypeX.NoteOffEvent
+        ElseIf stat = &H90 Then
+            trev.TypeX = EventTypeX.NoteOnEvent
+        ElseIf stat = &HA0 Then
+            trev.TypeX = EventTypeX.PolyKeyPressure
+        ElseIf stat = &HB0 Then
+            trev.TypeX = EventTypeX.ControlChange
+        ElseIf stat = &HC0 Then
+            trev.TypeX = EventTypeX.ProgramChange
+        ElseIf stat = &HD0 Then
+            trev.TypeX = EventTypeX.ChannelPressure
+        ElseIf stat = &HE0 Then
+            trev.TypeX = EventTypeX.PitchBend
+        End If
+
+        Return trev
+    End Function
+
+
+
     ''' <summary>
     ''' According to standard midi file specification
     ''' </summary>

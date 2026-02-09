@@ -3,7 +3,7 @@ Imports System.Threading
 
 Partial Public Module Player
 
-    Public WithEvents SequencePlayer As New NoteOffProcessor
+    Public WithEvents PatternPlayer As New NoteOffProcessor
     Public WithEvents TrackPlayer As New NoteOffProcessor
 
     ' SequencePlayer and TrackPlayer have their own Time, BPM, NoteOffList.
@@ -13,9 +13,9 @@ Partial Public Module Player
     ' then all notes sent by TrackPlayer on channel 2 will also be played with this sound.
 
 
-    Private Sub SequencePlayer_SetTempo(BPM As Single) Handles SequencePlayer.SetTempo
-        SequencePlayerBPM = BPM
-        SequencePlayer.BPMUpdate = True
+    Private Sub SequencePlayer_SetTempo(BPM As Single) Handles PatternPlayer.SetTempo
+        PatternPlayerBPM = BPM
+        PatternPlayer.BPMUpdate = True
     End Sub
 
     Private Sub TrackPlayer_SetTempo(BPM As Single) Handles TrackPlayer.SetTempo

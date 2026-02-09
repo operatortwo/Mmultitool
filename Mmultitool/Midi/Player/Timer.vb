@@ -15,10 +15,10 @@ Public Module Player
     Public ReadOnly Property TrackPlayerTime As Double          ' TrackPlayer Ticks, TrackPlayer position
     Public ReadOnly Property IsTrackPlayerRunning As Boolean     ' True while TrackPlayer is running
 
-    ' plays one or more sequences independently
-    Public ReadOnly Property SequencePlayerErrors As Integer    ' Number of Catches in Play SequenceList
-    Public ReadOnly Property SequencePlayerTime As Double       ' SequencePlayer Ticks, SequencePlayer position
-    Public ReadOnly Property IsSequencePlayerRunning As Boolean ' True while SequencePlayer is running
+    ' plays one or more Pattern independently
+    Public ReadOnly Property PatternPlayerErrors As Integer    ' Number of Catches in Play PatternList
+    Public ReadOnly Property PatternPlayerTime As Double       ' PatternPlayer Ticks, PatternPlayer position
+    Public ReadOnly Property IsPatternPlayerRunning As Boolean ' True while PatternPlayer is running
 
     Private _TrackPlayerBPM As Single = 120
     ''' <summary>
@@ -40,22 +40,22 @@ Public Module Player
         End Set
     End Property
 
-    Private _SequencePlayerBPM As Single = 120
+    Private _PatternPlayerBPM As Single = 120
     ''' <summary>
     ''' Tempo (BeatsPerMinute) Minimum: 10, Maximum: 300. Values above and below will be corrected    
     ''' </summary>
     ''' <returns></returns>
-    Public Property SequencePlayerBPM As Single                      ' tempo (Beats per Minute)
+    Public Property PatternPlayerBPM As Single                      ' tempo (Beats per Minute)
         Get
-            Return _SequencePlayerBPM
+            Return _PatternPlayerBPM
         End Get
         Set(value As Single)
             If value < 10 Then
-                _SequencePlayerBPM = 10
+                _PatternPlayerBPM = 10
             ElseIf value > 300 Then
-                _SequencePlayerBPM = 300
+                _PatternPlayerBPM = 300
             Else
-                _SequencePlayerBPM = value
+                _PatternPlayerBPM = value
             End If
         End Set
     End Property
@@ -184,13 +184,13 @@ Public Module Player
 
         End If
 
-        '--- Play SequenceList ---
+        '--- Play PatternList ---
 
-        If IsSequencePlayerRunning = True Then
-            Dim DeltaSequencePlayerTicks As Double
-            DeltaSequencePlayerTicks = DeltaTicks / Stopwatch.Frequency * SequencePlayerBPM * TPQdiv60
+        If IsPatternPlayerRunning = True Then
+            Dim DeltaPatternPlayerTicks As Double
+            DeltaPatternPlayerTicks = DeltaTicks / Stopwatch.Frequency * PatternPlayerBPM * TPQdiv60
 
-            _SequencePlayerTime += DeltaSequencePlayerTicks
+            _PatternPlayerTime += DeltaPatternPlayerTicks
 
 
 
@@ -198,20 +198,20 @@ Public Module Player
 
             ' catch exceptions, make sure the tick ends as quickly as possible
             Try
-                SequencePlayer.Do_TimedNoteOff(SequencePlayerTime)                     ' NoteOff processing for SequencePlayer
-                PlaySequenceList()
+                PatternPlayer.Do_TimedNoteOff(PatternPlayerTime)                     ' NoteOff processing for PatternPlayer
+                PlayPatternList()
             Catch
-                _SequencePlayerErrors += 1
+                _PatternPlayerErrors += 1
             End Try
 
-            '--- stop SequencePlayler if IdleTime > MaxIdleTime (ms) ---
+            '--- stop PatternPlayler if IdleTime > MaxIdleTime (ms) ---
             IdleCheckCount += 1
             If IdleCheckCount >= 100 Then
                 IdleCheckCount = 0
-                If SequenceList.Count = 0 Then
+                If PatternList.Count = 0 Then
                     If Stopwatch.ElapsedMilliseconds - IdleBaseTime > MaxIdleTime Then
-                        StopSequencePlayer()
-                        Set_SequencePlayerTime(0)
+                        StopPatternPlayer()
+                        Set_PatternPlayerTime(0)
                     End If
                 Else
                     IdleBaseTime = Stopwatch.ElapsedMilliseconds
@@ -227,33 +227,33 @@ Public Module Player
     Private Const MaxIdleTime = 30 * 1000           ' milliseconds
 
 
-    Public Sub StartSequencePlayer()
+    Public Sub StartPatternPlayer()
         If TimerID = 0 Then Start_Timer()
-        If IsSequencePlayerRunning = True Then Exit Sub
+        If IsPatternPlayerRunning = True Then Exit Sub
         IdleCheckCount = 0
         IdleBaseTime = Stopwatch.ElapsedMilliseconds
-        _IsSequencePlayerRunning = True
+        _IsPatternPlayerRunning = True
     End Sub
 
-    Public Sub StopSequencePlayer()
-        If IsSequencePlayerRunning = False Then Exit Sub
-        _IsSequencePlayerRunning = False
-        SequencePlayer.AllRunningNotesOff()
-        _IsSequencePlayerRunning = False
+    Public Sub StopPatternPlayer()
+        If IsPatternPlayerRunning = False Then Exit Sub
+        _IsPatternPlayerRunning = False
+        PatternPlayer.AllRunningNotesOff()
+        _IsPatternPlayerRunning = False
     End Sub
 
-    Public Sub Set_SequencePlayerTime(newTime As Double)
-        If IsSequencePlayerRunning = True Then
-            If newTime < SequencePlayerTime Then
-                SequencePlayer.AllRunningNotesOff()
+    Public Sub Set_PatternPlayerTime(newTime As Double)
+        If IsPatternPlayerRunning = True Then
+            If newTime < PatternPlayerTime Then
+                PatternPlayer.AllRunningNotesOff()
             End If
         End If
-        _SequencePlayerTime = newTime
+        _PatternPlayerTime = newTime
     End Sub
 
-    Public Sub Restart_SequencePlayer()
-        Set_SequencePlayerTime(0)
-        SequenceList.Clear()
+    Public Sub Restart_PatternPlayer()
+        Set_PatternPlayerTime(0)
+        PatternList.Clear()
     End Sub
 
     Public Sub StartTrackPlayer()

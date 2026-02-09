@@ -3,7 +3,7 @@ Imports Mmultitool.Player
 
 Public Class DlgImportMidiPattern
 
-    Public RetSequence As Sequence
+    Public RetSequence As Pattern
 
 
     Private Shared ScreenRefreshTimer As New Timers.Timer(50)       ' 50 ms Screen Timer (= 20 FPS)
@@ -18,13 +18,13 @@ Public Class DlgImportMidiPattern
     End Sub
 
     Private Sub Window_Closing(sender As Object, e As ComponentModel.CancelEventArgs)
-        Player.RemoveSequence(Sequence1)
-        Player.RemoveSequence(Sequence2)
+        Player.RemovePattern(Pattern1)
+        Player.RemovePattern(Pattern2)
     End Sub
 
     Private Sub btnImport_Click(sender As Object, e As RoutedEventArgs) Handles btnImport.Click
         CreateEventlist2()
-        RetSequence = CreateSequence(evlic2.EventList, evlic2.TPQ, NudNumberOfBeats.Value)
+        RetSequence = CreatePattern(evlic2.EventList, evlic2.TPQ, NudNumberOfBeats.Value)
         RetSequence.Name = Path.GetFileNameWithoutExtension(mifir.MidiName)
         DialogResult = True
         Close()
@@ -38,21 +38,21 @@ Public Class DlgImportMidiPattern
 
     Public Delegate Sub ScreenRefresh_Delegate()
     Private Sub ScreenRefresh()
-        If SequencePlayerBPM <> SsldSequencePlayerBPM1.Value Then
-            SsldSequencePlayerBPM1.SetValueSilent(Math.Round(SequencePlayerBPM, 0))
+        If PatternPlayerBPM <> SsldSequencePlayerBPM1.Value Then
+            SsldSequencePlayerBPM1.SetValueSilent(Math.Round(PatternPlayerBPM, 0))
         End If
-        If SequencePlayerBPM <> SsldSequencePlayerBPM2.Value Then
-            SsldSequencePlayerBPM2.SetValueSilent(Math.Round(SequencePlayerBPM, 0))
+        If PatternPlayerBPM <> SsldSequencePlayerBPM2.Value Then
+            SsldSequencePlayerBPM2.SetValueSilent(Math.Round(PatternPlayerBPM, 0))
         End If
-        If Sequence1 IsNot Nothing Then
-            If Sequence1.ID <> 0 Then
+        If Pattern1 IsNot Nothing Then
+            If Pattern1.ID <> 0 Then
                 IsPlayingMark1.Visibility = Visibility.Visible
             Else
                 IsPlayingMark1.Visibility = Visibility.Hidden
             End If
         End If
-        If Sequence2 IsNot Nothing Then
-            If Sequence2.ID <> 0 Then
+        If Pattern2 IsNot Nothing Then
+            If Pattern2.ID <> 0 Then
                 IsPlayingMark2.Visibility = Visibility.Visible
             Else
                 IsPlayingMark2.Visibility = Visibility.Hidden
@@ -66,14 +66,14 @@ Public Class DlgImportMidiPattern
     Private mifir As New MidifileRead                   ' original file
     Private evlic1 As EventListContainer                ' original evc
     Private numbeats1 As Single                         ' number of beats    
-    Private Sequence1 As Sequence                       ' play original evc
+    Private Pattern1 As Pattern                       ' play original evc
 
     Private evlic2 As EventListContainer                ' edited evc
-    Private Sequence2 As Sequence                       ' play edited evc
+    Private Pattern2 As Pattern                       ' play edited evc
 
     Private Sub BtnOpenMidifile_Click(sender As Object, e As RoutedEventArgs) Handles BtnOpenMidifile.Click
-        Player.RemoveSequence(Sequence1)
-        Player.RemoveSequence(Sequence2)
+        Player.RemovePattern(Pattern1)
+        Player.RemovePattern(Pattern2)
 
         btnImport.IsEnabled = False
         evlic1 = Nothing
@@ -159,24 +159,24 @@ Public Class DlgImportMidiPattern
     Private Sub btnPlay1_Click(sender As Object, e As RoutedEventArgs) Handles BtnPlay1.Click
         StopPlaying()
         If evlic1 Is Nothing Then Exit Sub
-        Sequence1 = CreateSequence(evlic1.EventList, evlic1.TPQ)
-        Player.PlaySequence(Sequence1, TgbtnLoop1.IsChecked)
+        Pattern1 = CreatePattern(evlic1.EventList, evlic1.TPQ)
+        Player.PlayPattern(Pattern1, TgbtnLoop1.IsChecked)
     End Sub
 
     Private Sub BtnStopSequence1_Click(sender As Object, e As RoutedEventArgs) Handles BtnStopSequence1.Click
-        Player.RemoveSequence(Sequence1)
+        Player.RemovePattern(Pattern1)
     End Sub
 
     Private Sub BtnPlay2_Click(sender As Object, e As RoutedEventArgs) Handles BtnPlay2.Click
         StopPlaying()
         CreateEventlist2()
         If evlic2 Is Nothing Then Exit Sub
-        Sequence2 = CreateSequence(evlic2.EventList, evlic2.TPQ)
-        Player.PlaySequence(Sequence2, TgbtnLoop2.IsChecked)
+        Pattern2 = CreatePattern(evlic2.EventList, evlic2.TPQ)
+        Player.PlayPattern(Pattern2, TgbtnLoop2.IsChecked)
     End Sub
 
     Private Sub BtnStopSequence2_Click(sender As Object, e As RoutedEventArgs) Handles BtnStopSequence2.Click
-        Player.RemoveSequence(Sequence2)
+        Player.RemovePattern(Pattern2)
     End Sub
 
     Private Sub NudNumberOfBeats_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles NudNumberOfBeats.ValueChanged
@@ -184,20 +184,20 @@ Public Class DlgImportMidiPattern
     End Sub
 
     Private Sub StopPlaying()
-        Player.RemoveSequence(Sequence1)
-        Player.RemoveSequence(Sequence2)
+        Player.RemovePattern(Pattern1)
+        Player.RemovePattern(Pattern2)
     End Sub
 
 
     Private Sub SsldSequencePlayerBPM_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles SsldSequencePlayerBPM1.ValueChanged
         If IsLoaded = True Then
-            SequencePlayerBPM = SsldSequencePlayerBPM1.Value
+            PatternPlayerBPM = SsldSequencePlayerBPM1.Value
         End If
     End Sub
 
     Private Sub SsldSequencePlayerBPM2_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double)) Handles SsldSequencePlayerBPM2.ValueChanged
         If IsLoaded = True Then
-            SequencePlayerBPM = SsldSequencePlayerBPM2.Value
+            PatternPlayerBPM = SsldSequencePlayerBPM2.Value
         End If
     End Sub
 

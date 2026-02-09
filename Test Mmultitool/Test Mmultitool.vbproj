@@ -101,6 +101,9 @@
     <Compile Include="Debugging\Windows\DlgClipboardContent.xaml.vb">
       <DependentUpon>DlgClipboardContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Debugging\Windows\DlgMidiOutLog.xaml.vb">
+      <DependentUpon>DlgMidiOutLog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AboutWin.xaml.vb">
       <DependentUpon>AboutWin.xaml</DependentUpon>
     </Compile>
@@ -108,6 +111,10 @@
       <DependentUpon>DlgMidiPorts.xaml</DependentUpon>
     </Compile>
     <Page Include="Debugging\Windows\DlgClipboardContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Debugging\Windows\DlgMidiOutLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

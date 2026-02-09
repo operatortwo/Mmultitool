@@ -188,7 +188,7 @@
     <Compile Include="Midi\File\Write\MidiFileWrite.vb" />
     <Compile Include="Midi\File\Write\MidiFileWriteAux.vb" />
     <Compile Include="Midi\Player\Common.vb" />
-    <Compile Include="Midi\Player\SequencePlayer.vb" />
+    <Compile Include="Midi\Player\PatternPlayer.vb" />
     <Compile Include="Midi\Player\OutputStage.vb" />
     <Compile Include="Midi\Player\Timer.vb" />
     <Compile Include="Midi\Player\TrackPlayer.vb" />

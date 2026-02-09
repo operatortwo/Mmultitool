@@ -1,0 +1,14 @@
+﻿<Window x:Class="DlgMidiOutLog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Test_Mmultitool"
+        xmlns:mmt="clr-namespace:Mmultitool;assembly=Mmultitool"
+        mc:Ignorable="d"
+        Title="MidiOut Log" Height="400" Width="600">
+    <Grid>
+        <mmt:EventLister x:Name="EventLister1" Margin="0,10,0,65"/>
+        <Button x:Name="btnOk" Content="Ok" HorizontalAlignment="Center" Margin="0,0,0,23" Width="76" IsDefault="True" IsCancel="True" Height="20" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>

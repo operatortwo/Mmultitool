@@ -50,7 +50,7 @@ Partial Public Class SequencePad
         MainPad.Children.Clear()
         If SeqPadData Is Nothing Then Exit Sub
 
-        SequencePlayerBPM = SeqPadData.BPM
+        PatternPlayerBPM = SeqPadData.BPM
 
         Try
             For Each vpdata In SeqPadData.VoicePanelList
@@ -142,7 +142,7 @@ Partial Public Class SequencePad
     Private Sub CollectSeqPadData()
         SeqPadData = New SequencePadData
 
-        SeqPadData.BPM = SequencePlayerBPM
+        SeqPadData.BPM = PatternPlayerBPM
 
         '--- SequenceVoicePanels ---
         Dim vp As SequenceVoicePanel
@@ -321,7 +321,7 @@ Partial Public Class SequencePad
         Public ID_Previous As New List(Of Integer)
 
         '--- pattern data ---
-        Public Sequence As Sequence
+        Public Sequence As Pattern
 
 
         Public Sub SetData(panel As SequenceBox)

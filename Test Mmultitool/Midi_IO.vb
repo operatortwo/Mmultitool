@@ -1,4 +1,6 @@
-﻿Partial Public Class MainWindow
+﻿Imports Mmultitool
+
+Partial Public Class MainWindow
 
     Public WithEvents MIO As New Midi_IO.Midi_IO
 
@@ -76,15 +78,24 @@
 
     End Sub
 
+    Private DbgMidiOutList As New List(Of TrackEventX)
+
     Public Sub MidiOutShortMsg(status As Byte, data1 As Byte, data2 As Byte)
         If hMidiOut <> 0 Then
             MIO.OutShortMsg(hMidiOut, status, data1, data2)
+            If DbgLogMidiOut = True Then
+                If DbgMidiOutList.Count < 1000 Then
+                    Dim trev As TrackEventX
+                    trev = CreateTrackEventX(status, data1, data2)
+                    trev.Time = PatternPlayerTime
+                    DbgMidiOutList.Add(trev)
+                End If
+            End If
         End If
     End Sub
 
     Public Sub MidiOutLongMsg(SysExData As Byte())
         If hMidiOut <> 0 Then
-            'MIO.OutShortMsg(hMidiOut0, status, data1, data2)
             MIO.OutLongMsg(hMidiOut, SysExData)
         End If
     End Sub

@@ -3,6 +3,7 @@
 
 Date			Version		Changes
 ------------------------------------------------	
+2026 02 09		1.0.7.3		renamed sequence to pattern
 2026 02 04		1.0.7.2		before renaming sequence to pattern
 2026 01 09		1.0.7.1		duc Library V 1.1.0.3
 2026 01 09		1.0.7.0		targeting .NET Framework 4.8
