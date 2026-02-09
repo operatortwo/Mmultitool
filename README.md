@@ -22,7 +22,7 @@ The selected events can be copied to the Clipboard using **right-click**. From t
 Similar to EventLister. Allows changing single events in the list. Contains some code parts for converting, displaying and changing MidiEvents and MetaEvents.
 
 ### Player
-Contains a **TrackPlayer** and a **SequencePlayer**.  
+Contains a **TrackPlayer** and a **PatternPlayer**.  
 The **TrackPlayer** allows the simultaneous playback of multiple tracks, for example the playback of a MIDI file in format 0 or 1.  
 The **Sequence Player** is designed to play single event lists (patterns) and fragments from tracks or event lists.
 
